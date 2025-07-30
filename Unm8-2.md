@@ -17,10 +17,10 @@ Therefore, first-order models have interpretability but lack expressiveness, whi
   To our knowledge, we are the first to define high-order halo effects in terms of item features formally. For example, when assessing how subset $\{A, B\}$ influences the utility of item $C$ in an offer set $\{A, B, C, D\}$, the effect should depend only on the features of $A$, $B$, and $C$, not on unrelated items like $D$. Including irrelevant items makes the subset effect uninterpretable. This illustrates why models that entangle all item features inevitably introduce uncontrolled, high-order interactions.
 
 - **Structured Decomposition and Controllable Effect Order**  
-  As shown in Appendix A, DeepHalo’s architecture ensures the utility can be decomposed as in Line 189. The model depth determines the maximum interaction order, while the choice of activation function affects how quickly the order increases. We appreciate the reviewer’s interest and clarify this further in XXXX. [REFER EXACTLY TO THE CONTENT BELOW]
+  As shown in Appendix A, DeepHalo’s architecture ensures the utility can be decomposed as in Line 189. The model depth determines the maximum interaction order, while the choice of activation function affects how quickly the order increases. We appreciate the reviewer’s interest and clarify this further in Section 2.
 
 - **Direct Effect Recovery Without Solving Linear Systems**  
-  Prior approaches require solving large linear systems to recover halo effects, which becomes intractable for large assortments. In contrast, DeepHalo leverages Eq. (3) and Eq. (10) to recover effects directly and efficiently. We elaborate on this further in xxxxxx in response to your questions. [REFER EXACTLY TO THE CONTENT BELOW]
+  Prior approaches require solving large linear systems to recover halo effects, which becomes intractable for large assortments. In contrast, DeepHalo leverages Eq. (3) and Eq. (10) to recover effects directly and efficiently. We elaborate on this further in Section 3 in response to your questions. 
 
 These innovations go beyond what Deep Set offers. While DeepSets provides permutation invariance, DeepHalo integrates domain-specific insights from discrete choice theory and the halo literature, along with architectural elements like residual connections and polynomial activations. This enables interpretable, high-order interaction modeling in a principled and controllable way.
 
@@ -29,15 +29,15 @@ These innovations go beyond what Deep Set offers. While DeepSets provides permut
 
 Thank you for raising this point. The key intuition is that every recursion depth l in Eqs. (4)–(5) adds **exactly one additional order of interaction** while preserving all lower‑order terms via the residual connection. The process is the same as Appendix A 2.2 and A 2.3. To better facilitate the understanding, we provide a simple example below.
 
-Consider an offer set ${j, k, l}$ and let $\phi$ be an identity mapping. [REWRITE TO MAKE SURE THE NOTATION DOES NOT OVERLOAD.]
+Consider an offer set ${j, k, l}$ and let $\phi$ be an identity mapping. We focus on the change of $z_{j}$ in DeepHalo.
 1. **Pairwise (1‑st order) layer.**  
    The first layer aggregates the linear summary vector $\bar Z^{1}$ from raw embedding vector $z^{0}$ and modulates them with $z_{j}^{0}$. This yields  
-   $z_{j}^{1}=z_{j}^{0} + \frac1H\sum_{h}\bar Z_{h}^{1} \cdot z_{j}^{0}$, which contains only **pairwise interactions** between the target alternative \(j\) and every other item \(k\) in the set.
+   $z_{j}^{1}=z_{j}^{0} + \frac1H\sum_{h}\bar Z_{h}^{1} \cdot z_{j}^{0}$, which contains only **pairwise interactions** between the target alternative $j$ and every other item $k, l$ in the set.
    If we denote $f_j$ as any function containing only item j's feature information, the above output can be formulated as,
    $z_{j}^{1} = f_j + \frac1H\sum_{h}(f_j + f_k + f_l) \cdot f_j$, thus it contains zero order term $f_j$ and first order term $f_k \cdot f_j$ and $f_l \cdot f_j$, second order term $f_j \cdot f_k \cdot f_l$ won't appear. For simplicity, we use $f_{ab}$ to represent any term like $f_a \cdot f_b$ and $f_b \cdot f_a$, which only contains the features of item a and item b.
 
 2. **Second‑order layer.**  
-   Consider a choice set $\{j,k,l\}$. [DOES NOT NEED THIS. YOU HAVE DEFINED IT] After the first layer, $z_{k}^{1}$ and $z_{l}^{1}$ already embed their pairwise effects with every other item.  
+   After the first layer, $z_{k}^{1}$ and $z_{l}^{1}$ already embed their pairwise effects with every other item.  
    The second layer builds
     
    $\bar Z^{2}=\tfrac1S\sum_{m}W^{2}z_{m}^{1}$, which contains term $f_j, f_k, f_l, f_{jk}, f_{jl}, f_{kl}$.
