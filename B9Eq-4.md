@@ -27,53 +27,53 @@ In general:
 Therefore, we recommend:
 
 - Using Eq. (5) when stability is a concern or when higher-order context effects are not considered.
-- Using Eq. (8) to reduce network depth when higher-order interactions are known or hypothesized.
+- Using Eq. (8) to reduce network depth when higher-order interactions are considered.
 - Combining them for a tunable trade-off.
 
 This modularity makes DeepHalo a unified and controllable framework for context-dependent choice modeling, in both feature-rich and featureless settings. We will add a guidance paragraph in the revision to clarify these trade-offs.
 
 #### 3. Clarifying what makes DeepHalo more interpretable than prior neural context-effect models
 
-We appreciate the reviewer’s thoughtful question. While many prior models (e.g., FATE, TCNet) acknowledge context effects, none have **formally defined feature-based halo effects in a utility-decomposable framework**. Our work is, to the best of our knowledge, the first to do so.
+We appreciate the reviewer’s thoughtful question. While many prior models (e.g., FATE, TCNet) acknowledge context effects, none have formally defined feature-based halo effects in a utility-decomposable framework. Our work is, to the best of our knowledge, the first to do so.
 
-Concretely, given an offer set $\{A, B, C, D\}$, when estimating how the subset $\{A, B\}$ influences the utility of item $C$, **the function must depend only on the features of $A$, $B$, and $C$**, and **must not involve irrelevant items like $D$**. This subset-specific conditioning is critical for interpretability, but is not enforced in FATE, TCNet. Models such as FATE and TCNet attempt to learn context by directly entangling all item features. As the reviewer notes, their outputs can be interpreted via Eq. (10) as halo effects. However, **the interaction order in these models is uncontrolled**, and recovering a faithful decomposition would require evaluating up to $|S|-1$ orders, leading to exponentially many terms and breaking interpretability.
+Concretely, given an offer set $\{A, B, C, D\}$, when estimating how the subset $\{A, B\}$ influences the utility of item $C$, the function must depend only on the features of $A$, $B$, and $C$, and must not involve irrelevant items like $D$. This subset-specific conditioning is critical for interpretability, but is not enforced in FATE, TCNet. Models such as FATE and TCNet attempt to learn context by directly entangling all item features. As the reviewer notes, their outputs can be interpreted via Eq. (10) as halo effects. However, the interaction order in these models is uncontrolled, and recovering a faithful decomposition would require evaluating up to $|S|-1$ orders, leading to exponentially many terms and breaking interpretability.
 
-The issue lies in their architecture. FATE combines global context with individual features but cannot restrict interaction depth. TCNet’s attention mechanism inherently mixes all items, effectively modeling full-order interactions by design. As a result, these models **do not formulate context effects in a structured, decomposable way**, making interpretation difficult.
+The issue lies in their architecture. FATE combines global context with individual features but cannot restrict interaction depth. TCNet’s attention mechanism inherently mixes all items, effectively modeling full-order interactions by design. As a result, these models do not formulate context effects in a structured, decomposable way, making interpretation difficult.
 
-DeepHalo resolves this with a **modular design**:
+DeepHalo resolves this with a modular design:
 
-- Each layer introduces **exactly one additional interaction order or $\times 2$ using quadratic activation**.
-- The **maximum effect order is bounded** by the network depth $L$.
-- Residual and polynomial structures guarantee **halo-decomposable utility functions**. We will give a simple example later for better illustration.
+- Each layer introduces exactly one additional interaction order or $\times 2$ using quadratic activation.
+- The maximum effect order is bounded by the network depth $L$.
+- Residual and polynomial structures guarantee halo-decomposable utility functions. We will give a simple example later for better illustration.
 
 This enables users to control expressiveness, avoid overfitting, and ensure that only desired-order interactions are modeled. For example, modeling third-order effects over a catalog of 100 items without such control would require handling over 160,000 subsets—computationally prohibitive and interpretively infeasible.
 
-**In summary**, DeepHalo is the first model to:
+In summary, DeepHalo is the first model to:
 
 1. Formally define feature-based halo effects. 
 2. Provide a general decomposition-compatible framework.
 3. Architecturally enforce subset attribution and interaction-order control.
 
-These properties are essential for **reliable and scalable interpretability**, and are not achievable with existing models.
+These properties are essential for reliable and scalable interpretability, and are not achievable with existing models.
 
 #### 4. Clarifying the distinction between DeepHalo and SDA [Rosenfeld et al., 2020]
 
 Thank you for the insightful observation. While DeepHalo shares some high-level similarities with set-dependent embedding (SDA) approaches such as [Rosenfeld et al., 2020, Eq. (2)], we would like to emphasize several key distinctions in both motivation and design.
 
-DeepHalo is fundamentally grounded in **halo effect theory**, which prioritizes interpretable higher-order interactions. While incorporating context information (e.g., through contextual functions like $\phi$) is straightforward in both frameworks, **interpretability requires controlling the maximum order of interactions**—a key principle not enforced by SDA.
+DeepHalo is fundamentally grounded in halo effect theory, which prioritizes interpretable higher-order interactions. While incorporating context information (e.g., through contextual functions like $\phi$) is straightforward in both frameworks, interpretability requires controlling the maximum order of interactions—a key principle not enforced by SDA.
 
-As the reviewer rightly noted, if Eq. (10) were applied to arbitrary context-based architectures (e.g., SDA), the number of halo terms would grow **exponentially** with the size of the offer set. This would result in a **combinatorial explosion** of interaction terms that are computationally infeasible and practically uninterpretable.
+As the reviewer rightly noted, if Eq. (10) were applied to arbitrary context-based architectures (e.g., SDA), the number of halo terms would grow exponentially with the size of the offer set. This would result in a combinatorial explosion of interaction terms that are computationally infeasible and practically uninterpretable.
 
 In contrast:
 
-- **SDA and related models** aggregate item features in a **fully entangled** way.
-  - This makes it **virtually impossible to recover halo effects** without enumerating all subsets—an exponentially large and ill-posed task.
-- **DeepHalo**, by design:
-  - Uses **residual connections and polynomial activations** to explicitly control and construct the interaction order.
-  - Ensures that utilities are **halo-decomposable** and that **item features remain disentangled**.
-  - Caps model expressiveness to low-order interactions, preserving **interpretability and generalization**.
+- SDA and related models aggregate item features in a fully entangled way.
+  - This makes it virtually impossible to recover halo effect* without enumerating all subsets—an exponentially large and ill-posed task.
+- DeepHalo, by design:
+  - Uses residual connections and polynomial activations to explicitly control and construct the interaction order.
+  - Ensures that utilities are halo-decomposable and that item features remain disentangled.
+  - Caps model expressiveness to low-order interactions, preserving interpretability and generalization.
 
-In short, while SDA enables generic set-dependent context modeling, **DeepHalo provides a theoretically-grounded and architecturally-enforced approach to interpretable, order-controlled context effects**, which is essential for practical discrete choice applications.
+In short, while SDA enables generic set-dependent context modeling, DeepHalo provides a theoretically-grounded and architecturally-enforced approach to interpretable, order-controlled context effects, which is essential for practical discrete choice applications.
 
 ### 5. Simple Example: Utility Decomposition and Order Growth**
 We thank the author for raising this point.  The key intuition is that every recursion depth l in Eqs. (4)–(5) adds **exactly one additional order of interaction** while preserving all lower‑order terms via the residual connection. The process is consistent with Appendix A 2.2 and A 2.3. To illustrate, we provide a simple example as follows. 
