@@ -29,8 +29,9 @@ These innovations go beyond what DeepSets offers. While DeepSets provides permut
 
 
 ### **2&nbsp;&nbsp;Utility Decomposition and Order Growth**
-We thank the author for raising this point.  The key intuition is that every recursion depth l in Eqs. (4)–(5) adds **exactly one additional order of interaction** while preserving all lower‑order terms via the residual connection. The process is the same as Appendix A 2.2 and A 2.3. To better facilitate the understanding, we provide a simple example here. Formally, **let's take offer set ${j, k, l}$ as an example and take $\phi$ as identity mapping for simplicity**:
+We thank the author for raising this point.  The key intuition is that every recursion depth l in Eqs. (4)–(5) adds **exactly one additional order of interaction** while preserving all lower‑order terms via the residual connection. The process is the same as Appendix A 2.2 and A 2.3. To better facilitate the understanding, we provide a simple example here.
 
+Consider an offer set ${j, k, l}$ and set $\phi$ as an identity mapping.
 1. **Pairwise (1‑st order) layer.**  
    The first layer aggregates the linear summaries $\bar Z^{1}$ from raw embeddings $z^{0}$ and modulates them with $z_{j}^{0}$. This yields  
    $z_{j}^{1}=z_{j}^{0} + \frac1H\sum_{h}\bar Z_{h}^{1} \cdot z_{j}^{0},$  
@@ -54,7 +55,7 @@ Then it's clear how we can add up orders by increasing the number of layers and 
 The $(−1)^{∣T∣−∣R∣}$ factor in Eq. (3) is the inclusion–exclusion inversion coefficient on the Boolean lattice of subsets. Our vj(⋅) must invert the cumulative‑sum relation $u_j(X_S)=\sum_{T\subset S\setminus\{j\}} v_j(X_{T\cup\{j\}})$; effects contributed to many supersets are otherwise over‑counted. Alternating signs guarantee that terms appearing an even number of times cancel and those appearing an odd number of times net to the correct single contribution, yielding a unique decomposition. 
 
 ### **4&nbsp;&nbsp;Performance Difference between DeepHalo and TCnet**
-We thank the reviewer for the insightful observation. The similar performance between DeepHalo and TCNet is expected and highlights a key difference in modeling philosophy.
+Thanks for the insightful observation. We expect a similar performance between DeepHalo and TCNet and would like to highlight a key difference in modeling philosophy.
 
 While TCNet can approximate utility decompositions (maximum order), its Transformer architecture lacks control over the maximum interaction order. Attention layers aggregate across the full set, leading to high-order effects that are difficult to interpret. In contrast, DeepHalo explicitly controls interaction order through its recursive structure, enabling better interpretability and identifiability.
 
