@@ -67,7 +67,7 @@ As the reviewer rightly noted, if Eq. (10) were applied to arbitrary context-b
 In contrast:
 
 - SDA and related models aggregate item features in a fully entangled way.
-  - This makes it virtually impossible to recover halo effect* without enumerating all subsets—an exponentially large and ill-posed task.
+  - This makes it virtually impossible to recover halo effect without enumerating all subsets—an exponentially large and ill-posed task.
 - DeepHalo, by design:
   - Uses residual connections and polynomial activations to explicitly control and construct the interaction order.
   - Ensures that utilities are halo-decomposable and that item features remain disentangled.
