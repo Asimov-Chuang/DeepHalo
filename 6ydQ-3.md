@@ -9,17 +9,18 @@ A: DeepHalo's greatest contribution lies in its ability to effectively balance m
 
 - Other models such as FATE and TCNet attempt to learn context by directly entangling all item features. As other reviewers note, their outputs can be interpreted via Eq. (10) as halo effects. However, the interaction order in these models is uncontrolled. Recovering a correct decomposition would require evaluating up to $|S|-1$ orders, leading to exponentially many terms and breaking interpretability. The issue lies in their architecture. These models **do not formulate context effects in a structured, decomposable way**.
 
-Therefore, while first-order models offer interpretability, they suffer from limited expressiveness. In contrast, other models are more expressive but lack the ability to control the maximum effect order and are challenging to interpret. DeepHalo is designed to bridge this gap, enabling the modeling of higher-order halo effects up to any desired order. We kindly refer the reviewer to Appendix 2.2 and 2.3 for further intuition.
+Therefore, while first-order models offer interpretability, they suffer from limited expressiveness. In contrast, other models are more expressive but lack the ability to control the maximum effect order and are challenging to interpret. DeepHalo is designed to bridge this gap, enabling the modeling of higher-order halo effects up to any desired order. We kindly refer the reviewer to Appendix A2.2 and A2.3 for further intuition.
 
-> Q
-Regarding the choice of baselines for the experiment: If we understand your point correctly, you refer to the experiment in Section 5.1, Table 1. This experiment focuses on measuring the context effect in the featureless setting. We compare with the context-dependent DCM benchmark, Contextual MNL. To cover the context-independent DCM benchmarks you mentioned, which follow the RUM principle, we add mixed logit, which can approximate any RUM model arbitrarily well. The baseline MNL, usually included in the literature, functions merely as a sanity check. Regarding ML baselines, we add additional baselines with transformer (TCnet) and deep sets (FATE), as displayed below.
+> Q: If the contribution relates to DCM behaviour modeling for the ML community, then some aspects should be considered...
+
+A: Regarding the choice of baselines for the experiment: Our model aims to explore the context effect. Therefore we mainly compare DeepHalo with the context-dependent DCM benchmark, such as Contextual MNL. We set mnl as a baseline because comparing MNL and Contextual MNL directly demonstrates the effect of context, and MNL can serve as a sanity check. To cover the context-independent DCM benchmarks you mentioned, which follow the RUM principle, we add mixed logit in featureless experiments, which can approximate any RUM model arbitrarily well. Regarding ML baselines, we add additional baselines with transformer (TCnet) and deep sets (FATE), as displayed below.
 
 | Model         | Hotel (Train/Test) | SFOshop (Train/Test) | SFOwork (Train/Test) |
 |---------------|--------------------|------------------------|-----------------------|
 | MNL           | 0.7743 / 0.7743    | 1.7281 / 1.7262        | 0.9423 / 0.9482       |
 | MLP           | 0.7569 / 0.7523    | 1.5556 / 1.5523        | 0.8074 / 0.8120       |
 | CMNL          | 0.7566 / 0.7561    | 1.5676 / 1.5686        | 0.8116 / 0.8164       |
-| Mixed MNL     | 0.7635 / 0.7613    | 1.5599 / 1.5577        | 0.8092 / 0.8153       |
+| Mixed Logit     | 0.7635 / 0.7613    | 1.5599 / 1.5577        | 0.8092 / 0.8153       |
 | FateNet       | 0.7575 / 0.7568    | 1.5726 / 1.5765        | 0.8133 / 0.8167       |
 | TCNet         | **0.7467** / 0.7670| 1.5694 / 1.5742        | 0.8114 / 0.8145       |
 | **DeepHalo** (Ours) | 0.7479 / **0.7483** | **1.5385** / **1.5263** | **0.8040** / **0.8066** |
