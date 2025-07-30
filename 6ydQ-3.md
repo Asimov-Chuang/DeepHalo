@@ -46,15 +46,42 @@ A: We believe this paper belongs to this community, since several wonderful work
 Our primary area is machine learning for sciences (e.g., climate, health, life sciences, physics, social sciences). Transparent understanding of human decision-making processes is very important in social sciences and medical fields. In addition, establishing more reasonable preference models is also an important part of commonly used algorithms such as RLHF. Therefore, we believe that our article is very suitable for this primary area.
 
 **Clarifications:**
-- We will explain the ‘Featureless setting’ further by elaborating on ‘items without access to their features’.
-- We hope to clarify here that the mentioned definition regarding $u_j(T)$ is regarding the universal logit model, which generalizes the MNL model by allowing context-dependent utilities. MNL, as a special case of the universal logit model, is less expressive as it assumes IIA and the utility $u_j$ is only related to item j, not the whole choice set. Regarding the confusing notation, we will only introduce the utility function $u_j(S)$ instead, and only introduce the notation $T$ which emphasizes the context information (subset excluding the item j itself).
-- Thanks for pointing that out. We will rewrite the definition of $X_{T∪{j}}$ as “formed from the feature matrix $X_S$ by replacing the feature vectors not in the subset T∪{j} with zero.”
-- Each row of $W^1$ represents a specific mapping at index h, so W^1 provides H variety of mappings, which are then aggregated by the sum over $Z_h^1$. This is indeed training each of the h-th mapping, and the notion $W^1$ provides a clean representation of the H-head linear mapping. 
-- Regarding Section 4.1: One of the key computational benefits of the polynomial is exactly as you suggested – a few layers can include a large universe, which prevents the very deep structure (line 234). We further discuss the quadratic benefit in Section 4.2 (line 262-264) and provide a logarithmic relation, namely, a linear number of layers can cover exponentially many items. To enrich section 4.1, we will particularly refer to the quadratic example in the revised version.
-- Regarding Section 4.2: $e_S$ is a unit vector with the $(e_S)_j = 1$ if j ∈ S and 0 otherwise. The recursive expression in equation 9 can be represented as a polynomial of $e_S$. Let us consider the case with up to second-order interaction, then the second-order term relates to $e_S \otimes e_S$ where the (i,j)-th element refers to whether both item i and item j exist in the choice set. The coefficients in the polynomial corresponding to each element of the second-order term measure the specific interactions in equation (1).
-- Regarding $\cup$ in Equation 3: If I understand your question, I think your confusion might have originated from a typo in equation 3: $X_R$ should be $X_{R∪{j}}$. In equation (10), the relative context effect is specified on item j and item k, whose definition is introduced in Park and Hahn [1998].
-- The number of nn parameters in Fig 2 is the total number of trainable parameters, which specifies the model complexity and is influenced by the problem size and the selection of hyperparameters like H.
-- Yes, thanks for catching that. We will correct to |S|.
+> Q: The intro is good but some things are a bit unclear.
+
+A: We will explain the ‘Featureless setting’ further by elaborating on ‘items without access to their features’.
+
+> Q: “For each j ∈S, define a utility function uj(T), which represents the utility of alternative j when the context is the subset T ⊆S{j}.” This is quite confusing.
+
+A: We hope to clarify here that the mentioned definition regarding $u_j(T)$ is regarding the universal logit model, which generalizes the MNL model by allowing context-dependent utilities. MNL, as a special case of the universal logit model, is less expressive as it assumes IIA and the utility $u_j$ is only related to item j, not the whole choice set. Regarding the confusing notation, we will only introduce the utility function $u_j(S)$ instead, and only introduce the notation $T$ which emphasizes the context information (subset excluding the item j itself).
+
+> Q: “Here, XT∪{j}∈Rdx ×J denotes the matrix formed by replacing the feature vectors not in the subset T ∪{j}with zero.” —> rephrase. 
+
+
+A: Thanks for pointing that out. We will rewrite the definition of $X_{T∪{j}}$ as “formed from the feature matrix $X_S$ by replacing the feature vectors not in the subset T∪{j} with zero.”
+
+> Q: This sentence got me a bit confused: “Here, H denotes the number of interaction heads...”
+
+A: Each row of $W^1$ represents a specific mapping at index h, so W^1 provides H variety of mappings, which are then aggregated by the sum over $Z_h^1$. This is indeed training each of the h-th mapping, and the notion $W^1$ provides a clean representation of the H-head linear mapping. 
+
+> Q: Section “4.1 Residual Connection for Large Choice Sets” is quite confusing
+
+A: Regarding Section 4.1: One of the key computational benefits of the polynomial is exactly as you suggested – a few layers can include a large universe, which prevents the very deep structure (line 234). We further discuss the quadratic benefit in Section 4.2 (line 262-264) and provide a logarithmic relation, namely, a linear number of layers can cover exponentially many items. To enrich section 4.1, we will particularly refer to the quadratic example in the revised version.
+
+> Q: For section 4.2., if I understand well, e_S is a vector of 1s...
+
+A: Regarding Section 4.2: $e_S$ is a unit vector with the $(e_S)_j = 1$ if j ∈ S and 0 otherwise. The recursive expression in equation 9 can be represented as a polynomial of $e_S$. Let us consider the case with up to second-order interaction, then the second-order term relates to $e_S \otimes e_S$ where the (i,j)-th element refers to whether both item i and item j exist in the choice set. The coefficients in the polynomial corresponding to each element of the second-order term measure the specific interactions in equation (1).
+
+> Q: There’s something confusing with the meaning of \union in equation 3.
+
+A: Regarding $\cup$ in Equation 3: If I understand your question, I think your confusion might have originated from a typo in equation 3: $X_R$ should be $X_{R∪{j}}$. In equation (10), the relative context effect is specified on item j and item k, whose definition is introduced in Park and Hahn [1998].
+
+> Q: About number of parameters in Fig 2...
+
+A: The number of nn parameters in Fig 2 is the total number of trainable parameters, which specifies the model complexity and is influenced by the problem size and the selection of hyperparameters like H.
+
+> Q: \bar{Z}_1 := 1/S…
+
+A: Yes, thanks for catching that. We will correct to |S|.
 
 
 **Beverage Experiment**
