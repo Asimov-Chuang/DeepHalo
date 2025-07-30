@@ -1,4 +1,4 @@
-<img width="2304" height="316" alt="image" src="https://github.com/user-attachments/assets/2e36a6bf-275f-422e-8487-5edc5110de90" /><img width="3036" height="294" alt="image" src="https://github.com/user-attachments/assets/d1c9a0ae-893f-46a9-9372-9dccc4584563" />We sincerely appreciate your recognition of our modeling problem, methodological soundness, real-world validation, and thoughtful baseline selection. 
+We sincerely appreciate your recognition of our modeling problem, methodological soundness, real-world validation, and thoughtful baseline selection. 
 
 To address the concerns on novelty and interpretability, we provide detailed point-wise responses below.
 
