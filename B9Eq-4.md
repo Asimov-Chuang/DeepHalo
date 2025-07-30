@@ -5,10 +5,10 @@ We appreciate Reviewer 59ua’s positive feedback. To address the questions and 
 We agree that Section 4.1 should state this property explicitly. Currently, this is mentioned in Section 4.2, and the explanation is deferred in the appendix. 
 In the revision, we will:
 
-1. **Add a sentence to Section 4.1**  
+1) **Add a sentence to Section 4.1**  
    > “Because each Equation (8) layer doubles the maximum attainable interaction order, an *l*‑th‑order effect can be represented with at most ⌈log₂ l⌉ stacked layers.”
 
-2. **Provide an intuitive explanation**  
+2) **Provide an intuitive explanation**  
    - A single (8) layer captures up to second‑order effects.  
    - Stacking two layers composes these interactions, yielding up to 4‑th‑order effects, and so on.  
    - After *k* layers the highest order is $2^{k}$, giving the logarithmic bound.
@@ -20,9 +20,9 @@ We appreciate this insightful question. One of the strengths of the DeepHalo arc
 
 In general:
 
-1. **Higher-degree activations** (like Eq. (8)) allow *faster growth* in representational power with depth, efficiently capturing higher-order effects.
-2. **However**, very high-degree activations in deep networks may introduce *training instability*, such as exploding gradients.
-3. **Empirically**, we observe that for the same representable order, both variants achieve similar accuracy. Yet, **first-order activations (Eq. (5)) tend to be more stable**, especially on noisy or real-world datasets.
+- Higher-degree activations (like Eq. (8)) allow *faster growth* in representational power with depth, efficiently capturing higher-order effects.
+- However, very high-degree activations in deep networks may introduce *training instability*, such as exploding gradients.
+- Empirically, we observe that for the same representable order, both variants achieve similar accuracy. Yet, **first-order activations (Eq. (5)) tend to be more stable**, especially on noisy or real-world datasets.
 
 Therefore, we recommend:
 
