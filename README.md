@@ -74,3 +74,15 @@ In summary, **our contribution is not about surpassing TCNet in raw accuracy**, 
 To assess the data efficiency of DeepHalo, we conduct experiments on the SFOshop dataset, which exhibits strong context effects, by subsampling the training data at various proportions from 10% to 100%. All neural models are strictly constrained to a parameter budget of approximately 1k. Across all subsample ratios, DeepHalo consistently outperforms all other models in terms of Test NLL, demonstrating robust generalization even under limited data. When plotted, DeepHalo’s Test NLL exhibits the most pronounced and stable downward trend as the training data proportion increases—highlighting a clear advantage in data efficiency compared to other context-aware baselines such as TCnet, MLP, and FATE, which either plateau early or fluctuate as data increases.
 Crucially, in these experiments DeepHalo uses a single layer with a quadratic activation, explicitly constraining the highest interaction order to 2. Despite competing models (TCnet, MLP, FATE) having uncontrolled higher-order expressivity, they do not generalize better under the same parameter budget. This indicates that controlling the maximum interaction order is beneficial in real applications with context effects: it reduces overfitting to spurious higher-order interactions, focuses capacity on the dominant (up to second-order) structure, and yields consistently superior NLL across all data regimes.
 
+### **4&nbsp;&nbsp;Clarification**
+We sincerely thank the reviewer for pointing out the following typos and notational inconsistencies:
+
+- The use of $u_j(x_j, X_R)$ in Eq. (3) is indeed intended to denote the same function as $u_j(X_{R \cup \{j\}})$ in Eq. (2). We appreciate the suggestion and will revise the notation to maintain consistency throughout.
+
+- The duplicate citation of “Deep Sets [Zaheer et al., 2018]” and the misspelling of FETA and FATE (where “E” should stand for “evaluate”) will be corrected in the final version.
+
+- We acknowledge the inconsistent usage of $S$ for both the set and its cardinality. We will revise the manuscript to consistently use $|S|$ when referring to the size of the set, to avoid confusion.
+
+Thank you again for your careful reading — these corrections will be implemented in the final revision.
+
+
