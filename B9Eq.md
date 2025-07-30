@@ -2,13 +2,13 @@ We appreciate Reviewer 59ua’s positive feedback. To address the questions and 
 
 #### 1. Clarifying Section 4.1 — why Equation (8) needs only **log₂ l** layers to model *l*‑th‑order interactions
 
-We agree that Section 4.1 should state this property explicitly. Currently, this is mentioned in 4.2 and the explanation is defered in the appendix. 
+We agree that Section 4.1 should state this property explicitly. Currently, this is mentioned in Section 4.2, and the explanation is deferred in the appendix. 
 In the revision we will:
 
 1. **Add a sentence to Section 4.1**  
    > “Because each Equation (8) layer doubles the maximum attainable interaction order, an *l*‑th‑order effect can be represented with at most ⌈log₂ l⌉ stacked layers.”
 
-2. **Provide an intuitive explanation** (now in the appendix, to keep the main text concise):  
+2. **Provide an intuitive explanation**  
    - A single (8) layer captures up to second‑order effects.  
    - Stacking two layers composes these interactions, yielding up to 4‑th‑order effects, and so on.  
    - After *k* layers the highest order is $2^{k}$, giving the logarithmic bound.
