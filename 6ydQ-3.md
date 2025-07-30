@@ -85,6 +85,7 @@ A: Yes, thanks for catching that. We will correct to |S|.
 
 
 **Beverage Experiment**
+
 Thank you for the thoughtful comment. We encourage the reviewer to examine Figure 1 to better understand how DeepHalo captures interpretable and structured halo effects.
 
 Subfigure (b) visualizes the relative halo effect exerted by different subsets of items (horizontal axis) on the utility gap between competing item pairs (vertical axis). The rightmost column (∅) represents the baseline utility differences between item pairs in the absence of any contextual influence. For example, the strong baseline signal in pairs (1,2) and (3,4) corresponds to stable preferences such as Pepsi over Coke and 7-Up over Sprite, which are also clearly reflected in the observed market shares (Subfigure a). The leftmost column (item 1) shows a strong negative halo effect from Pepsi onto Coke: the presence of item 1 (Pepsi) reduces item 2’s (Coke’s) competitiveness when it is competing with item 3 or 4. Similarly, item 3 (7-Up) exerts a negative contextual effect on item 4 (Sprite) when competing with other items.
