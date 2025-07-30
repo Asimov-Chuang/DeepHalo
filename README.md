@@ -61,18 +61,19 @@ While TCNet can approximate utility decompositions (maximum order), its Transfor
 Given that low-order interactions often dominate in real-world settings, it is natural for TCNet to match DeepHalo's accuracy. However, DeepHalo achieves this with controlled expressiveness, offering a more interpretable alternative. Our goal is not to outperform black-box models in accuracy, but to provide a principled, order-aware design that balances predictive performance with transparency.
 
 ### **5&nbsp;&nbsp;Data Efficiency**
-| Ratio (%) | CMNL | MNL | FATE | MLP | MixedMNL | TCnet | **DeepHalo** |
-|---:|---:|---:|---:|---:|---:|---:|---:|
-|  10 | 1.574 | 1.898 | 1.583 | 1.571 | 1.674 | 1.589 | **1.566** |
-|  20 | 1.567 | 1.869 | 1.577 | 1.563 | 1.617 | 1.573 | **1.558** |
-|  30 | 1.564 | 1.844 | 1.577 | 1.557 | 1.590 | 1.569 | **1.551** |
-|  40 | 1.562 | 1.820 | 1.577 | 1.554 | 1.576 | 1.568 | **1.548** |
-|  50 | 1.561 | 1.779 | 1.577 | 1.550 | 1.566 | 1.570 | **1.544** |
-|  60 | 1.562 | 1.760 | 1.577 | 1.545 | 1.563 | 1.551 | **1.537** |
-|  70 | 1.555 | 1.742 | 1.577 | 1.542 | 1.560 | 1.539 | **1.532** |
-|  80 | 1.544 | 1.726 | 1.577 | 1.537 | 1.558 | 1.560 | **1.528** |
-|  90 | 1.550 | 1.699 | 1.577 | 1.539 | 1.555 | 1.549 | **1.526** |
-| 100 | 1.550 | 1.726 | 1.577 | 1.537 | 1.558 | 1.538 | **1.528** |
+| Ratio (%) | CMNL  | MNL   | FATE   | MLP   | MixedMNL | TCnet | **DeepHalo** |
+|-----------|-------|-------|--------|-------|-----------|--------|--------------|
+| 10        | 1.574 | 1.898 | 1.577 | 1.571 | 1.674     | 1.589 | **1.566**     |
+| 20        | 1.567 | 1.869 | 1.576 | 1.563 | 1.617     | 1.573 | **1.558**     |
+| 30        | 1.564 | 1.844 | 1.574 | 1.557 | 1.590     | 1.569 | **1.551**     |
+| 40        | 1.562 | 1.820 | 1.574 | 1.554 | 1.576     | 1.568 | **1.548**     |
+| 50        | 1.561 | 1.779 | 1.576 | 1.550 | 1.566     | 1.570 | **1.544**     |
+| 60        | 1.562 | 1.760 | 1.576 | 1.545 | 1.563     | 1.551 | **1.537**     |
+| 70        | 1.555 | 1.742 | 1.576 | 1.542 | 1.560     | 1.539 | **1.532**     |
+| 80        | 1.544 | 1.726 | 1.576 | 1.537 | 1.558     | 1.560 | **1.528**     |
+| 90        | 1.550 | 1.699 | 1.576 | 1.539 | 1.555     | 1.549 | **1.526**     |
+| 100       | 1.550 | 1.726 | 1.560 | 1.537 | 1.558     | 1.538 | **1.528**     |
+
 
 To evaluate data efficiency, we subsample the SFOshop dataset—known for strong context effects—at ratios from 10% to 100%, training all neural models under a strict ~1k parameter budget.
 
