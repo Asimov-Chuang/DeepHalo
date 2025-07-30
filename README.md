@@ -4,23 +4,23 @@ methodological soundness, real-world validation, and thoughtful baseline selecti
 To address the reviewer’s concerns on novelty and interpretability, 
 we provide detailed point-wise responses below.
 
-### 1&nbsp;&nbsp;Beyond FETA and other context based choice models: controllable modeling of higher‑order effects  
-Among context based models, 
+### 1&nbsp;&nbsp; Beyond FETA and other context-based choice models: controllable modeling of higher‑order effects  
+Among context-based models, 
 
-First-order models like CMNL (Yousefi Maragheh et al., 2020), low-rank Halo MNL (Ko and Li, 2024), and FETA (Pfannschmidt et al., 2022) can only capture pairwise interactions. While FETA proposes a utility decomposition similar to the halo effect, it only evaluates first-order terms in practice, as enumerating higher-order subsets is computationally infeasible for large assortments—limiting its ability to model complex choices.
+First-order models like CMNL (Yousefi Maragheh et al., 2020), low-rank Halo MNL (Ko and Li, 2024), and FETA (Pfannschmidt et al., 2022) can only capture pairwise interactions. While FETA proposes a utility decomposition similar to the halo effect, it only evaluates first-order terms in practice, as enumerating higher-order subsets is computationally infeasible for large assortments, limiting its ability to model complex choices.
 
-Other models such as FATE and TCNet attempt to learn context by directly entangling all item features. As the reviewer notes, their outputs can be interpreted via Eq. (10) as halo effects. However, **the interaction order in these models is uncontrolled**, and recovering a faithful decomposition would require evaluating up to $|S|-1$ orders—leading to exponentially many terms and breaking interpretability.
+Other models, such as FATE and TCNet, attempt to learn context by directly entangling all item features. As the reviewer notes, their outputs can be interpreted via Eq. (10) as halo effects. However, **the interaction order in these models is uncontrolled**, and recovering a faithful decomposition would require evaluating up to $|S|-1$ orders, leading to exponentially many terms and breaking interpretability.
 
 The issue lies in their architecture. FATE combines global context with individual features but cannot restrict interaction depth. TCNet’s attention mechanism inherently mixes all items, effectively modeling full-order interactions by design. As a result, these models **do not formulate context effects in a structured, decomposable way**, making interpretation difficult.
 
 
-Therefore, first-order models have interpretability but lack of expressiveness, while other models have expressiveness but cannot control maximum effect order and is difficult to interpret. DeepHalo is designed to fill this gap, which manages to model higher Halo effects up to any order we want. How do we do?
+Therefore, first-order models have interpretability but lack expressiveness, while other models have expressiveness but cannot control the maximum effect order and are difficult to interpret. DeepHalo is designed to fill this gap, which manages to model higher Halo effects up to any order we want. We achieve this through the following aspects.
 
 - **Feature-Based High-Order Halo Effects**  
-  To our knowledge, we are the first to formally define high-order halo effects in terms of item features. For example, when assessing how subset $\{A, B\}$ influences the utility of item $C$ in an offer set $\{A, B, C, D\}$, the effect should depend only on the features of $A$, $B$, and $C$, not on unrelated items like $D$. Including irrelevant items makes the subset effect uninterpretable. This illustrates why models that entangle all item features inevitably introduce uncontrolled, high-order interactions.
+  To our knowledge, we are the first to define high-order halo effects in terms of item features formally. For example, when assessing how subset $\{A, B\}$ influences the utility of item $C$ in an offer set $\{A, B, C, D\}$, the effect should depend only on the features of $A$, $B$, and $C$, not on unrelated items like $D$. Including irrelevant items makes the subset effect uninterpretable. This illustrates why models that entangle all item features inevitably introduce uncontrolled, high-order interactions.
 
 - **Structured Decomposition and Controllable Effect Order**  
-  As shown in Appendix A, DeepHalo’s architecture ensures the utility can be decomposed as in Line 189. The maximum interaction order is determined by the model depth, while the choice of activation function affects how quickly the order increases. We appreciate the reviewer’s interest and will clarify this further in the revision.
+  As shown in Appendix A, DeepHalo’s architecture ensures the utility can be decomposed as in Line 189. The model depth determines the maximum interaction order, while the choice of activation function affects how quickly the order increases. We appreciate the reviewer’s interest and will clarify this further in the revision.
 
 - **Direct Effect Recovery Without Solving Linear Systems**  
   Prior approaches require solving large linear systems to recover halo effects, which becomes infeasible for large assortments. In contrast, DeepHalo leverages Eq. (3) and Eq. (10) to recover effects directly and efficiently. We will elaborate on this in response to the reviewer’s questions.
@@ -29,7 +29,7 @@ These innovations go beyond what DeepSets offers. While DeepSets provides permut
 
 
 ### **2&nbsp;&nbsp;Utility Decomposition and Order Growth**
-We thank the author for raising this point.  The key intuition is that every recursion depth l in Eqs. (4)–(5) adds **exactly one additional order of interaction** while preserving all lower‑order terms via the residual connection. The process is same with Appendix A 2.2 and A 2.3, to better help the reviewer, we provide an simple example here. Formally, **let's take offer set ${j, k, l}$ as an example and take $\phi$ as identity mapping for simplicity**:
+We thank the author for raising this point.  The key intuition is that every recursion depth l in Eqs. (4)–(5) adds **exactly one additional order of interaction** while preserving all lower‑order terms via the residual connection. The process is the same as Appendix A 2.2 and A 2.3. To better facilitate the understanding, we provide a simple example here. Formally, **let's take offer set ${j, k, l}$ as an example and take $\phi$ as identity mapping for simplicity**:
 
 1. **Pairwise (1‑st order) layer.**  
    The first layer aggregates the linear summaries $\bar Z^{1}$ from raw embeddings $z^{0}$ and modulates them with $z_{j}^{0}$. This yields  
@@ -46,9 +46,9 @@ We thank the author for raising this point.  The key intuition is that every rec
    
    $z_{j}^{2}=z_{j}^{1}+\tfrac1H\sum_{h} \bar Z_{h}^{2} \cdot z_{j}^{0}$ which is analogous to $(f_j + f_{jk} + f_{jl}) + \sum_h(f_j + f_k + f_l + f_{jk} + f_{jl} + f_{kl}) \cdot f_j$
    
-   which brings about second order term $f_{jkl} = f_{kl} \cdot f_{j}$. It can be interpreted as effect of ${k,l}$ on $j$
+   which brings about second order term $f_{jkl} = f_{kl} \cdot f_{j}$. It can be interpreted as the effect of ${k,l}$ on $j$.
 
-then it's clear how we can add up order by increasing layer and get a decomposable utility representation. If we change the $\cdot$ in layers to some other polynomial function the term order will grow faster, like in first layer we change to $(f_j + f_k + f_l)^2 \cdot f_j$ in the sum will directly bring about second order term $f_{jkl}$. The quadratic activation naturally brings $log_2$ form depth requirement.
+Then it's clear how we can add up orders by increasing the number of layers and get a decomposable utility representation. If we change the $\cdot$ in layers to some other polynomial function, the term order will grow faster, like in the first layer we change to $(f_j + f_k + f_l)^2 \cdot f_j$, in the sum will directly bring about the second order term $f_{jkl}$. The quadratic activation naturally brings a $log_2$ form depth requirement.
 
 ### **3&nbsp;&nbsp;The Sign $(−1)^{∣T∣−∣R∣}$ in (3)**
 The $(−1)^{∣T∣−∣R∣}$ factor in Eq. (3) is the inclusion–exclusion inversion coefficient on the Boolean lattice of subsets. Our vj(⋅) must invert the cumulative‑sum relation $u_j(X_S)=\sum_{T\subset S\setminus\{j\}} v_j(X_{T\cup\{j\}})$; effects contributed to many supersets are otherwise over‑counted. Alternating signs guarantee that terms appearing an even number of times cancel and those appearing an odd number of times net to the correct single contribution, yielding a unique decomposition. 
