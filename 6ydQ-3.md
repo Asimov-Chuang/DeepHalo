@@ -1,6 +1,17 @@
 Thank you for your thoughtful comments. Please see our response as follows.
 
 **Weakness & Questions:**
+> Q: The methodological ML contribution lies practically exclusively in the modeling of interactions and equivariance, and in both cases, the contributions are not very novel.
+
+A: DeepHalo's greatest contribution lies in its ability to effectively balance model expressiveness and interpretability by controlling the maximum order of the Halo effect. Among context based choice models, 
+
+- First-order models like CMNL (Yousefi Maragheh et al., 2020), low-rank Halo MNL (Ko and Li, 2024), and FETA (Pfannschmidt et al., 2022) can only capture pairwise interactions. While FETA proposes a utility decomposition similar to the halo effect, it only evaluates first-order terms in practice, as enumerating higher-order subsets is computationally infeasible for large assortments—limiting its ability to model complex choices.
+
+- Other models such as FATE and TCNet attempt to learn context by directly entangling all item features. As other reviewers note, their outputs can be interpreted via Eq. (10) as halo effects. However, the interaction order in these models is uncontrolled. Recovering a correct decomposition would require evaluating up to $|S|-1$ orders, leading to exponentially many terms and breaking interpretability. The issue lies in their architecture. These models **do not formulate context effects in a structured, decomposable way**.
+
+Therefore, while first-order models offer interpretability, they suffer from limited expressiveness. In contrast, other models are more expressive but lack the ability to control the maximum effect order and are challenging to interpret. DeepHalo is designed to bridge this gap, enabling the modeling of higher-order halo effects up to any desired order. We kindly refer the reviewer to Appendix 2.2 and 2.3 for further intuition.
+
+> Q
 Regarding the choice of baselines for the experiment: If we understand your point correctly, you refer to the experiment in Section 5.1, Table 1. This experiment focuses on measuring the context effect in the featureless setting. We compare with the context-dependent DCM benchmark, Contextual MNL. To cover the context-independent DCM benchmarks you mentioned, which follow the RUM principle, we add mixed logit, which can approximate any RUM model arbitrarily well. The baseline MNL, usually included in the literature, functions merely as a sanity check. Regarding ML baselines, we add additional baselines with transformer (TCnet) and deep sets (FATE), as displayed below.
 
 | Model         | Hotel (Train/Test) | SFOshop (Train/Test) | SFOwork (Train/Test) |
