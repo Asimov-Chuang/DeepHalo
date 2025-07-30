@@ -17,11 +17,11 @@ Therefore, first-order models have interpretability but lack of expressiveness, 
 
 - **Decomposible Utility Representation and Controllable Maximum Effect Order** In Appendix A, we provide derivation showing the utilities output by DeepHalo can be decomposed by the way in Line 189. We have proved that the maximum order is constrained by the model depth, and the increasing speed of effect order is controlled by which activation function you choose. **We are glad that the reviewer is interested in this part, and we will elaborate this later.**
   
-- **Effect Recover Algorithm without Formulate Linear System** In previous literature, people need to formulate the whole linear system to get the halo effects, which is inefficient when the assortment size is big. With equation (10), we can skip this step. **We know the reviewer has some questions in this part, and we will elaborate them later.**
+- **Identifiable Effect Recover Algorithm without Formulate Linear System** In previous literature, people need to formulate the whole linear system to get the halo effects, which is inefficient when the assortment size is big. With equation (3) and (10), we can skip this step. **We know the reviewer has some questions in this part, and we will elaborate them later.**
 
 This is also why our model is not a simple imitation of DeepSets. DeepSets merely provides a foundational tool for implementing permutation invariant models. Building upon this, we integrate insights from discrete choice theory and the halo effect literature, and further incorporate architectural innovations such as residual connections and polynomial activations. These design choices make it possible to learn high-order interaction effects in a structured and controllable manner.
 
-### 2&nbsp;&nbsp;Utility Decomposition Elaboration
+### **2&nbsp;&nbsp;Utility Decomposition and Order Growth**
 We thank the author for raising this point.  The key intuition is that **every recursion depth l in Eqs. (4)–(5) adds **exactly one additional order of interaction** while preserving all lower‑order terms via the residual connection. The process is same with Appendix A 2.2 and A 2.3, to better help the reviewer, we provide an simple example here. Formally, **let's take offer set ${j, k, l}$ as an example and take $\phi$ as identity mapping for simplicity**:
 
 1. **Pairwise (1‑st order) layer.**  
