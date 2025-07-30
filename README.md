@@ -19,84 +19,30 @@ Therefore, first-order models have interpretability but lack of expressiveness, 
   
 - **Effect Recover Algorithm without Formulate Linear System** In previous literature, people need to formulate the whole linear system to get the halo effects, which is inefficient when the assortment size is big. With equation (10), we can skip this step. **We know the reviewer has some questions in this part, and we will elaborate them later.**
 
-This is also why our model is not a simple imitation of DeepSets. DeepSets merely provides a foundational tool for implementing permutation invariance. Building upon this, we integrate insights from discrete choice theory and the halo effect literature, and further incorporate architectural innovations such as residual connections and polynomial activations. These design choices make it possible to learn high-order interaction effects in a structured and controllable manner.
+This is also why our model is not a simple imitation of DeepSets. DeepSets merely provides a foundational tool for implementing permutation invariant models. Building upon this, we integrate insights from discrete choice theory and the halo effect literature, and further incorporate architectural innovations such as residual connections and polynomial activations. These design choices make it possible to learn high-order interaction effects in a structured and controllable manner.
 
 ### 2&nbsp;&nbsp;Utility Decomposition Elaboration
-We thank the author for raising this point.  The key intuition is that **every recursion depth *l*** in Eqs. (4)–(5) adds **exactly one additional order of interaction** while preserving all lower‑order terms via the residual connection.  Formally:
+We thank the author for raising this point.  The key intuition is that **every recursion depth l in Eqs. (4)–(5) adds **exactly one additional order of interaction** while preserving all lower‑order terms via the residual connection. The process is same with Appendix A 2.2 and A 2.3, to better help the reviewer, we provide an simple example here. Formally, **let's take offer set ${j, k, l}$ as an example and take $\phi$ as identity mapping for simplicity**:
 
 1. **Pairwise (1‑st order) layer.**  
    The first layer aggregates the linear summaries $\bar Z^{1}$ from raw embeddings $z^{0}$ and modulates them with $z_{j}^{0}$. This yields  
-   $z_{j}^{1}=z_{j}^{0} + \frac1H\sum_{h}\bar Z_{h}^{1} \varphi_{h}^{1}(z_{j}^{0}),$  
+   $z_{j}^{1}=z_{j}^{0} + \frac1H\sum_{h}\bar Z_{h}^{1} \cdot z_{j}^{0},$  
    which contains only **pairwise interactions** between the target alternative \(j\) and every other item \(k\) in the set.  (Derivation lines 90‑116 in the Paper)
+   if we take notation $f_j$ to represent any function containing only item j's feature information, the above process can be formulated as,
+   $z_{j}^{1} = f_j + \frac1H\sum_{h}(f_j + f_k + f_l) \cdot f_j,$ thus it contains zero order term $f_j$ and first order term $f_k \cdot f_j$ and $f_l \cdot f_j$, second order term $f_j \cdot f_k \cdot f_l$ won't appear. For simplicity, we use $f_{ab}$ to represent any term like $f_a \cdot f_b$ and $f_b \cdot f_a, which only contains the features of item a and item b$.
 
 2. **Second‑order layer.**  
    Consider a choice set $\{j,k,\ell\}$.  After the first layer, $z_{k}^{1}$ and $z_{\ell}^{1}$ already embed their pairwise effects with every other item.  
-   The second layer builds  
-   $\bar Z^{2}=\tfrac1S\sum_{m}W^{2}z_{m}^{1}, \qquad z_{j}^{2}=z_{j}^{1}+\tfrac1H\sum_{h} \bar Z_{h}^{2} \varphi_{h}^{2}(z_{j}^{0}),$  
-   where $\bar Z^{2}$ is **linear in each $z^{1}_{m}$** and therefore bilinear in the original embeddings.  Multiplying $\bar Z_{h}^{2}$ with $\varphi_{h}^{2}(z_{j}^{0})$ produces terms proportional to  
-   $\langle W^{2}W^{1}x_{k}, \varphi_{h}^{2}(x_{j})\rangle$ and $\langle W^{2}W^{1}x_{\ell}, \varphi_{h}^{2}(x_{j})\rangle$,  
-   **jointly involving $\{j,k,\ell\}$**—exactly the second‑order contribution $v_{j}(\{k,\ell\})$ in the decomposition.  Higher‑order cross‑terms cannot arise until deeper recursions, so the separation is preserved.
+   The second layer builds
+    
+   $\bar Z^{2}=\tfrac1S\sum_{m}W^{2}z_{m}^{1}$, which contains term $f_j, f_k, f_l, f_{jk}, f_{jl}, f_{kl}$
+   
+   $z_{j}^{2}=z_{j}^{1}+\tfrac1H\sum_{h} \bar Z_{h}^{2} \cdot z_{j}^{0}$ which is analogous to $(f_j + f_{jk} + f_{jl}) + \sum_h(f_j + f_k + f_l + f_{jk} + f_{jl} + f_{kl}) \cdot f_j$
+   
+   which brings about second order term $f_{jkl} = f_{kl} \cdot f_{j}$. It can be interpreted as effect of ${k,l}$ on $j$
 
-### Two‑layer expansion on an offer set $\{a,b,c,d\}$  
+then it's clear how we can add up order by increasing layer and get a decomposable utility representation. If we change the $\cdot$ in layers to some other polynomial function the term order will grow faster, like in first layer we change to $(f_j + f_k + f_l)^2 \cdot f_j$ in the sum will directly bring about second order term $f_{jkl}$.
 
-Let the raw embeddings be $z_{i}^{0}=x_{i}$ for every item $i\!\in\!\{a,b,c,d\}$.
-
----
-
-#### **Layer 1 — pairwise terms**
-
-1. **Set summary**
-   $$s^{1}= \tfrac14\!\sum_{k\in\{a,b,c,d\}} W^{1}x_{k}
-          = \tfrac14\!\bigl(W^{1}x_{a}+W^{1}x_{b}+W^{1}x_{c}+W^{1}x_{d}\bigr).$$  
-
-2. **Updated embedding for $a$**
-   $$z_{a}^{1}=x_{a}
-      +\tfrac1H\!\sum_{h} s_{h}^{1}\,\varphi_{h}^{1}(x_{a}).$$  
-
-   Expanding $s_{h}^{1}$ shows that $z_{a}^{1}$ contains the three **pairwise interactions**  
-   $$v_{a}^{1}(b)=\tfrac1H\!\sum_{h} \bigl(W^{1}x_{b}\bigr)_{h}\,\varphi_{h}^{1}(x_{a}),\qquad
-     v_{a}^{1}(c),\qquad
-     v_{a}^{1}(d).$$  
-
-   Symmetrically, $z_{b}^{1},z_{c}^{1},z_{d}^{1}$ collect their own pairwise effects.  
-   Hence layer 1 realizes the order‑1 component
-   $$u_{a}^{(1)}(S\setminus\{a\})
-     =v_{a}^{1}(b)+v_{a}^{1}(c)+v_{a}^{1}(d).$$  
-
----
-
-#### **Layer 2 — second‑order terms**
-
-1. **Set summary**
-   $$s^{2}= \tfrac14\sum_{k} W^{2}z_{k}^{1}
-          = \tfrac14\sum_{k} W^{2}\bigl(x_{k}+v_{k}^{1}(\cdot)\bigr).$$  
-
-   The first part $W^{2}x_{k}$ is **linear**, reproducing lower‑order terms.  
-   The second part $W^{2}v_{k}^{1}(\cdot)$ is **bilinear** in two distinct items.  
-   Thus $s^{2}$ already mixes **pairs of other items.**
-
-2. **Updated embedding for $a$**
-   $$z_{a}^{2}=z_{a}^{1}
-      +\tfrac1H\sum_{h} s_{h}^{2}\,\varphi_{h}^{2}(x_{a}).$$  
-
-   Substituting $s^{2}$ yields six distinct **second‑order utilities**
-   $$v_{a}^{2}(b,c)=\tfrac1H\sum_{h}\bigl\langle W^{2}v_{b}^{1}(c),e_{h}\bigr\rangle\varphi_{h}^{2}(x_{a}), v_{a}^{2}(b,d), v_{a}^{2}(c,d), \text{and their symmetric counterparts}.$$  
-
-   Collecting them gives the order‑2 component
-   $$u_{a}^{(2)}(S\setminus\{a\})
-     =v_{a}^{2}(b,c)+v_{a}^{2}(b,d)+v_{a}^{2}(c,d).$$  
-
----
-
-### **Utility decomposition achieved so far**
-
-After two layers the utility of item $a$ decomposes as  
-$$u_{a}(S)=u_{a}^{(0)} +u_{a}^{(1)}(S\setminus\{a\})+u_{a}^{(2)}(S\setminus\{a\})$$  
-
-Hence **layer count = maximum interaction order represented**:  
-- depth 1 ⇒ pairwise;  
-- depth 2 ⇒ up to second‑order;  
-and deeper recursions continue this pattern inductively.
 
 
 
