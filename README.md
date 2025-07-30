@@ -22,14 +22,14 @@ Therefore, first-order models have interpretability but lack of expressiveness, 
 This is also why our model is not a simple imitation of DeepSets. DeepSets merely provides a foundational tool for implementing permutation invariant models. Building upon this, we integrate insights from discrete choice theory and the halo effect literature, and further incorporate architectural innovations such as residual connections and polynomial activations. These design choices make it possible to learn high-order interaction effects in a structured and controllable manner.
 
 ### **2&nbsp;&nbsp;Utility Decomposition and Order Growth**
-We thank the author for raising this point.  The key intuition is that **every recursion depth l in Eqs. (4)–(5) adds **exactly one additional order of interaction** while preserving all lower‑order terms via the residual connection. The process is same with Appendix A 2.2 and A 2.3, to better help the reviewer, we provide an simple example here. Formally, **let's take offer set ${j, k, l}$ as an example and take $\phi$ as identity mapping for simplicity**:
+We thank the author for raising this point.  The key intuition is that every recursion depth l in Eqs. (4)–(5) adds **exactly one additional order of interaction** while preserving all lower‑order terms via the residual connection. The process is same with Appendix A 2.2 and A 2.3, to better help the reviewer, we provide an simple example here. Formally, **let's take offer set ${j, k, l}$ as an example and take $\phi$ as identity mapping for simplicity**:
 
 1. **Pairwise (1‑st order) layer.**  
    The first layer aggregates the linear summaries $\bar Z^{1}$ from raw embeddings $z^{0}$ and modulates them with $z_{j}^{0}$. This yields  
    $z_{j}^{1}=z_{j}^{0} + \frac1H\sum_{h}\bar Z_{h}^{1} \cdot z_{j}^{0},$  
    which contains only **pairwise interactions** between the target alternative \(j\) and every other item \(k\) in the set.  (Derivation lines 90‑116 in the Paper)
    if we take notation $f_j$ to represent any function containing only item j's feature information, the above process can be formulated as,
-   $z_{j}^{1} = f_j + \frac1H\sum_{h}(f_j + f_k + f_l) \cdot f_j,$ thus it contains zero order term $f_j$ and first order term $f_k \cdot f_j$ and $f_l \cdot f_j$, second order term $f_j \cdot f_k \cdot f_l$ won't appear. For simplicity, we use $f_{ab}$ to represent any term like $f_a \cdot f_b$ and $f_b \cdot f_a, which only contains the features of item a and item b$.
+   $z_{j}^{1} = f_j + \frac1H\sum_{h}(f_j + f_k + f_l) \cdot f_j,$ thus it contains zero order term $f_j$ and first order term $f_k \cdot f_j$ and $f_l \cdot f_j$, second order term $f_j \cdot f_k \cdot f_l$ won't appear. For simplicity, we use $f_{ab}$ to represent any term like $f_a \cdot f_b$ and $f_b \cdot f_a$, which only contains the features of item a and item b.
 
 2. **Second‑order layer.**  
    Consider a choice set $\{j,k,\ell\}$.  After the first layer, $z_{k}^{1}$ and $z_{\ell}^{1}$ already embed their pairwise effects with every other item.  
@@ -41,9 +41,36 @@ We thank the author for raising this point.  The key intuition is that **every r
    
    which brings about second order term $f_{jkl} = f_{kl} \cdot f_{j}$. It can be interpreted as effect of ${k,l}$ on $j$
 
-then it's clear how we can add up order by increasing layer and get a decomposable utility representation. If we change the $\cdot$ in layers to some other polynomial function the term order will grow faster, like in first layer we change to $(f_j + f_k + f_l)^2 \cdot f_j$ in the sum will directly bring about second order term $f_{jkl}$.
+then it's clear how we can add up order by increasing layer and get a decomposable utility representation. If we change the $\cdot$ in layers to some other polynomial function the term order will grow faster, like in first layer we change to $(f_j + f_k + f_l)^2 \cdot f_j$ in the sum will directly bring about second order term $f_{jkl}$. The quadratic activation naturally brings $log_2$ form depth requirement.
 
+### **3&nbsp;&nbsp;The Sign $(−1)^{∣T∣−∣R∣}$ in (3)**
+The $(−1)^{∣T∣−∣R∣}$ factor in Eq. (3) is the inclusion–exclusion inversion coefficient on the Boolean lattice of subsets. Our vj(⋅) must invert the cumulative‑sum relation $u_j(X_S)=\sum_{T\subset S\setminus\{j\}} v_j(X_{T\cup\{j\}})$; effects contributed to many supersets are otherwise over‑counted. Alternating signs guarantee that terms appearing an even number of times cancel and those appearing an odd number of times net to the correct single contribution, yielding a unique decomposition. 
 
+### **4&nbsp;&nbsp;Performance Difference between DeepHalo and TCnet**
+We appreciate the reviewer’s thoughtful observation. In fact, we believe the comparable performance is both expected and reasonable, and it highlights an important distinction in modeling philosophy:
 
+- As the reviewer rightly points out, the outputs of TCNet can also be interpreted through a utility decomposition perspective. However, **TCNet’s Transformer backbone lacks any mechanism to control the maximum interaction order**. The attention layers aggregate over the entire offer set, inherently blending information from all other items, which results in **unconstrained high-order interaction effects**. This makes the learned utilities difficult to interpret or isolate.
 
+- In contrast, **DeepHalo provides explicit control over the interaction order** via its recursive architecture. For example, a depth-$l$ network captures only up to $l$-th order effects (see Appendix A.2), preserving identifiability and interpretability. The model structure enforces this decomposition, rather than approximating it implicitly.
+
+- Given that low-order interactions often dominate in real-world choice tasks, it is **unsurprising that a sufficiently expressive Transformer (TCNet)** is able to match the predictive performance of DeepHalo. In fact, this reinforces the idea that **DeepHalo has captured the essential utility structure using fewer degrees of freedom**, while maintaining interpretability.
+
+In summary, **our contribution is not about surpassing TCNet in raw accuracy**, but rather about offering a **principled tradeoff between expressiveness and interpretability**. DeepHalo is designed to act as a **bridge between highly expressive black-box models and simpler order-controllable models**, making it a valuable addition to the modeling toolkit for choice tasks with context effects.
+
+### **4&nbsp;&nbsp;Data Efficiency**
+| Ratio (%) | CMNL | MNL | FATE | MLP | MixedMNL | TCnet | **DeepHalo** |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+|  10 | 1.574 | 1.898 | 1.583 | 1.571 | 1.674 | 1.589 | **1.566** |
+|  20 | 1.567 | 1.869 | 1.577 | 1.563 | 1.617 | 1.573 | **1.558** |
+|  30 | 1.564 | 1.844 | 1.577 | 1.557 | 1.590 | 1.569 | **1.551** |
+|  40 | 1.562 | 1.820 | 1.577 | 1.554 | 1.576 | 1.568 | **1.548** |
+|  50 | 1.561 | 1.779 | 1.577 | 1.550 | 1.566 | 1.570 | **1.544** |
+|  60 | 1.562 | 1.760 | 1.577 | 1.545 | 1.563 | 1.551 | **1.537** |
+|  70 | 1.555 | 1.742 | 1.577 | 1.542 | 1.560 | 1.539 | **1.532** |
+|  80 | 1.544 | 1.726 | 1.577 | 1.537 | 1.558 | 1.560 | **1.528** |
+|  90 | 1.550 | 1.699 | 1.577 | 1.539 | 1.555 | 1.549 | **1.526** |
+| 100 | 1.550 | 1.726 | 1.577 | 1.537 | 1.558 | 1.538 | **1.528** |
+
+To assess the data efficiency of DeepHalo, we conduct experiments on the SFOshop dataset, which exhibits strong context effects, by subsampling the training data at various proportions from 10% to 100%. All neural models are strictly constrained to a parameter budget of approximately 1k. Across all subsample ratios, DeepHalo consistently outperforms all other models in terms of Test NLL, demonstrating robust generalization even under limited data. When plotted, DeepHalo’s Test NLL exhibits the most pronounced and stable downward trend as the training data proportion increases—highlighting a clear advantage in data efficiency compared to other context-aware baselines such as TCnet, MLP, and FATE, which either plateau early or fluctuate as data increases.
+Crucially, in these experiments DeepHalo uses a single layer with a quadratic activation, explicitly constraining the highest interaction order to 2. Despite competing models (TCnet, MLP, FATE) having uncontrolled higher-order expressivity, they do not generalize better under the same parameter budget. This indicates that controlling the maximum interaction order is beneficial in real applications with context effects: it reduces overfitting to spurious higher-order interactions, focuses capacity on the dominant (up to second-order) structure, and yields consistently superior NLL across all data regimes.
 
