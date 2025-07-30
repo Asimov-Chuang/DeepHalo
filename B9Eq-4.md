@@ -3,7 +3,7 @@ We appreciate Reviewer 59ua’s positive feedback. To address the questions and 
 #### 1. Clarifying Section 4.1 — why Equation (8) needs only **log₂ l** layers to model *l*‑th‑order interactions
 
 We agree that Section 4.1 should state this property explicitly. Currently, this is mentioned in Section 4.2, and the explanation is deferred in the appendix. 
-In the revision we will:
+In the revision, we will:
 
 1. **Add a sentence to Section 4.1**  
    > “Because each Equation (8) layer doubles the maximum attainable interaction order, an *l*‑th‑order effect can be represented with at most ⌈log₂ l⌉ stacked layers.”
@@ -36,7 +36,7 @@ This modularity makes DeepHalo a unified and controllable framework for context-
 
 We appreciate the reviewer’s thoughtful question. While many prior models (e.g., FATE, TCNet) acknowledge context effects, none have **formally defined feature-based halo effects in a utility-decomposable framework**. Our work is, to the best of our knowledge, the first to do so.
 
-Concretely, given an offer set $\{A, B, C, D\}$, when estimating how the subset $\{A, B\}$ influences the utility of item $C$, **the function must depend only on the features of $A$, $B$, and $C$**, and **must not involve irrelevant items like $D$**. This subset-specific conditioning is critical for interpretability, but is not enforced in FATE, TCNet. Models such as FATE and TCNet attempt to learn context by directly entangling all item features. As the reviewer notes, their outputs can be interpreted via Eq. (10) as halo effects. However, **the interaction order in these models is uncontrolled**, and recovering a faithful decomposition would require evaluating up to $|S|-1$ orders—leading to exponentially many terms and breaking interpretability.
+Concretely, given an offer set $\{A, B, C, D\}$, when estimating how the subset $\{A, B\}$ influences the utility of item $C$, **the function must depend only on the features of $A$, $B$, and $C$**, and **must not involve irrelevant items like $D$**. This subset-specific conditioning is critical for interpretability, but is not enforced in FATE, TCNet. Models such as FATE and TCNet attempt to learn context by directly entangling all item features. As the reviewer notes, their outputs can be interpreted via Eq. (10) as halo effects. However, **the interaction order in these models is uncontrolled**, and recovering a faithful decomposition would require evaluating up to $|S|-1$ orders, leading to exponentially many terms and breaking interpretability.
 
 The issue lies in their architecture. FATE combines global context with individual features but cannot restrict interaction depth. TCNet’s attention mechanism inherently mixes all items, effectively modeling full-order interactions by design. As a result, these models **do not formulate context effects in a structured, decomposable way**, making interpretation difficult.
 
@@ -46,12 +46,12 @@ DeepHalo resolves this with a **modular design**:
 - The **maximum effect order is bounded** by the network depth $L$.
 - Residual and polynomial structures guarantee **halo-decomposable utility functions**. We will give a simple example later for better illustration.
 
-This enables users to control expressivity, avoid overfitting, and ensure that only desired-order interactions are modeled. For example, modeling third-order effects over a catalog of 100 items without such control would require handling over 160,000 subsets—computationally prohibitive and interpretively infeasible.
+This enables users to control expressiveness, avoid overfitting, and ensure that only desired-order interactions are modeled. For example, modeling third-order effects over a catalog of 100 items without such control would require handling over 160,000 subsets—computationally prohibitive and interpretively infeasible.
 
 **In summary**, DeepHalo is the first model to:
 
-1. Formally define feature-based halo effects, 
-2. Provide a general decomposition-compatible framework,
+1. Formally define feature-based halo effects. 
+2. Provide a general decomposition-compatible framework.
 3. Architecturally enforce subset attribution and interaction-order control.
 
 These properties are essential for **reliable and scalable interpretability**, and are not achievable with existing models.
@@ -76,7 +76,9 @@ In contrast:
 In short, while SDA enables generic set-dependent context modeling, **DeepHalo provides a theoretically-grounded and architecturally-enforced approach to interpretable, order-controlled context effects**, which is essential for practical discrete choice applications.
 
 ### 5. Simple Example: Utility Decomposition and Order Growth**
-We thank the author for raising this point.  The key intuition is that every recursion depth l in Eqs. (4)–(5) adds **exactly one additional order of interaction** while preserving all lower‑order terms via the residual connection. The process is same with Appendix A 2.2 and A 2.3, to better help the reviewer, we provide an simple example here. Formally, **let's take offer set ${j, k, l}$ as an example and take $\phi$ as identity mapping for simplicity**:
+We thank the author for raising this point.  The key intuition is that every recursion depth l in Eqs. (4)–(5) adds **exactly one additional order of interaction** while preserving all lower‑order terms via the residual connection. The process is consistent with Appendix A 2.2 and A 2.3. To illustrate, we provide a simple example as follows. 
+
+Consider the offer set ${j, k, l}$ and set $\phi$ as the identity mapping.
 
 1. **Pairwise (1‑st order) layer.**  
    The first layer aggregates the linear summaries $\bar Z^{1}$ from raw embeddings $z^{0}$ and modulates them with $z_{j}^{0}$. This yields  
@@ -95,4 +97,4 @@ We thank the author for raising this point.  The key intuition is that every rec
    
    which brings about second order term $f_{jkl} = f_{kl} \cdot f_{j}$. It can be interpreted as effect of ${k,l}$ on $j$
 
-then it's clear how we can add up order by increasing layer and get a decomposable utility representation. If we change the $\cdot$ in layers to some other polynomial function the term order will grow faster, like in first layer we change to $(f_j + f_k + f_l)^2 \cdot f_j$ in the sum will directly bring about second order term $f_{jkl}$. The quadratic activation naturally brings $log_2$ form depth requirement.
+Then it's clear how we can add up orders by increasing the layer and get a decomposable utility representation. If we change the $\cdot$ in layers to some other polynomial function, the term order will grow faster, like in the first layer we change to $(f_j + f_k + f_l)^2 \cdot f_j$ in the sum will directly bring about the second-order term $f_{jkl}$. The quadratic activation naturally brings a $log_2$ form depth requirement.
