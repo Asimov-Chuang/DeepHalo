@@ -11,7 +11,7 @@ A: DeepHalo's greatest contribution lies in its ability to effectively balance m
 
 Therefore, while first-order models offer interpretability, they suffer from limited expressiveness. In contrast, other models are more expressive but lack the ability to control the maximum effect order and are challenging to interpret. DeepHalo is designed to bridge this gap, enabling the modeling of higher-order halo effects up to any desired order. We kindly refer the reviewer to Appendix A2.2 and A2.3 for further intuition.
 
-> Q: If the contribution relates to DCM behaviour modeling for the ML community, then some aspects should be considered...
+> Q: If the contribution relates to DCM behaviour modeling for the ML community, then some aspects should be considered... (Poor choice of (classical DCM) baselines)
 
 A: Regarding the choice of baselines for the experiment: Our model aims to explore the context effect. Therefore we mainly compare DeepHalo with the context-dependent DCM benchmark, such as Contextual MNL. We set mnl as a baseline because comparing MNL and Contextual MNL directly demonstrates the effect of context, and MNL can serve as a sanity check. To cover the context-independent DCM benchmarks you mentioned, which follow the RUM principle, we add mixed logit in featureless experiments, which can approximate any RUM model arbitrarily well. Regarding ML baselines, we add additional baselines with transformer (TCnet) and deep sets (FATE), as displayed below.
 
@@ -25,9 +25,13 @@ A: Regarding the choice of baselines for the experiment: Our model aims to explo
 | TCNet         | **0.7467** / 0.7670| 1.5694 / 1.5742        | 0.8114 / 0.8145       |
 | **DeepHalo** (Ours) | 0.7479 / **0.7483** | **1.5385** / **1.5263** | **0.8040** / **0.8066** |
 
+> Q: Lack of training (computational) performance statistics. How fast/slow is it, compared with the other DNNs?
 
-- Regarding the computational performance statistics: The training speed of the ML baselines and our model does not exhibit significant gaps, thus we do not include them in the statistics. On the other hand, our model enjoys more computational capability in recovering the interaction coefficients, because we don’t need to formulate the whole linear halo system. We can recover the effect iteratively up to any order effect we want.
-- Fitting in Neurips venue: We believe this paper belongs to this community, since several wonderful works related to our topic have appeared in previous years’ Neurips; some are listed below:
+A: The training speed of the ML baselines and our model does not exhibit significant gaps, thus we do not include them in the statistics. On the other hand, our model enjoys more computational capability in recovering the interaction coefficients, because we don’t need to formulate the whole linear halo system. We can recover the effect iteratively up to any order effect we want.
+
+> Q: However, it’s very unclear to me why this fits in the NeurIPS context.
+
+A: We believe this paper belongs to this community, since several wonderful works related to our topic have appeared in previous years’ Neurips; some are listed below:
 
 [1]Oh S, Thekumparampil KK, Xu J. Collaboratively learning preferences from ordinal data. Advances in Neural Information Processing Systems. 28, 2015
 
@@ -39,6 +43,7 @@ A: Regarding the choice of baselines for the experiment: Our model aims to explo
 
 [5]De Peuter S, Zhu S, Guo Y, Howes A, Kaski S. Preference learning of latent decision utilities with a human-like model of preferential choice. Advances in Neural Information Processing Systems, 37:123608-36, 2024
 
+Our primary area is machine learning for sciences (e.g., climate, health, life sciences, physics, social sciences). Transparent understanding of human decision-making processes is very important in social sciences and medical fields. In addition, establishing more reasonable preference models is also an important part of commonly used algorithms such as RLHF. Therefore, we believe that our article is very suitable for this primary area.
 
 **Clarifications:**
 - We will explain the ‘Featureless setting’ further by elaborating on ‘items without access to their features’.
