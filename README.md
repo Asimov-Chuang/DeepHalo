@@ -60,7 +60,7 @@ While TCNet can approximate utility decompositions (maximum order), its Transfor
 
 Given that low-order interactions often dominate in real-world settings, it is natural for TCNet to match DeepHalo's accuracy. However, DeepHalo achieves this with controlled expressiveness, offering a more interpretable alternative. Our goal is not to outperform black-box models in accuracy, but to provide a principled, order-aware design that balances predictive performance with transparency.
 
-### **4&nbsp;&nbsp;Data Efficiency**
+### **5&nbsp;&nbsp;Data Efficiency**
 | Ratio (%) | CMNL | MNL | FATE | MLP | MixedMNL | TCnet | **DeepHalo** |
 |---:|---:|---:|---:|---:|---:|---:|---:|
 |  10 | 1.574 | 1.898 | 1.583 | 1.571 | 1.674 | 1.589 | **1.566** |
@@ -81,7 +81,7 @@ Across all settings, **DeepHalo consistently achieves the lowest Test NLL**, sho
 Importantly, DeepHalo uses just a **single layer with quadratic activation**, explicitly limiting interaction order to 2. Competing models, though more expressive, do not generalize better under the same capacity. This suggests that **controlling interaction order improves generalization** by avoiding spurious high-order effects and focusing on dominant low-order structure.
 
 
-### **5&nbsp;&nbsp;Clarification**
+### **6&nbsp;&nbsp;Clarification**
 The expression $u_j(x_j, X_R)$ in Eq. (3) refers to the same function as $u_j(X_{R \cup \{j\}})$ in Eq. (2), and we will revise the notation for consistency. We will also correct the duplicate citation of Deep Sets [Zaheer et al., 2018], fix the misspelling of FETA and FATE (“E” stands for “evaluate”), and use $|S|$ consistently to denote set size. These issues will be addressed in the final version. We appreciate the reviewer’s careful reading.
 
 
