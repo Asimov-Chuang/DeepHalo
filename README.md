@@ -7,19 +7,26 @@ we provide detailed point-wise responses below.
 ### 1&nbsp;&nbsp;Beyond FETA and other context based choice models: controllable modeling of higher‑order effects  
 Among context based models, 
 
-- **first-order models** such as CMNL (Yousefi Maragheh et al., 2020), low-rank Halo MNL (Ko and Li, 2024) and FETA (Pfannschmidt et al., 2022) are only capable of capturing first-order interaction effects. Even though FETA proposed the utility decomposition method similar to Halo effect, in practice, it evaluates only first‑order (pairwise) terms because enumerating higher‑order subsets is combinatorially expensive, especially when facing large assortment sizes. This severely limits their ability to model complex choice behavior involving higher-order item interactions.
+First-order models like CMNL (Yousefi Maragheh et al., 2020), low-rank Halo MNL (Ko and Li, 2024), and FETA (Pfannschmidt et al., 2022) can only capture pairwise interactions. While FETA proposes a utility decomposition similar to the halo effect, it only evaluates first-order terms in practice, as enumerating higher-order subsets is computationally infeasible for large assortments—limiting its ability to model complex choices.
 
-- **Other context based models**, such as FATE (Pfannschmidt et al., 2022) and TCnet (Wang et al., 2023), try to learn an overall context information by directly entangling all items' features together. While we acknowledge that these models, as the reviewer has pointed out, can be explained by Halo effects recovered with equation (10), a critical and often overlooked issue is that **the maximum order of interactions is uncontrollable and we need to recover up to |S - 1| order to interpret these models, otherwise the halo model recovered by (10) is different from the one you got from training**. This results in exponentially many context terms, which fundamentally harms interpretability. The dilemma lies in the model architecture. For example, the $U^{'}$ function in FATE entangles all the item features, then concatenates it with the original feature and does transformations with it. The utility calculation does have context information, but cannot control the maximum effect order. In TCnet, transformer-based attention mechanism inherently computes a softmax over all items — meaning each item's representation is a function of the entire set, pushing the interaction order to the maximum by design. In one word, these models don't formulate context effect in a decomposible way.
+Other models such as FATE and TCNet attempt to learn context by directly entangling all item features. As the reviewer notes, their outputs can be interpreted via Eq. (10) as halo effects. However, **the interaction order in these models is uncontrolled**, and recovering a faithful decomposition would require evaluating up to $|S|-1$ orders—leading to exponentially many terms and breaking interpretability.
+
+The issue lies in their architecture. FATE combines global context with individual features but cannot restrict interaction depth. TCNet’s attention mechanism inherently mixes all items, effectively modeling full-order interactions by design. As a result, these models **do not formulate context effects in a structured, decomposable way**, making interpretation difficult.
+
 
 Therefore, first-order models have interpretability but lack of expressiveness, while other models have expressiveness but cannot control maximum effect order and is difficult to interpret. DeepHalo is designed to fill this gap, which manages to model higher Halo effects up to any order we want. How do we do?
 
-- **Formally Define Feature-based high order Halo Effect** Our work is, to the best of our knowledge, the first to provide such a definition. Specifically, in an offer set\{A, B, C, D\}, when estimating how the subset \{A, B\} influences the utility of item C, the function representing this effect must depend only on the features of A, B, C—and must not involve features from irrelevant items like D. Violating this would render the subset effect uninterpretable. This highlights why indiscriminately entangling all item features within the offered set inevitably results in uncontrolled and often maximal-order interactions.
+- **Feature-Based High-Order Halo Effects**  
+  To our knowledge, we are the first to formally define high-order halo effects in terms of item features. For example, when assessing how subset $\{A, B\}$ influences the utility of item $C$ in an offer set $\{A, B, C, D\}$, the effect should depend only on the features of $A$, $B$, and $C$, not on unrelated items like $D$. Including irrelevant items makes the subset effect uninterpretable. This illustrates why models that entangle all item features inevitably introduce uncontrolled, high-order interactions.
 
-- **Decomposible Utility Representation and Controllable Maximum Effect Order** In Appendix A, we provide derivation showing the utilities output by DeepHalo can be decomposed by the way in Line 189. We have proved that the maximum order is constrained by the model depth, and the increasing speed of effect order is controlled by which activation function you choose. **We are glad that the reviewer is interested in this part, and we will elaborate this later.**
-  
-- **Identifiable Effect Recover Algorithm without Formulate Linear System** In previous literature, people need to formulate the whole linear system to get the halo effects, which is inefficient when the assortment size is big. With equation (3) and (10), we can skip this step. **We know the reviewer has some questions in this part, and we will elaborate them later.**
+- **Structured Decomposition and Controllable Effect Order**  
+  As shown in Appendix A, DeepHalo’s architecture ensures the utility can be decomposed as in Line 189. The maximum interaction order is determined by the model depth, while the choice of activation function affects how quickly the order increases. We appreciate the reviewer’s interest and will clarify this further in the revision.
 
-This is also why our model is not a simple imitation of DeepSets. DeepSets merely provides a foundational tool for implementing permutation invariant models. Building upon this, we integrate insights from discrete choice theory and the halo effect literature, and further incorporate architectural innovations such as residual connections and polynomial activations. These design choices make it possible to learn high-order interaction effects in a structured and controllable manner.
+- **Direct Effect Recovery Without Solving Linear Systems**  
+  Prior approaches require solving large linear systems to recover halo effects, which becomes infeasible for large assortments. In contrast, DeepHalo leverages Eq. (3) and Eq. (10) to recover effects directly and efficiently. We will elaborate on this in response to the reviewer’s questions.
+
+These innovations go beyond what DeepSets offers. While DeepSets provides permutation invariance, DeepHalo integrates domain-specific insights from discrete choice theory and the halo literature, along with architectural elements like residual connections and polynomial activations. This enables interpretable, high-order interaction modeling in a principled and controllable way.
+
 
 ### **2&nbsp;&nbsp;Utility Decomposition and Order Growth**
 We thank the author for raising this point.  The key intuition is that every recursion depth l in Eqs. (4)–(5) adds **exactly one additional order of interaction** while preserving all lower‑order terms via the residual connection. The process is same with Appendix A 2.2 and A 2.3, to better help the reviewer, we provide an simple example here. Formally, **let's take offer set ${j, k, l}$ as an example and take $\phi$ as identity mapping for simplicity**:
@@ -47,15 +54,11 @@ then it's clear how we can add up order by increasing layer and get a decomposab
 The $(−1)^{∣T∣−∣R∣}$ factor in Eq. (3) is the inclusion–exclusion inversion coefficient on the Boolean lattice of subsets. Our vj(⋅) must invert the cumulative‑sum relation $u_j(X_S)=\sum_{T\subset S\setminus\{j\}} v_j(X_{T\cup\{j\}})$; effects contributed to many supersets are otherwise over‑counted. Alternating signs guarantee that terms appearing an even number of times cancel and those appearing an odd number of times net to the correct single contribution, yielding a unique decomposition. 
 
 ### **4&nbsp;&nbsp;Performance Difference between DeepHalo and TCnet**
-We appreciate the reviewer’s thoughtful observation. In fact, we believe the comparable performance is both expected and reasonable, and it highlights an important distinction in modeling philosophy:
+We thank the reviewer for the insightful observation. The similar performance between DeepHalo and TCNet is expected and highlights a key difference in modeling philosophy.
 
-- As the reviewer rightly points out, the outputs of TCNet can also be interpreted through a utility decomposition perspective. However, **TCNet’s Transformer backbone lacks any mechanism to control the maximum interaction order**. The attention layers aggregate over the entire offer set, inherently blending information from all other items, which results in **unconstrained high-order interaction effects**. This makes the learned utilities difficult to interpret or isolate.
+While TCNet can approximate utility decompositions (maximum order), its Transformer architecture lacks control over the maximum interaction order. Attention layers aggregate across the full set, leading to high-order effects that are difficult to interpret. In contrast, DeepHalo explicitly controls interaction order through its recursive structure, enabling better interpretability and identifiability.
 
-- In contrast, **DeepHalo provides explicit control over the interaction order** via its recursive architecture. For example, a depth-$l$ network captures only up to $l$-th order effects (see Appendix A.2), preserving identifiability and interpretability. The model structure enforces this decomposition, rather than approximating it implicitly.
-
-- Given that low-order interactions often dominate in real-world choice tasks, it is **unsurprising that a sufficiently expressive Transformer (TCNet)** is able to match the predictive performance of DeepHalo. In fact, this reinforces the idea that **DeepHalo has captured the essential utility structure using fewer degrees of freedom**, while maintaining interpretability.
-
-In summary, **our contribution is not about surpassing TCNet in raw accuracy**, but rather about offering a **principled tradeoff between expressiveness and interpretability**. DeepHalo is designed to act as a **bridge between highly expressive black-box models and simpler order-controllable models**, making it a valuable addition to the modeling toolkit for choice tasks with context effects.
+Given that low-order interactions often dominate in real-world settings, it is natural for TCNet to match DeepHalo's accuracy. However, DeepHalo achieves this with controlled expressiveness, offering a more interpretable alternative. Our goal is not to outperform black-box models in accuracy, but to provide a principled, order-aware design that balances predictive performance with transparency.
 
 ### **4&nbsp;&nbsp;Data Efficiency**
 | Ratio (%) | CMNL | MNL | FATE | MLP | MixedMNL | TCnet | **DeepHalo** |
@@ -71,18 +74,14 @@ In summary, **our contribution is not about surpassing TCNet in raw accuracy**, 
 |  90 | 1.550 | 1.699 | 1.577 | 1.539 | 1.555 | 1.549 | **1.526** |
 | 100 | 1.550 | 1.726 | 1.577 | 1.537 | 1.558 | 1.538 | **1.528** |
 
-To assess the data efficiency of DeepHalo, we conduct experiments on the SFOshop dataset, which exhibits strong context effects, by subsampling the training data at various proportions from 10% to 100%. All neural models are strictly constrained to a parameter budget of approximately 1k. Across all subsample ratios, DeepHalo consistently outperforms all other models in terms of Test NLL, demonstrating robust generalization even under limited data. When plotted, DeepHalo’s Test NLL exhibits the most pronounced and stable downward trend as the training data proportion increases—highlighting a clear advantage in data efficiency compared to other context-aware baselines such as TCnet, MLP, and FATE, which either plateau early or fluctuate as data increases.
-Crucially, in these experiments DeepHalo uses a single layer with a quadratic activation, explicitly constraining the highest interaction order to 2. Despite competing models (TCnet, MLP, FATE) having uncontrolled higher-order expressivity, they do not generalize better under the same parameter budget. This indicates that controlling the maximum interaction order is beneficial in real applications with context effects: it reduces overfitting to spurious higher-order interactions, focuses capacity on the dominant (up to second-order) structure, and yields consistently superior NLL across all data regimes.
+To evaluate data efficiency, we subsample the SFOshop dataset—known for strong context effects—at ratios from 10% to 100%, training all neural models under a strict ~1k parameter budget.
+
+Across all settings, **DeepHalo consistently achieves the lowest Test NLL**, showing strong generalization even with limited data. Its Test NLL steadily improves with more data, while other models (TCNet, MLP, FATE) either plateau early or fluctuate.
+
+Importantly, DeepHalo uses just a **single layer with quadratic activation**, explicitly limiting interaction order to 2. Competing models, though more expressive, do not generalize better under the same capacity. This suggests that **controlling interaction order improves generalization** by avoiding spurious high-order effects and focusing on dominant low-order structure.
+
 
 ### **4&nbsp;&nbsp;Clarification**
-We sincerely thank the reviewer for pointing out the following typos and notational inconsistencies:
-
-- The use of $u_j(x_j, X_R)$ in Eq. (3) is indeed intended to denote the same function as $u_j(X_{R \cup \{j\}})$ in Eq. (2). We appreciate the suggestion and will revise the notation to maintain consistency throughout.
-
-- The duplicate citation of “Deep Sets [Zaheer et al., 2018]” and the misspelling of FETA and FATE (where “E” should stand for “evaluate”) will be corrected in the final version.
-
-- We acknowledge the inconsistent usage of $S$ for both the set and its cardinality. We will revise the manuscript to consistently use $|S|$ when referring to the size of the set, to avoid confusion.
-
-Thank you again for your careful reading — these corrections will be implemented in the final revision.
+The expression $u_j(x_j, X_R)$ in Eq. (3) refers to the same function as $u_j(X_{R \cup \{j\}})$ in Eq. (2), and we will revise the notation for consistency. We will also correct the duplicate citation of Deep Sets [Zaheer et al., 2018], fix the misspelling of FETA and FATE (“E” stands for “evaluate”), and use $|S|$ consistently to denote set size. These issues will be addressed in the final version. We appreciate the reviewer’s careful reading.
 
 
