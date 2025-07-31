@@ -48,7 +48,7 @@ A: The $(−1)^{∣T∣−∣R∣}$ factor in Eq. (3) is the inclusion–exclusi
 
 A: Thanks for the insightful observation. We acknowledge that similar performance between DeepHalo and TCNet is expected; however, we wish to emphasize a key difference in their modeling philosophies.
 
-While TCNet can approximate utility decompositions (maximum order), its Transformer architecture lacks control over the maximum interaction order. Attention layers aggregate across the full set, leading to high-order effects that are difficult to interpret. In contrast, DeepHalo explicitly controls interaction order through its recursive structure, enabling better interpretability and identifiability.
+While TCNet can approximate utility decompositions (maximum order), its Transformer architecture lacks control over the maximum interaction order. Attention layers aggregate across the full set, leading to large quantities of high-order effects that are difficult to interpret. In contrast, DeepHalo explicitly controls interaction order through its recursive structure, enabling better interpretability and identifiability.
 
 Given that low-order interactions often dominate in real-world settings, it is not surprising that TCNet matches DeepHalo's accuracy. However, DeepHalo achieves this with controlled expressiveness, offering a more interpretable alternative. Rather than outperforming black-box models in accuracy, our main goal is to provide a principled, order-aware design that balances predictive performance with transparency.
 
