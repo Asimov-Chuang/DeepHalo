@@ -24,9 +24,9 @@ In e-commerce applications such as recommendation systems and bundle pricing, pr
 These innovations go beyond what Deep Set offers. While DeepSets provides permutation invariance, DeepHalo integrates domain-specific insights from discrete choice theory and the halo literature, along with architectural elements like residual connections and polynomial activations. This enables interpretable, high-order interaction modeling in a principled and controllable way.
 
 
-### **2&nbsp;&nbsp;Utility Decomposition and Order Growth**
+> Q: Furthermore, I’m not convinced that the proposed network architecture replicates the utility decomposition the paper aims for (line 189). It seems correct for pairwise interactions, but I do not see how the recursive structure proposed replicates this utility decomposition.
 
-Thank you for raising this point. The key intuition is that every recursion depth l in Eqs. (4)–(5) adds **exactly one additional order of interaction** while preserving all lower‑order terms via the residual connection. The process is the same as Appendix A 2.2 and A 2.3. To better facilitate the understanding, we provide a simple example below.
+A: Thank you for raising this point. The key intuition is that every recursion depth l in Eqs. (4)–(5) adds **exactly one additional order of interaction** while preserving all lower‑order terms via the residual connection. The process is the same as Appendix A 2.2 and A 2.3. To better facilitate the understanding, we provide a simple example below.
 
 Consider an offer set ${j, k, l}$ and let $\phi$ be an identity mapping. We focus on the change of $z_{j}$ in DeepHalo.
 1. **Pairwise (1‑st order) layer.**  
