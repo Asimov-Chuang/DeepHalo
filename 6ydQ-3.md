@@ -63,9 +63,7 @@ A: Thanks for pointing that out. We will rewrite the definition of $X_{T∪{j}}$
 
 > Q: This sentence got me a bit confused: “Here, H denotes the number of interaction heads...”
 
-(Analogous to multi-head attention, in our context, this can be interpreted as H different consumer types with different tastes. The h-th row of W^1 represents the h-th taste vector..... We use matrix W^1 to compact the notation.)
-
-A: Each row of $W^1$ represents a specific mapping at index h, so W^1 provides H variety of mappings, which are then aggregated by the sum over $Z_h^1$. This is indeed training each of the h-th mapping, and the notion $W^1$ provides a clean representation of the H-head linear mapping. 
+A: Analogous to multi-head attention, in our context, this can be interpreted as H different consumer types with different tastes. The h-th row of W^1 represents the h-th taste vector, which can map the input with various preferences. Thus, W^1 provides H variety of mappings, which are then aggregated by the sum over $Z_h^1$. This is indeed training each of the h-th mapping, and we use matrix W^1 to compact the notation. 
 
 > Q: Section “4.1 Residual Connection for Large Choice Sets” is quite confusing
 
@@ -80,7 +78,7 @@ A: Regarding Section 4.2: $e_S$ is a unit vector with the $(e_S)_j = 1$ if j ∈
 > Q: There’s something confusing with the meaning of $\cup$ in equation 3.
 
 (Apologize the typo first.)
-A: Regarding $\cup$ in Equation 3: If I understand your question, I think your confusion might have originated from a typo in equation 3: $X_R$ should be $X_{R∪{j}}$. In equation (10), the relative context effect is specified on item j and item k, whose definition is introduced in Park and Hahn [1998].
+A: We apologize for the typo in equation 3: $X_R$ should be $X_{R∪{j}}$, which hopefully entangles the confusion. In equation (10), the relative context effect is specified on item j and item k, whose definition is introduced in Park and Hahn [1998].
 
 > Q: About number of parameters in Fig 2...
 
