@@ -7,9 +7,11 @@ A: DeepHalo's greatest contribution lies in its ability to effectively balance m
 
 - First-order models like CMNL (Yousefi Maragheh et al., 2020), low-rank Halo MNL (Ko and Li, 2024), and FETA (Pfannschmidt et al., 2022) can only capture pairwise interactions. While FETA proposes a utility decomposition similar to the halo effect, it only evaluates first-order terms in practice, as enumerating higher-order subsets is computationally infeasible for large assortments—limiting its ability to model complex choices.
 
-- Other models such as FATE and TCNet attempt to learn context by directly entangling all item features. As other reviewers note, their outputs can be interpreted via Eq. (10) as halo effects. However, the interaction order in these models is uncontrolled. Recovering a correct decomposition would require evaluating up to $|S|-1$ orders, leading to exponentially many terms and breaking interpretability. The issue lies in their architecture. These models **do not formulate context effects in a structured, decomposable way**.
+ - Therefore, while first-order models offer interpretability, they suffer from limited expressiveness. In contrast, other models are more expressive but lack the ability to control the maximum effect order and are challenging to interpret. DeepHalo is designed to bridge this gap, enabling the modeling of higher-order halo effects up to any desired order. We kindly refer the reviewer to Appendix A2.2 and A2.3 for further intuition.
 
-Therefore, while first-order models offer interpretability, they suffer from limited expressiveness. In contrast, other models are more expressive but lack the ability to control the maximum effect order and are challenging to interpret. DeepHalo is designed to bridge this gap, enabling the modeling of higher-order halo effects up to any desired order. We kindly refer the reviewer to Appendix A2.2 and A2.3 for further intuition.
+- In contrast, other models such as FATE and TCNet attempt to learn context by directly entangling all item features. As other reviewers note, their outputs can be interpreted via Eq. (10) as halo effects. However, the interaction order in these models is uncontrolled. Recovering a correct decomposition would require evaluating up to $|S|-1$ orders, leading to exponentially many terms and breaking interpretability. The issue lies in their architecture. These models **do not formulate context effects in a structured, decomposable way**.
+
+
 
 > Q: If the contribution relates to DCM behaviour modeling for the ML community, then some aspects should be considered... (Poor choice of (classical DCM) baselines)
 
@@ -52,7 +54,11 @@ A: We will explain the ‘Featureless setting’ further by elaborating on ‘it
 
 > Q: “For each j ∈S, define a utility function uj(T), which represents the utility of alternative j when the context is the subset T ⊆S{j}.” This is quite confusing.
 
-A: We hope to clarify here that the mentioned definition regarding $u_j(T)$ is regarding the universal logit model, which generalizes the MNL model by allowing context-dependent utilities. MNL, as a special case of the universal logit model, is less expressive as it assumes IIA and the utility $u_j$ is only related to item j, not the whole choice set. Regarding the confusing notation, we will only introduce the utility function $u_j(S)$ instead, and only introduce the notation $T$ which emphasizes the context information (subset excluding the item j itself).
+A: 
+(Delete) We hope to clarify here that the mentioned definition regarding $u_j(T)$ is regarding the universal logit model, which generalizes the MNL model by allowing context-dependent utilities. MNL, as a special case of the universal logit model, is less expressive as it assumes IIA and the utility $u_j$ is only related to item j, not the whole choice set. Regarding the confusing notation, 
+
+(Keep only this)
+We will only introduce the utility function $u_j(S)$ instead, and only introduce the notation $T$ which emphasizes the context information (subset excluding the item j itself).
 
 > Q: “Here, $XT∪{j}∈R^{d_x ×J}$ denotes the matrix formed by replacing the feature vectors not in the subset T ∪{j}with zero.” —> rephrase. 
 
@@ -61,11 +67,15 @@ A: Thanks for pointing that out. We will rewrite the definition of $X_{T∪{j}}$
 
 > Q: This sentence got me a bit confused: “Here, H denotes the number of interaction heads...”
 
+(Analogous to multi-head attention, in our context this can be interpreted as H different consumer types with different tastes. The h-th row of W^1 represents the h-th taste vector..... We use matrix W^1 to compact the notation.)
+
 A: Each row of $W^1$ represents a specific mapping at index h, so W^1 provides H variety of mappings, which are then aggregated by the sum over $Z_h^1$. This is indeed training each of the h-th mapping, and the notion $W^1$ provides a clean representation of the H-head linear mapping. 
 
 > Q: Section “4.1 Residual Connection for Large Choice Sets” is quite confusing
 
-A: Regarding Section 4.1: One of the key computational benefits of the polynomial is exactly as you suggested – a few layers can include a large universe, which prevents the very deep structure (line 234). We further discuss the quadratic benefit in Section 4.2 (line 262-264) and provide a logarithmic relation, namely, a linear number of layers can cover exponentially many items. To enrich section 4.1, we will particularly refer to the quadratic example in the revised version.
+A: Regarding Section 4.1: One of the key computational benefits of the polynomial is exactly as you suggested – a few layers can include a large universe, which prevents the very deep structure (line 234). We further discuss the quadratic benefit in Section 4.2 (line 262-264) and provide a logarithmic relation, namely, a linear number of layers can cover exponentially many items. To enrich section 4.1, we will particularly refer to the quadratic example in the revised version. 
+
+(refer to other responses)
 
 > Q: For section 4.2., if I understand well, $e_S$ is a vector of 1s...
 
@@ -73,6 +83,7 @@ A: Regarding Section 4.2: $e_S$ is a unit vector with the $(e_S)_j = 1$ if j ∈
 
 > Q: There’s something confusing with the meaning of $\cup$ in equation 3.
 
+(Apologize the typo first.)
 A: Regarding $\cup$ in Equation 3: If I understand your question, I think your confusion might have originated from a typo in equation 3: $X_R$ should be $X_{R∪{j}}$. In equation (10), the relative context effect is specified on item j and item k, whose definition is introduced in Park and Hahn [1998].
 
 > Q: About number of parameters in Fig 2...
@@ -88,7 +99,8 @@ A: Yes, thanks for catching that. We will correct to |S|.
 
 Thank you for the thoughtful comment. We encourage the reviewer to examine Figure 1 to better understand how DeepHalo captures interpretable and structured halo effects.
 
+We wish to note that this classical hypothetical dataset has been widely used in literature from the definition of Halo effect is proposed (Park and Hahn [1998], Batsell and Polking, [1985]) due to its simplicity and clarity, making it a standard example for validating interpretability. Indeed, this experiment is conducted in a featureless setting, where no item features are used, demonstrating that DeepHalo can extract meaningful interaction effects purely from set-level preferences. 
+
 Subfigure (b) visualizes the relative halo effect exerted by different subsets of items (horizontal axis) on the utility gap between competing item pairs (vertical axis). The rightmost column (∅) represents the baseline utility differences between item pairs in the absence of any contextual influence. For example, the strong baseline signal in pairs (1,2) and (3,4) corresponds to stable preferences such as Pepsi over Coke and 7-Up over Sprite, which are also clearly reflected in the observed market shares (Subfigure a). The leftmost column (item 1) shows a strong negative halo effect from Pepsi onto Coke: the presence of item 1 (Pepsi) reduces item 2’s (Coke’s) competitiveness when it is competing with item 3 or 4. Similarly, item 3 (7-Up) exerts a negative contextual effect on item 4 (Sprite) when competing with other items.
 
-Crucially, this experiment is conducted in a featureless setting, where no item features are used, demonstrating that DeepHalo can extract meaningful interaction effects purely from set-level preferences. We also wish to note that this classical hypothetical dataset has been widely used in literature from the definition of Halo effect is proposed (Park and Hahn [1998], Batsell and Polking, [1985]) due to its simplicity and clarity, making it a standard example for validating interpretability. 
 
