@@ -35,7 +35,9 @@ A: Thanks for pointing this out. Below, we add the total training time (until ea
 
 > Q: However, it’s very unclear to me why this fits in the NeurIPS context.
 
-A: We believe this paper belongs to this community since several wonderful works related to our topic have appeared in previous years’ NeurIPS; some are listed below:
+A: We believe this paper belongs to this community. Our work directly aligns with NeurIPS’s growing focus on human-AI alignment and feedback modeling. Understanding and mathematically formalizing human choice behavior is central to building AI systems that interact reliably and effectively with humans across various fields such as recommender systems, robotics, and large language models. Current alignment approaches (e.g., RLHF, LfD) implicitly assume humans are rational and feedback is unbiased. These assumptions are routinely violated in practice, yet rarely scrutinized. By introducing a principled, interpretable framework for modeling context-dependent human choices (high-order Halo effects), our paper provides the foundational tools needed to lift these restricted assumptions, which enables more realistic models of human feedback that are crucial for advancing ethical, user-centric AI.
+
+Additionally, we list below several noteworthy works related to our topic from previous years’ NeurIPS:
 
 [1]Oh S, Thekumparampil KK, Xu J. Collaboratively learning preferences from ordinal data. Advances in Neural Information Processing Systems. 28, 2015
 
@@ -47,7 +49,6 @@ A: We believe this paper belongs to this community since several wonderful works
 
 [5]De Peuter S, Zhu S, Guo Y, Howes A, Kaski S. Preference learning of latent decision utilities with a human-like model of preferential choice. Advances in Neural Information Processing Systems, 37:123608-36, 2024
 
-Our primary area is machine learning for sciences (e.g., climate, health, life sciences, physics, social sciences). Transparent modeling of human decision-making is crucial in social sciences and healthcare. Moreover, developing better preference models is essential for algorithms like RLHF. Therefore, we believe our work aligns well with this area.
 
 **Clarifications:**
 > Q: Some things are a bit unclear in intro.
