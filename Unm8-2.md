@@ -1,6 +1,6 @@
 We sincerely appreciate your recognition of our modeling problem, methodological soundness, real-world validation, and thoughtful baseline selection. 
 
-To address the concerns on novelty and interpretability, we provide detailed point-wise responses below.
+To address the concerns, we provide detailed point-wise responses below.
 
 (FETA: NN architecture not scalable to model high-order interactions. A high-dimensional tensor is needed.
 FATE: Entangle. No explicit control over the order it can represent.
@@ -8,14 +8,13 @@ FATE: Entangle. No explicit control over the order it can represent.
 Give an example from e-commerce that there are practical situations where the decision maker would like to capture interactions upto a specific order.
 )
 
+> Q: As far as I can see, the specific decomposition of the utility function which DeepHalo uses mirrors FETA’s almost exactly. The proposed neural network architecture is a fairly straightforward variation on DeepSets. The authors claim that the model offers an increased level of interpretability. However, the notion of relative context effect in (10) used to interpret the model can be calculated with any model (including prior ones) that decomposes the utility of a choice set into contributions of subsets; the interpretability is therefore not derived from the DeepHalo architecture specifically.
+ 
+A: Among context-dependent models, 
 
+- First-order models such as CMNL (Yousefi Maragheh et al., 2020), low-rank Halo MNL (Ko and Li, 2024), and FETA (Pfannschmidt et al., 2022) are inherently restricted to pairwise interactions. For instance, FETA proposes a decomposition that resembles the halo effect, but in practice it is limited to first-order pairwise interactions. The architecture is not scalable to higher-order effects, as doing so would require exponentially large tensor storage and computational resources, rendering it impractical for real-world applications.
 
-### 1&nbsp;&nbsp; Beyond FETA and other context-dependent choice models: controllable modeling of higher‑order effects  
-Among context-dependent models, 
-
-- First-order models like CMNL (Yousefi Maragheh et al., 2020), low-rank Halo MNL (Ko and Li, 2024), and FETA (Pfannschmidt et al., 2022) can only capture pairwise interactions. While FETA proposes a utility decomposition similar to the halo effect, it only evaluates first-order terms in practice, as enumerating higher-order subsets is computationally infeasible for large assortments, limiting its ability to model complex choices.
-
-- Other higher-order models, such as FATE and TCNet, attempt to learn context by directly entangling all item features. As the reviewer has noted, their outputs can be interpreted via Eq. (10) as halo effects. However, **the interaction order in these models is uncontrolled**, and recovering a faithful decomposition would require evaluating up to $|S|-1$ orders, leading to exponentially many terms and breaking interpretability.
+- Other models such as FATE and TCNet attempt to learn context effects by directly entangling all item features within the offer set. While their outputs can be retrospectively interpreted as halo effects via Eq. (10), the interaction order is not explicitly controlled. Recovering a meaningful decomposition in these models would require computational complexity on the order of O(2 ∣S∣−1), due to the exponential number of possible interaction terms. This limitation stems from their architectural design: context effects are not modeled in a structured or decomposable way. Specifically, FATE aggregates all item features into a set embedding, which is then combined with individual item features through complex nonlinear transformations—obscuring the origin and order of interactions. TCNet, similarly, uses attention mechanisms where the softmax denominator implicitly mixes information from all items in the offer set, making it difficult to isolate individual effects. As a result, neither model can recover a truly decomposable utility function. 
 
 The difference lies in their architecture. FATE combines global context with individual features but cannot restrict interaction depth. TCNet’s attention mechanism inherently mixes all items, always modeling full-order interactions by design. As a result, these models **do not formulate context effects in a structured, decomposable way**, making interpretation more difficult.
 
