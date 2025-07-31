@@ -71,8 +71,6 @@ To evaluate data efficiency, we subsample the SFOshop dataset—known for strong
 
 Across all settings, **DeepHalo consistently achieves the lowest Test NLL**, showing strong generalization even with limited data. Its Test NLL steadily improves with more data, while other models (TCNet, MLP, FATE) either plateau early or fluctuate.
 
-Importantly, DeepHalo uses just a **single layer with quadratic activation**, explicitly limiting interaction order to 2. Competing models, though more expressive, do not generalize better under the same capacity. This suggests that **controlling interaction order improves generalization** by avoiding spurious high-order effects and focusing on dominant low-order structure.
-
 
 ### **Clarification**
 The expression $u_j(x_j, X_R)$ in Eq. (3) refers to the same function as $u_j(X_{R \cup \{j\}})$ in Eq. (2), and we will revise the notation for consistency. We will also correct the duplicate citation of Deep Sets [Zaheer et al., 2018], fix the misspelling of FETA and FATE (“E” stands for “evaluate”), and use $|S|$ consistently to denote set size. These issues will be addressed in the final version. We appreciate the reviewer’s careful reading.
