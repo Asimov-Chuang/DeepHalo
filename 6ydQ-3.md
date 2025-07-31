@@ -57,6 +57,9 @@ A: We believe this paper belongs to this community since several wonderful works
 
 [8] Nir Rosenfeld, Kojin Oshiba, and Yaron Singer. Predicting choice with set-dependent aggregation. In International Conference on Machine Learning, pages 8220–8229. PMLR, 2020.
 
+[9] Kiran Tomlinson and Austin R Benson. Learning interpretable feature context effects in discrete choice. In Proceedings of the 27th ACM SIGKDD conference on knowledge discovery & data mining, pages 1582–1592, 2021
+
+
 Our primary area is machine learning for sciences (e.g., climate, health, life sciences, physics, social sciences). Transparent understanding of human decision-making processes is very important in the social sciences and medical fields. In addition, establishing more reasonable preference models is also an important part of commonly used algorithms such as RLHF. Therefore, we believe that our article is very suitable for this primary area.
 
 **Clarifications:**
