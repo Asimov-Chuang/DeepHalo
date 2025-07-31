@@ -19,7 +19,10 @@ Therefore, first-order models have interpretability but lack expressiveness, whi
 - **Structured Decomposition and Controllable Effect Order**  
   As shown in Appendix A, DeepHalo’s architecture ensures the utility can be decomposed as in Line 189. The model depth determines the maximum interaction order, while the choice of activation function affects how quickly the order increases. We appreciate the reviewer’s interest and clarify this further in Section 2.
 
-- **Direct Effect Recovery Without Solving Linear Systems**  
+- **Direct Effect Recovery Without Solving Linear Systems**
+
+ (change O(2^S) vs O(2^K))
+
   Prior approaches require solving large linear systems to recover halo effects, which becomes intractable for large assortments. In contrast, DeepHalo leverages Eq. (3) and Eq. (10) to recover effects directly and efficiently. We elaborate on this further in Section 3 in response to your questions. 
 
 These innovations go beyond what Deep Set offers. While DeepSets provides permutation invariance, DeepHalo integrates domain-specific insights from discrete choice theory and the halo literature, along with architectural elements like residual connections and polynomial activations. This enables interpretable, high-order interaction modeling in a principled and controllable way.
