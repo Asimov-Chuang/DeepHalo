@@ -3,7 +3,7 @@ We appreciate Reviewer 59ua’s positive feedback. To address the questions and 
 ### Weakness
 
 
-#### 1. Clarifying Section 4.1 — why Equation (8) needs only $\log_2 l$ layers to model $l$‑th‑order interactions
+#### 1. Clarifying Section 4.1 — why Equation (8) needs only $\log_2l$ layers to model $l$‑th‑order interactions
 
 We agree that Section 4.1 should state this property explicitly. Currently, this is mentioned in Section 4.2, and the explanation is deferred in the appendix. 
 In the revision, we will:
