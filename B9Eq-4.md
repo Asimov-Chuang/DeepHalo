@@ -3,6 +3,17 @@ We appreciate Reviewer B9Eq’s positive feedback. To address the questions and 
 ### Weakness
 
 
+Novelty: We appreciate the reviewer’s thoughtful question. While many prior models (e.g., FATE, TCNet) acknowledge context effects, none have formally defined feature-based halo effects in a utility-decomposable framework. Our work is, to the best of our knowledge, the first to do so.
+
+In summary, DeepHalo is the first model to:
+
+1. Formally define feature-based halo effects. 
+2. Provide a general decomposition-compatible framework.
+3. Architecturally enforce subset attribution and interaction-order control.
+
+These properties are essential for reliable and scalable interpretability and are not achievable with existing models.
+
+
 #### 1. Clarifying Section 4.1 — why Equation (8) needs only $\log_2l$ layers to model $l$‑th‑order interactions
 
 We agree that Section 4.1 should state this property explicitly. Currently, this is mentioned in Section 4.2, and the explanation is deferred in the appendix. 
@@ -38,36 +49,21 @@ Therefore, we recommend:
 This modularity makes DeepHalo a unified and controllable framework for context-dependent choice modeling, in both feature-rich and featureless settings. We will add a guidance paragraph in the revision to clarify these trade-offs.
 
 #### 3. Clarifying what makes DeepHalo more interpretable than prior neural context-effect models
+We appreciate the reviewer’s thoughtful question. While many prior models can interpret the effects using Eq. (10), this is under two premises:
+- The model is expressive enough to include all interaction orders up to $(|S|-1)$ instead of some specific orders (which first-order models like CMNL and FETA cannot achieve)
+- Existing expressive models like FATE and TCNet require a computational time of $O(2^|S|)$.
 
-(1. They can recover using (10), but this is under two premises: (a) model expressive enough to include all interaction orders up to (|S|-1), but not some specific orders; (b) computational time O(2^{|S|}). In contrast, ours O(2^k) to get k-order interactions. 
+In contrast, our expressive DeepHalo model can capture up to a specific order and only needs $O(2^k)$ computational time to obtain $k$-order interactions, which provide more interpretability. For example, modeling third-order effects over a catalog of 100 items without such control would require handling over 160,000 subsets, which is computationally prohibitive and interpretively infeasible.
 
-2. Model up to a specific order is of practical interest. For instance,....
+Besides, the exact-interaction-order control inherited in our model is of practical interest. As a concrete example, consider a choice set $\{A, B, C, D\}$. hen estimating how the subset $\{A, B\}$ influences the utility of item $C$, the function must depend only on the features of $A$, $B$, and $C$, and must not involve irrelevant items like $D$. This subset-specific conditioning is critical for interpretability, but is not enforced in existing context-dependent ML models. 
 
-3. They reason why these existing model cannot capture exactly for up-to k-order interactions is ......
+The reason they cannot capture exactly up to $k$-order interactions is that they attempt to learn context by directly entangling all item features. For instance, FATE combines global context with individual features but cannot restrict interaction depth. TCNet’s attention mechanism inherently mixes all items, effectively modeling full-order interactions by design. As a result, these models do not formulate context effects in a structured, decomposable way, making interpretation difficult.
 
-)
-
-We appreciate the reviewer’s thoughtful question. While many prior models (e.g., FATE, TCNet) acknowledge context effects, none have formally defined feature-based halo effects in a utility-decomposable framework. Our work is, to the best of our knowledge, the first to do so.
-
-As a concrete example, consider an offer set $\{A, B, C, D\}$ ..... when estimating how the subset $\{A, B\}$ influences the utility of item $C$, the function must depend only on the features of $A$, $B$, and $C$, and must not involve irrelevant items like $D$. This subset-specific conditioning is critical for interpretability, but is not enforced in FATE, TCNet. Models such as FATE and TCNet attempt to learn context by directly entangling all item features. As the reviewer notes, their outputs can be interpreted via Eq. (10) as halo effects. However, the interaction order in these models is uncontrolled, and recovering a faithful decomposition would require evaluating up to $|S|-1$ orders, leading to exponentially many terms and breaking interpretability.
-
-The issue lies in their architecture. FATE combines global context with individual features but cannot restrict interaction depth. TCNet’s attention mechanism inherently mixes all items, effectively modeling full-order interactions by design. As a result, these models do not formulate context effects in a structured, decomposable way, making interpretation difficult.
-
-DeepHalo resolves this with a modular design:
-
+On the contrary, our model achieve more interpretability with a modular design:
 - Each layer introduces exactly one additional interaction order or $\times 2$ using quadratic activation.
 - The maximum effect order is bounded by the network depth $L$.
 - Residual and polynomial structures guarantee halo-decomposable utility functions. We will give a simple example later for better illustration.
 
-This enables users to control expressiveness, avoid overfitting, and ensure that only desired-order interactions are modeled. For example, modeling third-order effects over a catalog of 100 items without such control would require handling over 160,000 subsets—computationally prohibitive and interpretively infeasible.
-
-In summary, DeepHalo is the first model to:
-
-1. Formally define feature-based halo effects. 
-2. Provide a general decomposition-compatible framework.
-3. Architecturally enforce subset attribution and interaction-order control.
-
-These properties are essential for reliable and scalable interpretability, and are not achievable with existing models.
 
 #### 4. Clarifying the distinction between DeepHalo and SDA [Rosenfeld et al., 2020]
 
