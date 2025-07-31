@@ -15,7 +15,7 @@ A: DeepHalo's main contribution lies in its ability to effectively balance model
 
 > Q: If the contribution relates to DCM behaviour modeling for the ML community, then some aspects should be considered... (Poor choice of (classical DCM) baselines)
 
-A: Regarding the choice of baselines for the experiment: Our model aims to explore the context effect. Therefore we mainly compare DeepHalo with the context-dependent DCM benchmark, such as Contextual MNL. We set mnl as a baseline because comparing MNL and Contextual MNL directly demonstrates the effect of context, and MNL can serve as a sanity check. To cover the context-independent DCM benchmarks you mentioned, which follow the RUM principle, we add mixed logit in featureless experiments, which can approximate any RUM model arbitrarily well. Regarding ML baselines, we add additional baselines with transformer (TCnet) and deep sets (FATE) (suggested by reviewer D2h9), as displayed below.
+A: Regarding the choice of baselines for the experiment: Our model aims to explore the context effect. Therefore, we mainly compare DeepHalo with the context-dependent DCM benchmark, such as Contextual MNL. We set MNL as a baseline because comparing MNL and Contextual MNL directly demonstrates the effect of context, and MNL can serve as a sanity check. To cover the context-independent DCM benchmarks you mentioned, which follow the RUM principle, we add mixed logit in featureless experiments, which can approximate any RUM model arbitrarily well. Regarding ML baselines, we add additional baselines with transformer (TCnet) and deep sets (FATE) (suggested by reviewer D2h9), as displayed below.
 
 | Model         | Hotel (Train/Test) | SFOshop (Train/Test) | SFOwork (Train/Test) |
 |---------------|--------------------|------------------------|-----------------------|
@@ -45,7 +45,7 @@ A: We believe this paper belongs to this community, since several wonderful work
 
 [5]De Peuter S, Zhu S, Guo Y, Howes A, Kaski S. Preference learning of latent decision utilities with a human-like model of preferential choice. Advances in Neural Information Processing Systems, 37:123608-36, 2024
 
-Our primary area is machine learning for sciences (e.g., climate, health, life sciences, physics, social sciences). Transparent understanding of human decision-making processes is very important in social sciences and medical fields. In addition, establishing more reasonable preference models is also an important part of commonly used algorithms such as RLHF. Therefore, we believe that our article is very suitable for this primary area.
+Our primary area is machine learning for sciences (e.g., climate, health, life sciences, physics, social sciences). Transparent understanding of human decision-making processes is very important in the social sciences and medical fields. In addition, establishing more reasonable preference models is also an important part of commonly used algorithms such as RLHF. Therefore, we believe that our article is very suitable for this primary area.
 
 **Clarifications:**
 > Q: The intro is good but some things are a bit unclear.
@@ -54,11 +54,7 @@ A: We will explain the ‘Featureless setting’ further by elaborating on ‘it
 
 > Q: “For each j ∈S, define a utility function uj(T), which represents the utility of alternative j when the context is the subset T ⊆S{j}.” This is quite confusing.
 
-A: 
-(Delete) We hope to clarify here that the mentioned definition regarding $u_j(T)$ is regarding the universal logit model, which generalizes the MNL model by allowing context-dependent utilities. MNL, as a special case of the universal logit model, is less expressive as it assumes IIA and the utility $u_j$ is only related to item j, not the whole choice set. Regarding the confusing notation, 
-
-(Keep only this)
-We will only introduce the utility function $u_j(S)$ instead, and only introduce the notation $T$ which emphasizes the context information (subset excluding the item j itself).
+A: We will only introduce the utility function $u_j(S)$ instead, and only introduce the notation $T$, which emphasizes the context information (subset excluding the item j itself).
 
 > Q: “Here, $XT∪{j}∈R^{d_x ×J}$ denotes the matrix formed by replacing the feature vectors not in the subset T ∪{j}with zero.” —> rephrase. 
 
@@ -67,7 +63,7 @@ A: Thanks for pointing that out. We will rewrite the definition of $X_{T∪{j}}$
 
 > Q: This sentence got me a bit confused: “Here, H denotes the number of interaction heads...”
 
-(Analogous to multi-head attention, in our context this can be interpreted as H different consumer types with different tastes. The h-th row of W^1 represents the h-th taste vector..... We use matrix W^1 to compact the notation.)
+(Analogous to multi-head attention, in our context, this can be interpreted as H different consumer types with different tastes. The h-th row of W^1 represents the h-th taste vector..... We use matrix W^1 to compact the notation.)
 
 A: Each row of $W^1$ represents a specific mapping at index h, so W^1 provides H variety of mappings, which are then aggregated by the sum over $Z_h^1$. This is indeed training each of the h-th mapping, and the notion $W^1$ provides a clean representation of the H-head linear mapping. 
 
