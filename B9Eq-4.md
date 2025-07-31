@@ -17,7 +17,7 @@ A: Thanks for your suggestion! We will consider adding some unique elements to o
 
 > Q: How does the sample complexity and need for hyperparameter tuning compare to existing approaches?
 
-A: Regarding sample complexity and data efficiency, we refer the reviewer to our response to Reviewer Unm8【CHECK】, where we provide an experiment evaluating model performance under varying data proportions.
+A: Regarding sample complexity and data efficiency, we refer the reviewer to our response to Reviewer Unm8 (Q: About data efficiency), where we provide an experiment evaluating model performance under varying data proportions.
 
 As for the hyperparameter tuning, we find empirically that DeepHalo is relatively easy to tune. **Once the maximum effect order is specified, the overall effect complexity is fixed**, which is the main tuning difference compared to existing approaches. Additional parameters are then introduced only to improve the approximation accuracy of these effects, rather than to increase model capacity arbitrarily. 
 
