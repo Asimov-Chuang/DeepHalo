@@ -15,13 +15,7 @@ In contrast, DeepHalo is explicitly designed to address this gap by enabling pre
 
 In e-commerce applications such as recommendation systems and bundle pricing, practitioners are often primarily interested in lower-order context effects, which are more stable, interpretable, and practically useful. While expressive models can theoretically recover such effects, they do so implicitly as part of an entangled representation involving many higher-order interactions. Consequently, low-order effects cannot be meaningfully isolated and require evaluating up to $O(2^{|S|-1})$ terms. DeepHalo offers a principled approximation that explicitly models low-order halo effects. It allows users to control the maximum interaction order $K$, with computational complexity only $O(2^K)$, offering a flexible trade-off between efficiency and expressiveness.
 
-- **Feature-Based High-Order Halo Effects**  
-  To our knowledge, we are the first to define high-order halo effects in terms of item features formally. For example, when assessing how subset $\{A, B\}$ influences the utility of item $C$ in an offer set $\{A, B, C, D\}$, the effect should depend only on the features of $A$, $B$, and $C$, not on unrelated items like $D$. Including irrelevant items makes the subset effect uninterpretable. This illustrates why models that entangle all item features inevitably introduce uncontrolled, high-order interactions.
-
-- **Structured Decomposition and Controllable Effect Order**  
-  As shown in Appendix A, DeepHalo’s architecture ensures the utility can be decomposed as in Line 189. The model depth determines the maximum interaction order, while the choice of activation function affects how quickly the order increases. We appreciate the reviewer’s interest and clarify this further in Section 2.
-
-These innovations go beyond what Deep Set offers. While DeepSets provides permutation invariance, DeepHalo integrates domain-specific insights from discrete choice theory and the halo literature, along with architectural elements like residual connections and polynomial activations. This enables interpretable, high-order interaction modeling in a principled and controllable way.
+Our contribution goes beyond what Deep Set offers. While DeepSets provides permutation invariance, DeepHalo integrates domain-specific insights from discrete choice theory and the halo literature, along with architectural elements like residual connections and polynomial activations. This enables interpretable, high-order interaction modeling in a principled and controllable way.
 
 
 > Q: Furthermore, I’m not convinced that the proposed network architecture replicates the utility decomposition the paper aims for (line 189)...
