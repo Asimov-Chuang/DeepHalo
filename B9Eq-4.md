@@ -6,16 +6,20 @@ We appreciate Reviewer B9Eq’s positive feedback. To address the questions and 
 
 A: The key advantage of DeepHalo lies in its ability to explicitly control the maximum order of context (halo) effects, enabling a flexible trade-off between model expressiveness and interpretability—something existing neural models lack.
 
-- First-order models (e.g., CMNL, FETA) are interpretable but limited to pairwise interactions and cannot scale to higher-order effects due to computational constraints.
-- High-capacity models (e.g., FATE, TCNet) are expressive but entangle all item features, making it infeasible to control interaction order. Recovering meaningful low-order effects from these models requires evaluating up to $O(2^{|S|-1})$ terms.
+- First-order models (e.g., CMNL [Yousefi Maragheh et al., 2020], FETA [Pfannschmidt et al., 2022]) are interpretable but limited to pairwise interactions and cannot scale to higher-order effects due to computational constraints.
+- High-capacity models (e.g., FATE [Pfannschmidt et al., 2022], ResLogit [Wong and Farooq, 2021], and TCNet [Wang et al., 2023]) are expressive but entangle all item features, making it infeasible to control interaction order. Recovering meaningful low-order effects from these models requires evaluating up to $O(2^{|S|-1})$ terms.
 
-In contrast, DeepHalo models context effects in a structured and decomposable way. It allows practitioners to specify the maximum interaction order $K$, with complexity $O(2^K)$, making it both efficient and interpretable. This is especially useful in real-world settings like recommendation and bundle pricing, where lower-order effects are often sufficient and desirable.
+In contrast, DeepHalo models context effects in a structured and decomposable way. It allows practitioners to specify the maximum interaction order $K$, with a complexity of $O(2^K)$ to recover the effect terms, making it both efficient and interpretable. This is especially useful in real-world settings like recommendation and bundle pricing, where lower-order effects are often sufficient and desirable.
+
+> Q: The title, though, is a bit generic, and could apply to several of the cited papers; ...
+
+A: Thanks for your suggestion! We will consider adding some unique elements to our title that help distinguish it from other context-dependent model papers.
 
 > Q: How does the sample complexity and need for hyperparameter tuning compare to existing approaches?
 
 A: Regarding sample complexity and data efficiency, we refer the reviewer to our response to Reviewer Unm8, where we provide an experiment evaluating model performance under varying data proportions.
 
-As for hyperparameter tuning, we find empirically that DeepHalo is relatively easy to tune. Once the maximum effect order is specified, the overall effect complexity is fixed. Additional parameters are then introduced only to improve the approximation accuracy of these effects, rather than to increase model capacity arbitrarily.
+As for the hyperparameter tuning, we find empirically that DeepHalo is relatively easy to tune. Once the maximum effect order is specified, the overall effect complexity is fixed. Additional parameters are then introduced only to improve the approximation accuracy of these effects, rather than to increase model capacity arbitrarily.
 
 #### 1. Clarifying Section 4.1 — why Equation (8) needs only $\log_2l$ layers to model $l$‑th‑order interactions
 
@@ -50,7 +54,7 @@ This modularity makes DeepHalo a unified and controllable framework for context-
 #### 3. Clarifying what makes DeepHalo more interpretable than prior neural context-effect models
 We appreciate the reviewer’s thoughtful question. While many prior models can interpret the effects using Eq. (10), this is under two premises:
 - The model is expressive enough to include all interaction orders up to $(|S|-1)$ instead of some specific orders (which first-order models like CMNL and FETA cannot achieve)
-- Existing expressive models like FATE and TCNet require a computational complexity of $O(2^{|S|})$ for recovering all halo effect in the model.
+- Existing expressive models like FATE and TCNet require a computational complexity of $O(2^{|S|})$ for recovering all halo effects in the model.
 
 In contrast, our expressive DeepHalo model can capture up to a specific order and only needs $O(2^K)$ computational time to obtain $k$-order interactions, which provide more interpretability. For example, modeling third-order effects over a catalog of 100 items without such control would require handling over 160,000 subsets, which is computationally prohibitive and interpretively infeasible.
 
@@ -58,7 +62,7 @@ Besides, the exact-interaction-order control inherited in our model is of practi
 
 The reason they cannot capture exactly up to $k$-order interactions is that they attempt to learn context by directly entangling all item features. For instance, FATE combines global context with individual features but cannot restrict interaction depth. TCNet’s attention mechanism inherently mixes all items, effectively modeling full-order interactions by design. As a result, these models do not formulate context effects in a structured, decomposable way, making interpretation difficult.
 
-On the contrary, our model achieve more interpretability with a modular design:
+On the contrary, our model achieves more interpretability with a modular design:
 - Each layer introduces exactly one additional interaction order or $\times 2$ using quadratic activation.
 - The maximum effect order is bounded by the network depth $L$.
 - Residual and polynomial structures guarantee halo-decomposable utility functions. We will give a simple example later for better illustration.
