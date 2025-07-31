@@ -3,7 +3,7 @@ We sincerely appreciate your recognition of our problem modeling, methodological
 To address the concerns, we provide detailed point-wise responses below.
 
 
-> Q: As far as I can see, the specific decomposition of the utility function which DeepHalo uses mirrors FETA’s almost exactly...
+> **Q: As far as I can see, the specific decomposition of the utility function which DeepHalo uses mirrors FETA’s almost exactly...**
  
 A: The key methodological contribution of DeepHalo lies in introducing a **structured and order-controllable framework** that balances expressiveness and interpretability—a capability that is lacking in existing context-dependent choice models. Among context-dependent models, 
 
@@ -18,7 +18,7 @@ In e-commerce applications such as recommendation systems and bundle pricing, pr
 Our contribution goes beyond what Deep Set offers. While DeepSets provides permutation invariance, DeepHalo integrates domain-specific insights from discrete choice theory and the halo literature, along with architectural elements like residual connections and polynomial activations. This enables interpretable, high-order interaction modeling in a principled and controllable way.
 
 
-> Q: Furthermore, I’m not convinced that the proposed network architecture replicates the utility decomposition the paper aims for (line 189)...
+> **Q: Furthermore, I’m not convinced that the proposed network architecture replicates the utility decomposition the paper aims for (line 189)...**
 
 A: Thank you for raising this point. The key intuition is that every recursion depth l in Eqs. (4)–(5) adds **exactly one additional order of interaction** while preserving all lower‑order terms via the residual connection. The process is the same as Appendix A 2.2 and A 2.3. To better facilitate the understanding, we provide a simple example below.
 
@@ -40,11 +40,11 @@ Consider an offer set ${j, k, l}$ and let $\phi$ be an identity mapping. We focu
 
 This example illustrates how we can add up orders by increasing the number of layers and get a decomposable utility representation. If we change the $\cdot$ in layers to some other polynomial function, the term order will grow faster, like in the first layer we change to $(f_j + f_k + f_l)^2 \cdot f_j$, in the sum will directly bring about the second order term $f_{jkl}$. The quadratic activation naturally brings a $log_2$ form depth requirement.
 
-> Q: The purpose of $(-1)^{|T|-|R|}$.
+> **Q: The purpose of $(-1)^{|T|-|R|}$.**
 
 A: The $(−1)^{∣T∣−∣R∣}$ factor in Eq. (3) is the **inclusion–exclusion inversion coefficient** on the Boolean lattice of subsets. Our $v_j(⋅)$ must invert the cumulative‑sum relation $u_j(X_S)=\sum_{T\subset S\setminus\{j\}} v_j(X_{T\cup\{j\}})$; effects contributed to many supersets are otherwise over‑counted. Alternating signs guarantee that terms appearing an even number of times cancel and those appearing an odd number of times net to the correct single contribution, yielding a unique decomposition. 
 
-> Q: About Performance Difference between DeepHalo and TCnet...
+> **Q: About Performance Difference between DeepHalo and TCnet...**
 
 A: Thanks for the insightful observation. We acknowledge that similar performance between DeepHalo and TCNet is expected; however, we wish to emphasize a key difference in their modeling philosophies.
 
@@ -52,7 +52,7 @@ While TCNet can approximate utility decompositions (maximum order), its Transfor
 
 Given that low-order interactions often dominate in real-world settings, it is not surprising that TCNet matches DeepHalo's accuracy. However, DeepHalo achieves this with controlled expressiveness, offering a more interpretable alternative. Rather than outperforming black-box models in accuracy, our main goal is to provide a principled, order-aware design that balances predictive performance with transparency.
 
-> Q: About data efficiency
+> **Q: About data efficiency**
 
 | Ratio (%) | CMNL  | MNL   | FATE   | MLP   | MixedMNL | TCnet | **DeepHalo** |
 |-----------|-------|-------|--------|-------|-----------|--------|--------------|
