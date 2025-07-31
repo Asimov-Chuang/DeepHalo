@@ -1,4 +1,4 @@
-We sincerely appreciate your recognition of our modeling problem, methodological soundness, real-world validation, and thoughtful baseline selection. 
+We sincerely appreciate your recognition of our problem modeling, methodological soundness, real-world validation, and thoughtful baseline selection. 
 
 To address the concerns, we provide detailed point-wise responses below.
 
