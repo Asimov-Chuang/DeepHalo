@@ -2,6 +2,12 @@ We sincerely appreciate your recognition of our modeling problem, methodological
 
 To address the concerns on novelty and interpretability, we provide detailed point-wise responses below.
 
+(FETA: NN architecture not scalable to model high-order interactions. A high-dimensional tensor is needed.
+FATE: Entangle. No explicit control over the order it can represent.
+)
+
+
+
 ### 1&nbsp;&nbsp; Beyond FETA and other context-dependent choice models: controllable modeling of higher‑order effects  
 Among context-dependent models, 
 
