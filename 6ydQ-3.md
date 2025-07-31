@@ -1,7 +1,7 @@
 Thank you very much for your thoughtful comments. Please see our response as follows.
 
 **Weakness & Questions:**
-> Q: The methodological ML contribution ... the contributions are not very novel.
+> **Q: The methodological ML contribution ... the contributions are not very novel.**
 
 A: The contribution of DeepHalo lies not merely in modeling interactions or equivariance, but in introducing a **structured and order-controllable framework** that balances expressiveness and interpretability, which is lacking in existing context-dependent choice models.
 
@@ -14,11 +14,11 @@ While prior models have explored interaction effects, they face fundamental chal
 In contrast, DeepHalo is explicitly designed to address this gap by enabling **precise control over the maximum order of halo interactions**. In e-commerce applications like recommendation and bundle pricing, lower-order context effects are often the most relevant—being more stable, interpretable, and practically useful. While expressive models can recover such effects, they do so implicitly within entangled high-order interactions, requiring up to $O(2^{|S|-1})$ terms to isolate. DeepHalo explicitly models limited-order halo effects, allowing users to control the maximum order $K$ with only $O(2^K)$ complexity, enabling a flexible trade-off between efficiency and expressiveness.
 
 
-> Q: If the contribution relates to DCM behaviour modeling for the ML community, then some aspects should be considered... (Poor choice of (classical DCM) baselines)
+> **Q: If the contribution relates to DCM behaviour modeling for the ML community, then some aspects should be considered... (Poor choice of (classical DCM) baselines)**
 
 A: Since our model targets context effects, we primarily compare DeepHalo with context-dependent DCMs like Contextual MNL. MNL serves as a sanity check to highlight the role of context. To include context-independent RUM-based models, we add Mixed Logit in the featureless setting, as it can approximate any RUM. For ML baselines, we include TCNet and FATE (suggested by reviewer D2h9). We respectfully refer the reviewer to our detailed response to Reviewer D2h9.
 
-> Q: Lack of training (computational) performance statistics.
+> **Q: Lack of training (computational) performance statistics.**
 
 A: Thanks for pointing this out. Below, we add the total training time (until early stop) in a sample run under the setting of the LPMC experiment in Section 5.2.
 | Model Name | Total Training Time (s) |
@@ -33,7 +33,7 @@ A: Thanks for pointing this out. Below, we add the total training time (until ea
 | TCnet      | 141.6                         |
 | DeepHalo   | 202.0                         |
 
-> Q: However, it’s very unclear to me why this fits in the NeurIPS context.
+> **Q: However, it’s very unclear to me why this fits in the NeurIPS context.**
 
 A: We believe this paper belongs to this community. Our work directly aligns with NeurIPS’s growing focus on **human-AI alignment** and **feedback modeling**. Understanding and mathematically formalizing human choice behavior is central to building AI systems that interact reliably and effectively with humans across various fields such as recommender systems, robotics, and large language models. Current alignment approaches (e.g., RLHF, LfD) implicitly assume humans are rational and feedback is unbiased. These assumptions are routinely violated in practice, yet rarely scrutinized. By introducing a principled, interpretable framework for modeling context-dependent human choices (Halo effects), our paper provides the foundational tools needed to lift these restricted assumptions, which enables more realistic models of human feedback that are crucial for advancing ethical, user-centric AI.
 
@@ -51,41 +51,41 @@ Additionally, we list below several noteworthy works related to our topic from p
 
 
 **Clarifications:**
-> Q: Some things are a bit unclear in intro.
+> **Q: Some things are a bit unclear in intro.**
 
 A: We will explain the ‘Featureless setting’ further by elaborating on ‘items without access to their features’.
 
-> Q: “For each j ∈S, define a utility function uj(T), ...” 
+> **Q: “For each j ∈S, define a utility function uj(T), ...”**
 
 A: We will only introduce the utility function $u_j(S)$ instead, and only introduce the notation $T$, which emphasizes the context information (subset excluding the item j itself).
 
-> Q: “Here, $XT∪{j}∈R^{d_x ×J}$ denotes the matrix formed by replacing the feature vectors not in the subset T ∪{j}with zero.” —> rephrase. 
+> **Q: “Here, $XT∪{j}∈R^{d_x ×J}$ denotes the matrix formed by replacing the feature vectors not in the subset T ∪{j}with zero.” —> rephrase.**
 
 A: We will rewrite the definition of $X_{T∪{j}}$ as “formed from the feature matrix $X_S$ by replacing the feature vectors not in the subset T∪{j} with zero.”
 
-> Q: This sentence got me a bit confused: “Here, H denotes the number of interaction heads...”
+> **Q: This sentence got me a bit confused: “Here, H denotes the number of interaction heads...”**
 
 A: Analogous to multi-head attention, in our context, this can be interpreted as H different consumer types with different tastes. The h-th row of W^1 represents the h-th taste vector, which can map the input with various preferences. Thus, W^1 provides H variety of mappings, which are then aggregated by the sum over $Z_h^1$. This is indeed training each of the h-th mapping, and we use matrix W^1 to compact the notation. 
 
-> Q: “Residual Connection for Large Choice Sets” is quite confusing
+> **Q: “Residual Connection for Large Choice Sets” is quite confusing**
 
 A: As the reviewer noted, one key computational advantage of the polynomial formulation is that a small number of layers can cover a large range of effect orders, avoiding the need for deep architectures (line 234). We elaborate on this in Section 4.2 (lines 262–264), showing a logarithmic relationship: a linear number of layers can express exponentially many interaction orders. We will clarify this in the revised version by referring explicitly to the quadratic example. See also Appendix A2.2, A2.3, and the example in our response to reviewer Unm8 (Section 2).
 
 As for numerical stability, training remains stable in the featureless setting even with high-order interactions (Figure 2). In the feature-rich setting, deep quadratic stacks may cause instability, but we find that modeling up to 4th or 5th order suffices in practice (e.g., Expedia), striking a good balance between expressiveness and interpretability.
 
-> Q: For section 4.2., $e_S$ is a vector of 1s...
+> **Q: For section 4.2., $e_S$ is a vector of 1s...**
 
 A: Regarding Section 4.2: $e_S$ is a unit vector with the $(e_S)_j = 1$ if j ∈ S and 0 otherwise. The recursive expression in equation 9 can be represented as a polynomial of $e_S$. Let us consider the case with up to second-order interaction, then the second-order term relates to $e_S \otimes e_S$ where the (i,j)-th element refers to whether both item i and item j exist in the choice set. The coefficients in the polynomial corresponding to each element of the second-order term measure the specific interactions in equation (1).
 
-> Q: confusing with the meaning of $\cup$ in equation 3.
+> **Q: confusing with the meaning of $\cup$ in equation 3.**
 
 A: We apologize for the typo in equation 3: $X_R$ should be $X_{R∪{j}}$, which hopefully entangles the confusion. In equation (10), the relative context effect is specified on item j and item k, whose definition is introduced in Park and Hahn [1998].
 
-> Q: About number of parameters in Fig 2...
+> **Q: About number of parameters in Fig 2...**
 
 A: The number of nn parameters in Fig 2 is the total number of trainable parameters, which specifies the model complexity and is influenced by the problem size and the selection of hyperparameters like H.
 
-> Q: $\bar{Z}_1 := 1/S$…
+> **Q: $\bar{Z}_1 := 1/S$…**
 
 A: Yes, thanks for catching that. We will correct to |S|.
 
