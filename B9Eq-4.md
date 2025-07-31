@@ -1,18 +1,21 @@
 We appreciate Reviewer B9Eq’s positive feedback. To address the questions and concerns about our method, we provide point-wise responses as follows.
 
-### Weakness
+### Weakness and Limitation
 
+> Q: Could be clearer what the advantages are of the proposed method vs existing neural context effect models
 
-Novelty: We appreciate the reviewer’s thoughtful question. While many prior models (e.g., FATE, TCNet) acknowledge context effects, none have formally defined feature-based halo effects in a utility-decomposable framework. Our work is, to the best of our knowledge, the first to do so.
+A: The key advantage of DeepHalo lies in its ability to explicitly control the maximum order of context (halo) effects, enabling a flexible trade-off between model expressiveness and interpretability—something existing neural models lack.
 
-In summary, DeepHalo is the first model to:
+- First-order models (e.g., CMNL, FETA) are interpretable but limited to pairwise interactions and cannot scale to higher-order effects due to computational constraints.
+- High-capacity models (e.g., FATE, TCNet) are expressive but entangle all item features, making it infeasible to isolate or control interaction order. Recovering meaningful low-order effects from these models requires evaluating up to $O(2^{|S|-1})$ terms.
 
-1. Formally define feature-based halo effects. 
-2. Provide a general decomposition-compatible framework.
-3. Architecturally enforce subset attribution and interaction-order control.
+In contrast, DeepHalo models context effects in a structured and decomposable way. It allows practitioners to specify the maximum interaction order $K$, with complexity $O(2^K)$, making it both efficient and interpretable. This is especially useful in real-world settings like recommendation and bundle pricing, where lower-order effects are often sufficient and desirable.
 
-These properties are essential for reliable and scalable interpretability and are not achievable with existing models.
+> Q: How does the sample complexity and need for hyperparameter tuning compare to existing approaches?
 
+A: Regarding sample complexity and data efficiency, we refer the reviewer to our response to Reviewer Unm8, where we provide an experiment evaluating model performance under varying data proportions.
+
+As for hyperparameter tuning, we find empirically that DeepHalo is relatively easy to tune. Once the maximum effect order is specified, the overall effect complexity is fixed. Additional parameters are then introduced only to improve the approximation accuracy of these effects, rather than to increase model capacity arbitrarily.
 
 #### 1. Clarifying Section 4.1 — why Equation (8) needs only $\log_2l$ layers to model $l$‑th‑order interactions
 
@@ -30,21 +33,17 @@ In the revision, we will:
 
 #### 2. Practical guidance on when to use Equation (5) vs Equation (8)
 
-If the number of alternatives is small and the computational limit permits, use (5). Otherwise use (8). In fact, xxxxxxx we can use a mixture of linear and quadratic activations as well. [I remember here need to first directly answer the reviewer's question (your conclusion/recommendation) then give example.]
+We appreciate this insightful question. Generally, we recommend:
 
-We appreciate this insightful question. One of the strengths of the DeepHalo architecture is its structural flexibility: the activation function σ can be instantiated as any polynomial function, and Equations (5) and (8) are not mutually exclusive. In practice, they can be freely mixed—for example, stacking layers with linear and quadratic activations can achieve effective interaction orders such as $((1+1+1)\times2+1)\times2$, offering nuanced control over expressivity.
+- Using Eq. (5) when training stability is a concern or when higher-order context effects are not considered.
+- Using Eq. (8) to reduce network depth when higher-order interactions are considered.
+- Combining them for a tunable trade-off.
 
-In general:
+Here we provide some details for further intuition. One of the strengths of the DeepHalo architecture is its structural flexibility: the activation function σ can be instantiated as any polynomial function. (5) and (8) can be used interchangeably within the same model. In practice, they can be freely mixed—for example, stacking layers with linear and quadratic activations can achieve effective interaction orders such as $((1+1+1)\times2+1)\times2$, offering nuanced control over expressivity.
 
 - Higher-degree activations (like Eq. (8)) allow *faster growth* in representational power with depth, efficiently capturing higher-order effects.
 - However, very high-degree activations in deep networks may introduce *training instability*, such as exploding gradients.
-- Empirically, we observe that for the same representable order, both variants achieve similar accuracy. Yet, **first-order activations (Eq. (5)) tend to be more stable**, especially on noisy or real-world datasets.
-
-Therefore, we recommend:
-
-- Using Eq. (5) when stability is a concern or when higher-order context effects are not considered.
-- Using Eq. (8) to reduce network depth when higher-order interactions are considered.
-- Combining them for a tunable trade-off.
+- Empirically, we observe that for the same representable order, both variants achieve similar accuracy. Yet, first-order activations (Eq. (5)) tend to be more stable, especially on noisy or real-world datasets.
 
 This modularity makes DeepHalo a unified and controllable framework for context-dependent choice modeling, in both feature-rich and featureless settings. We will add a guidance paragraph in the revision to clarify these trade-offs.
 
@@ -53,7 +52,7 @@ We appreciate the reviewer’s thoughtful question. While many prior models can 
 - The model is expressive enough to include all interaction orders up to $(|S|-1)$ instead of some specific orders (which first-order models like CMNL and FETA cannot achieve)
 - Existing expressive models like FATE and TCNet require a computational time of $O(2^|S|)$.
 
-In contrast, our expressive DeepHalo model can capture up to a specific order and only needs $O(2^k)$ computational time to obtain $k$-order interactions, which provide more interpretability. For example, modeling third-order effects over a catalog of 100 items without such control would require handling over 160,000 subsets, which is computationally prohibitive and interpretively infeasible.
+In contrast, our expressive DeepHalo model can capture up to a specific order and only needs $O(2^K)$ computational time to obtain $k$-order interactions, which provide more interpretability. For example, modeling third-order effects over a catalog of 100 items without such control would require handling over 160,000 subsets, which is computationally prohibitive and interpretively infeasible.
 
 Besides, the exact-interaction-order control inherited in our model is of practical interest. As a concrete example, consider a choice set $\{A, B, C, D\}$. hen estimating how the subset $\{A, B\}$ influences the utility of item $C$, the function must depend only on the features of $A$, $B$, and $C$, and must not involve irrelevant items like $D$. This subset-specific conditioning is critical for interpretability, but is not enforced in existing context-dependent ML models. 
 
@@ -86,7 +85,7 @@ In short, while SDA enables generic set-dependent context modeling, DeepHalo pro
 
 
 (Change to explain why other models cannot do this)
-### 5. Simple Example: Utility Decomposition and Order Growth**
+#### 5. Simple Example: Utility Decomposition and Order Growth
 The key intuition is that every recursion depth l in Eqs. (4)–(5) adds **exactly one additional order of interaction** while preserving all lower‑order terms via the residual connection. The process is the same as Appendix A 2.2 and A 2.3. To better facilitate the understanding, we provide a simple example below.
 
 
