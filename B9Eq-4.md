@@ -7,7 +7,7 @@ We appreciate Reviewer B9Eq’s positive feedback. To address the questions and 
 A: The key advantage of DeepHalo lies in its ability to explicitly control the maximum order of context (halo) effects, enabling a flexible trade-off between model expressiveness and interpretability—something existing neural models lack.
 
 - First-order models (e.g., CMNL, FETA) are interpretable but limited to pairwise interactions and cannot scale to higher-order effects due to computational constraints.
-- High-capacity models (e.g., FATE, TCNet) are expressive but entangle all item features, making it infeasible to isolate or control interaction order. Recovering meaningful low-order effects from these models requires evaluating up to $O(2^{|S|-1})$ terms.
+- High-capacity models (e.g., FATE, TCNet) are expressive but entangle all item features, making it infeasible to control interaction order. Recovering meaningful low-order effects from these models requires evaluating up to $O(2^{|S|-1})$ terms.
 
 In contrast, DeepHalo models context effects in a structured and decomposable way. It allows practitioners to specify the maximum interaction order $K$, with complexity $O(2^K)$, making it both efficient and interpretable. This is especially useful in real-world settings like recommendation and bundle pricing, where lower-order effects are often sufficient and desirable.
 
