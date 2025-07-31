@@ -1,4 +1,4 @@
-We appreciate Reviewer B9Eq’s positive feedback. To address the questions and concerns about our method, we provide point-wise responses as follows.
+We truly appreciate Reviewer B9Eq’s positive feedback. To address the questions and concerns about our method, we provide point-wise responses as follows.
 
 ### Weakness and Limitation
 
@@ -58,9 +58,9 @@ We appreciate the reviewer’s thoughtful question. While many prior models can 
 
 In contrast, **our expressive DeepHalo model can capture up to a specific order and only needs $O(2^K)$ computational time to obtain $k$-order interactions**, which provide more interpretability. For example, modeling third-order effects over a catalog of 100 items without such control would require handling over 160,000 subsets, which is computationally prohibitive and interpretively infeasible.
 
-Besides, the exact-interaction-order control inherited in our model is of practical interest. As a concrete example, consider a choice set $\{A, B, C, D\}$. Then estimating how the subset $\{A, B\}$ influences the utility of item $C$, the function must depend only on the features of $A$, $B$, and $C$, and must not involve irrelevant items like $D$. This subset-specific conditioning is critical for interpretability, but is not enforced in existing context-dependent ML models. 
+Besides, **the exact-interaction-order control inherited in our model is of practical interest.** As a concrete example, consider a choice set $\{A, B, C, D\}$. Then, estimating how the subset $\{A, B\}$ influences the utility of item $C$, the function must depend only on the features of $A$, $B$, and $C$, and must not involve irrelevant items like $D$. This subset-specific conditioning is critical for interpretability, but is not enforced in existing context-dependent ML models. 
 
-The reason they cannot capture exactly up to $k$-order interactions is that they attempt to learn context by directly entangling all item features. For instance, FATE combines global context with individual features but cannot restrict interaction depth. TCNet’s attention mechanism inherently mixes all items, effectively modeling full-order interactions by design. As a result, these models do not formulate context effects in a structured, decomposable way, making interpretation difficult.
+The reason the existing models cannot capture exactly up to $k$-order interactions is that they attempt to learn context by directly entangling all item features. For instance, FATE combines global context with individual features but cannot restrict interaction depth. TCNet’s attention mechanism inherently mixes all items, effectively modeling full-order interactions by design. As a result, these models do not formulate context effects in a structured, decomposable way, making interpretation difficult.
 
 On the contrary, **our model achieves more interpretability with a modular design**:
 - Each layer introduces exactly one additional interaction order or $\times 2$ using quadratic activation.
