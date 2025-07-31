@@ -3,14 +3,17 @@ Thank you for your thoughtful comments. Please see our response as follows.
 **Weakness & Questions:**
 > Q: The methodological ML contribution lies practically exclusively in the modeling of interactions and equivariance, and in both cases, the contributions are not very novel.
 
-A: DeepHalo's main contribution lies in its ability to effectively balance model expressiveness and interpretability by controlling the maximum order of the Halo effect. Among context choice models, 
+A: We appreciate the reviewer’s comment and respectfully clarify that the key methodological contribution of DeepHalo lies not merely in modeling interactions or equivariance per se, but in introducing a structured and order-controllable framework that balances expressiveness and interpretability—a capability that is lacking in existing context-dependent choice models.
 
-- First-order models like CMNL (Yousefi Maragheh et al., 2020), low-rank Halo MNL (Ko and Li, 2024), and FETA (Pfannschmidt et al., 2022) can only capture pairwise interactions. While FETA proposes a utility decomposition similar to the halo effect, it only evaluates first-order terms in practice, as enumerating higher-order subsets is computationally infeasible for large assortments, limiting its ability to model complex choices.
+While prior models have explored interaction effects, they face fundamental limitations:
 
- - Therefore, while first-order models offer interpretability, they suffer from limited expressiveness. In contrast, other models are more expressive but lack the ability to control the maximum effect order and are challenging to interpret. DeepHalo is designed to bridge this gap, enabling the modeling of higher-order halo effects up to any desired order. We kindly refer the reviewer to Appendix A2.2 and A2.3 for further intuition.
+- First-order models such as CMNL (Yousefi Maragheh et al., 2020), low-rank Halo MNL (Ko and Li, 2024), and FETA (Pfannschmidt et al., 2022) are inherently restricted to pairwise interactions. For instance, FETA proposes a decomposition that resembles the halo effect, but in practice it is limited to first-order pairwise interactions. The architecture is not scalable to higher-order effects, as doing so would require exponentially large tensor storage and computational resources, rendering it impractical for real-world applications.
 
-- In contrast, other higher-order models such as FATE and TCNet attempt to learn context by directly entangling all item features. Although their outputs can be interpreted via Eq. (10) as halo effects, the interaction order in these models is uncontrolled. Recovering a correct decomposition would require evaluating up to $|S|-1$ orders, leading to exponentially many terms and breaking interpretability. The issue lies in their architecture. These models **do not formulate context effects in a structured, decomposable way**.
+- Other models like FATE and TCNet attempt to learn context effects by directly entangling all item features. While their outputs can be post hoc interpreted as halo effects via Eq. (10), the interaction order is not explicitly controlled. Recovering a meaningful decomposition would require evaluating up to $|S| - 1$ orders, leading to exponential complexity and severely impairing interpretability. This limitation arises from their architecture: context is not modeled in a structured or decomposable manner. FATE combines all item features in the offer set to learn a set embedding, which is then combined with the item features to perform complex nonlinear transformations. The denominator of the softmax in the attention weight in TCnet automatically combines all item information. Neither approach can obtain a truly decomposable utility representation, and the results learned can only be explained by an exponential number of effects.
 
+In contrast, DeepHalo is explicitly designed to address this gap by enabling precise control over the maximum order of halo interactions. To the best of our knowledge, it is the first model that supports flexible trade-offs between model complexity and interpretability in this context.
+
+Consider, for instance, a retail setting with 100 items and an assortment size of 10. First-order models are insufficiently expressive to capture the intricate context effects that may arise. Recovering the behavior of more expressive, unconstrained models in this case would require modeling interactions up to the 10th order, resulting in an exponential number of terms and rendering interpretability intractable. In contrast, DeepHalo allows practitioners to explicitly limit the interaction order—for example, to third-order effects—thereby retaining interpretability while achieving sufficient expressive power for practical applications.
 
 
 > Q: If the contribution relates to DCM behaviour modeling for the ML community, then some aspects should be considered... (Poor choice of (classical DCM) baselines)
@@ -67,9 +70,7 @@ A: Analogous to multi-head attention, in our context, this can be interpreted as
 
 > Q: Section “4.1 Residual Connection for Large Choice Sets” is quite confusing
 
-A: Regarding Section 4.1: One of the key computational benefits of the polynomial is exactly as you suggested – a few layers can include a large universe, which prevents the very deep structure (line 234). We further discuss the quadratic benefit in Section 4.2 (line 262-264) and provide a logarithmic relation, namely, a linear number of layers can cover exponentially many items. To enrich section 4.1, we will particularly refer to the quadratic example in the revised version. 
-
-(refer to other responses)
+A: Regarding Section 4.1: One of the key computational benefits of the polynomial is exactly as you suggested – a few layers can include a large universe, which prevents the very deep structure (line 234). We further discuss the quadratic benefit in Section 4.2 (line 262-264) and provide a logarithmic relation, namely, a linear number of layers can cover exponentially many effect orders. To enrich section 4.1, we will particularly refer to the quadratic example in the revised version. We refer the reviewer to Appendix A 2.2 and A 2.3 and the example (Section 2) we give in our response to reviewer Unm8. Regarding potential numerical issues, we note empirically that training remains stable in the featureless setting, even with very high-order interactions (see Figure 2). In the feature-rich setting, stacking too many quadratic layers may lead to instability during training. However, it is important to emphasize that achieving very high orders is not necessary in practice. In experiments such as Expedia, we find that modeling effects up to the 4th or 5th order already provides sufficient expressiveness. This strikes a desirable balance—yielding interpretable models with a manageable number of effects, while maintaining strong performance.
 
 > Q: For section 4.2., if I understand well, $e_S$ is a vector of 1s...
 
@@ -77,7 +78,6 @@ A: Regarding Section 4.2: $e_S$ is a unit vector with the $(e_S)_j = 1$ if j ∈
 
 > Q: There’s something confusing with the meaning of $\cup$ in equation 3.
 
-(Apologize the typo first.)
 A: We apologize for the typo in equation 3: $X_R$ should be $X_{R∪{j}}$, which hopefully entangles the confusion. In equation (10), the relative context effect is specified on item j and item k, whose definition is introduced in Park and Hahn [1998].
 
 > Q: About number of parameters in Fig 2...
@@ -91,10 +91,10 @@ A: Yes, thanks for catching that. We will correct to |S|.
 
 **Beverage Experiment**
 
-Thank you for the thoughtful comment. We encourage the reviewer to examine Figure 1 to better understand how DeepHalo captures interpretable and structured halo effects.
+Thank you for the thoughtful comment. 
 
 We wish to note that this classical hypothetical dataset has been widely used in literature from the definition of Halo effect is proposed (Park and Hahn [1998], Batsell and Polking, [1985]) due to its simplicity and clarity, making it a standard example for validating interpretability. Indeed, this experiment is conducted in a featureless setting, where no item features are used, demonstrating that DeepHalo can extract meaningful interaction effects purely from set-level preferences. 
 
-Subfigure (b) visualizes the relative halo effect exerted by different subsets of items (horizontal axis) on the utility gap between competing item pairs (vertical axis). The rightmost column (∅) represents the baseline utility differences between item pairs in the absence of any contextual influence. For example, the strong baseline signal in pairs (1,2) and (3,4) corresponds to stable preferences such as Pepsi over Coke and 7-Up over Sprite, which are also clearly reflected in the observed market shares (Subfigure a). The leftmost column (item 1) shows a strong negative halo effect from Pepsi onto Coke: the presence of item 1 (Pepsi) reduces item 2’s (Coke’s) competitiveness when it is competing with item 3 or 4. Similarly, item 3 (7-Up) exerts a negative contextual effect on item 4 (Sprite) when competing with other items.
+Here we provide a more detailed explanation of the contents of the figure. Subfigure (b) visualizes the relative halo effect exerted by different subsets of items (horizontal axis) on the utility gap between competing item pairs (vertical axis). The rightmost column (∅) represents the baseline utility differences between item pairs in the absence of any contextual influence. For example, the strong baseline signal in pairs (1,2) and (3,4) corresponds to stable preferences such as Pepsi over Coke and 7-Up over Sprite, which are also clearly reflected in the observed market shares (Subfigure a). The leftmost column (item 1) shows a strong negative halo effect from Pepsi onto Coke: the presence of item 1 (Pepsi) reduces item 2’s (Coke’s) competitiveness when it is competing with item 3 or 4. Similarly, item 3 (7-Up) exerts a negative contextual effect on item 4 (Sprite) when competing with other items.
 
 
