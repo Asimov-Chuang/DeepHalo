@@ -50,7 +50,7 @@ This modularity makes DeepHalo a unified and controllable framework for context-
 #### 3. Clarifying what makes DeepHalo more interpretable than prior neural context-effect models
 We appreciate the reviewer’s thoughtful question. While many prior models can interpret the effects using Eq. (10), this is under two premises:
 - The model is expressive enough to include all interaction orders up to $(|S|-1)$ instead of some specific orders (which first-order models like CMNL and FETA cannot achieve)
-- Existing expressive models like FATE and TCNet require a computational time of $O(2^|S|)$.
+- Existing expressive models like FATE and TCNet require a computational time of $O(2^{|S|})$.
 
 In contrast, our expressive DeepHalo model can capture up to a specific order and only needs $O(2^K)$ computational time to obtain $k$-order interactions, which provide more interpretability. For example, modeling third-order effects over a catalog of 100 items without such control would require handling over 160,000 subsets, which is computationally prohibitive and interpretively infeasible.
 
