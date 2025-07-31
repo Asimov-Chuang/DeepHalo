@@ -50,7 +50,7 @@ This modularity makes DeepHalo a unified and controllable framework for context-
 #### 3. Clarifying what makes DeepHalo more interpretable than prior neural context-effect models
 We appreciate the reviewer’s thoughtful question. While many prior models can interpret the effects using Eq. (10), this is under two premises:
 - The model is expressive enough to include all interaction orders up to $(|S|-1)$ instead of some specific orders (which first-order models like CMNL and FETA cannot achieve)
-- Existing expressive models like FATE and TCNet require a computational time of $O(2^{|S|})$.
+- Existing expressive models like FATE and TCNet require a computational complexity of $O(2^{|S|})$ for recovering all halo effect in the model.
 
 In contrast, our expressive DeepHalo model can capture up to a specific order and only needs $O(2^K)$ computational time to obtain $k$-order interactions, which provide more interpretability. For example, modeling third-order effects over a catalog of 100 items without such control would require handling over 160,000 subsets, which is computationally prohibitive and interpretively infeasible.
 
@@ -66,11 +66,11 @@ On the contrary, our model achieve more interpretability with a modular design:
 
 #### 4. Clarifying the distinction between DeepHalo and SDA [Rosenfeld et al., 2020]
 
-Thank you for the insightful observation. While DeepHalo shares some high-level similarities with set-dependent embedding (SDA) approaches such as [Rosenfeld et al., 2020, Eq. (2)], we would like to emphasize several key distinctions in both motivation and design.
+Thank you for the insightful observation. While DeepHalo shares some high-level similarities with set-dependent embedding (SDA) approaches such as [Rosenfeld et al., 2020, Eq. (2)], we would like to emphasize several key distinctions in both motivation and design, some are similar to point 3.
 
-DeepHalo is fundamentally grounded in halo effect theory, which prioritizes interpretable higher-order interactions. While incorporating context information (e.g., through contextual functions like $\phi$) is straightforward in both frameworks, interpretability requires controlling the maximum order of interactions—a key principle not enforced by SDA.
+DeepHalo is fundamentally grounded in halo effect theory, which prioritizes interpretable higher-order interactions. While simply incorporating context information (e.g., through contextual functions like $\phi$) is straightforward, interpretability requires controlling the maximum order of interactions—a key principle not enforced by SDA.
 
-As the reviewer rightly noted, if Eq. (10) were applied to arbitrary context-based architectures (e.g., SDA), the number of halo terms would grow exponentially with the size of the offer set. This would result in a combinatorial explosion of interaction terms that are computationally infeasible and practically uninterpretable.
+As the reviewer rightly noted, if Eq. (10) were applied to arbitrary context-based architectures (e.g., SDA), the number of halo terms would grow exponentially with the size of the offer set. This would result in a combinatorial explosion of interaction terms that are computationally hard and practically uninterpretable.
 
 In contrast:
 
@@ -81,29 +81,10 @@ In contrast:
   - Ensures that utilities are halo-decomposable and that item features remain disentangled.
   - Caps model expressiveness to low-order interactions, preserving interpretability and generalization.
 
-In short, while SDA enables generic set-dependent context modeling, DeepHalo provides a theoretically-grounded and architecturally-enforced approach to interpretable, order-controlled context effects, which is essential for practical discrete choice applications.
+In short, while SDA enables generic set-dependent context modeling, DeepHalo provides a theoretically-grounded and architecturally-enforced approach to interpretable, order-controlled context effects, which is essential for practical discrete choice applications. 
+
+For point 3 & 4, we refer the reviewer to Appendix A2.2 and A2.3, as well as the illustrative example in Question 2 of our response to reviewer Unm8, for a detailed explanation of how DeepHalo supports structured, decomposable modeling of context effects.
 
 
-(Change to explain why other models cannot do this)
-#### 5. Simple Example: Utility Decomposition and Order Growth
-The key intuition is that every recursion depth l in Eqs. (4)–(5) adds **exactly one additional order of interaction** while preserving all lower‑order terms via the residual connection. The process is the same as Appendix A 2.2 and A 2.3. To better facilitate the understanding, we provide a simple example below.
 
-
-Consider an offer set ${j, k, l}$ and let $\phi$ be an identity mapping. We focus on the change of $z_{j}$ in DeepHalo.
-1. **Pairwise (1‑st order) layer.**  
-   The first layer aggregates the linear summary vector $\bar Z^{1}$ from raw embedding vector $z^{0}$ and modulates them with $z_{j}^{0}$. This yields  
-   $z_{j}^{1}=z_{j}^{0} + \frac1H\sum_{h}\bar Z_{h}^{1} \cdot z_{j}^{0}$, which contains only **pairwise interactions** between the target alternative $j$ and every other item $k, l$ in the set.
-   If we denote $f_j$ as any function containing only item j's feature information, the above output can be formulated as,
-   $z_{j}^{1} = f_j + \frac1H\sum_{h}(f_j + f_k + f_l) \cdot f_j$, thus it contains zero order term $f_j$ and first order term $f_k \cdot f_j$ and $f_l \cdot f_j$, second order term $f_j \cdot f_k \cdot f_l$ won't appear. For simplicity, we use $f_{ab}$ to represent any term like $f_a \cdot f_b$ and $f_b \cdot f_a$, which only contains the features of item a and item b.
-
-2. **Second‑order layer.**  
-   After the first layer, $z_{k}^{1}$ and $z_{l}^{1}$ already embed their pairwise effects with every other item.  
-   The second layer builds
-    
-   $\bar Z^{2}=\tfrac1S\sum_{m}W^{2}z_{m}^{1}$, which contains term $f_j, f_k, f_l, f_{jk}, f_{jl}, f_{kl}$.
-   
-   $z_{j}^{2}=z_{j}^{1}+\tfrac1H\sum_{h} \bar Z_{h}^{2} \cdot z_{j}^{0}$ which is analogous to $(f_j + f_{jk} + f_{jl}) + \sum_h(f_j + f_k + f_l + f_{jk} + f_{jl} + f_{kl}) \cdot f_j$,
-   which brings about second order term $f_{jkl} = f_{kl} \cdot f_{j}$. It can be interpreted as the effect of ${k,l}$ on $j$.
-
-This example illustrates how we can add up orders by increasing the number of layers and get a decomposable utility representation. If we change the $\cdot$ in layers to some other polynomial function, the term order will grow faster, like in the first layer we change to $(f_j + f_k + f_l)^2 \cdot f_j$, in the sum will directly bring about the second order term $f_{jkl}$. The quadratic activation naturally brings a $log_2$ form depth requirement.
 
