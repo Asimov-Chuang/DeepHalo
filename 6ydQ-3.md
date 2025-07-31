@@ -1,15 +1,15 @@
-Thank you for your thoughtful comments. Please see our response as follows.
+Thank you very much for your thoughtful comments. Please see our response as follows.
 
 **Weakness & Questions:**
 > Q: The methodological ML contribution lies practically exclusively in the modeling of interactions and equivariance, and in both cases, the contributions are not very novel.
 
-A: We appreciate the reviewer’s comment and respectfully clarify that the key methodological contribution of DeepHalo lies not merely in modeling interactions or equivariance per se, but in introducing a structured and order-controllable framework that balances expressiveness and interpretability—a capability that is lacking in existing context-dependent choice models.
+A: We appreciate the reviewer’s comment and respectfully clarify that the key methodological contribution of DeepHalo lies not merely in modeling interactions or equivariance per se, but in introducing a structured and order-controllable framework that balances expressiveness and interpretability, which is lacking in existing context-dependent choice models.
 
-While prior models have explored interaction effects, they face fundamental limitations:
+While prior models have explored interaction effects, they face fundamental challenges:
 
-- First-order models such as CMNL (Yousefi Maragheh et al., 2020), low-rank Halo MNL (Ko and Li, 2024), and FETA (Pfannschmidt et al., 2022) are inherently restricted to pairwise interactions. For instance, FETA proposes a decomposition that resembles the halo effect, but in practice it is limited to first-order pairwise interactions. The architecture is not scalable to higher-order effects, as doing so would require exponentially large tensor storage and computational resources, rendering it impractical for real-world applications.
+- First-order models such as CMNL (Yousefi Maragheh et al., 2020), low-rank Halo MNL (Ko and Li, 2024), and FETA (Pfannschmidt et al., 2022) are inherently restricted to pairwise interactions. For instance, FETA proposes a decomposition that resembles the halo effect, but practically, it is limited to first-order pairwise interactions. The architecture is not scalable to higher-order effects, as doing so would require exponentially large tensor storage and computational resources, rendering it impractical for real-world applications.
 
-- Other models such as FATE and TCNet attempt to learn context effects by directly entangling all item features within the offer set. While their outputs can be retrospectively interpreted as halo effects via Eq. (10), the interaction order is not explicitly controlled. Recovering a meaningful decomposition in these models would require computational complexity on the order of $O(2 ^{∣S∣−1})$, due to the exponential number of possible interaction terms. This limitation stems from their architectural design: context effects are not modeled in a structured or decomposable way. Specifically, FATE aggregates all item features into a set embedding, which is then combined with individual item features through complex nonlinear transformations—obscuring the origin and order of interactions. TCNet, similarly, uses attention mechanisms where the softmax denominator implicitly mixes information from all items in the offer set, making it difficult to isolate individual effects. As a result, neither model can recover a truly decomposable utility function. We refer the reviewer to Appendix A2.2 and A2.3, as well as the illustrative example in Section 2 of our response to reviewer Unm8, for a detailed explanation of how DeepHalo supports structured, decomposable modeling of context effects.
+- Other higher-order models, such as FATE and TCNet, attempt to learn context effects by directly entangling all item features within the offer set. While their outputs can be retrospectively interpreted as halo effects via Eq. (10), the interaction order is not explicitly controlled. Recovering a meaningful decomposition in these models would require computational complexity on the order of $O(2^{∣S∣−1})$, due to the exponential number of possible interaction terms. This limitation stems from their architectural design: context effects are not modeled in a structured or decomposable way. Specifically, FATE aggregates all item features into a set embedding, which is then combined with individual item features through complex nonlinear transformations, obscuring the origin and order of interactions. TCNet, similarly, uses attention mechanisms where the softmax denominator implicitly mixes information from all items in the offer set, making it difficult to isolate individual effects. As a result, neither model can recover a truly decomposable utility function. We refer the reviewer to Appendix A2.2 and A2.3, as well as the illustrative example in Section 2 of our response to reviewer Unm8, for a detailed explanation of how DeepHalo supports structured, decomposable modeling of context effects.
 
 In contrast, DeepHalo is explicitly designed to address this gap by enabling precise control over the maximum order of halo interactions. To the best of our knowledge, it is the first model that supports flexible trade-offs between model complexity and interpretability in this context.
 
@@ -35,7 +35,20 @@ A: Regarding the choice of baselines: Since our model focuses on context effects
 
 > Q: Lack of training (computational) performance statistics. How fast/slow is it, compared with the other DNNs?
 
-A: The training speed of the ML baselines and our model does not exhibit significant gaps, thus we do not include them in the statistics. On the other hand, our model enjoys more computational capability in recovering the interaction coefficients, because we don’t need to formulate the whole linear halo system. We can recover the effect iteratively up to any order effect we want.
+A: Thanks for pointing this out. Below, we add the total training time (until early stop) in a sample run under the setting of the LPMC experiment in Section 5.2.
+| Model Name | Total Training Time (seconds) |
+|------------|-------------------------------|
+| MNL        | 96.5                          |
+| MLP        | 32.3                          |
+| TasteNet   | 45.5                          |
+| RUMNet     | 102.2                         |
+| DLCL       | 298.1                         |
+| ResLogit   | 143.3                         |
+| FATE       | 61.3                          |
+| TCnet      | 141.6                         |
+| DeepHalo   | 202.0                         |
+
+Our model exhibits moderate training time relative to other DNNs, which can be further reduced through hyperparameter tuning (e.g., early stopping criteria, batch size). Notably, all DNN models complete training on the dataset within 5 minutes, demonstrating efficient and scalable training. This makes rendering training speed a less critical concern in this context. More importantly, our model offers enhanced computational capability in recovering interaction coefficients, as discussed in our response to your first question.
 
 > Q: However, it’s very unclear to me why this fits in the NeurIPS context.
 
@@ -58,7 +71,6 @@ A: We believe this paper belongs to this community since several wonderful works
 [8] Nir Rosenfeld, Kojin Oshiba, and Yaron Singer. Predicting choice with set-dependent aggregation. In International Conference on Machine Learning, pages 8220–8229. PMLR, 2020.
 
 [9] Kiran Tomlinson and Austin R Benson. Learning interpretable feature context effects in discrete choice. In Proceedings of the 27th ACM SIGKDD conference on knowledge discovery & data mining, pages 1582–1592, 2021
-
 
 Our primary area is machine learning for sciences (e.g., climate, health, life sciences, physics, social sciences). Transparent understanding of human decision-making processes is very important in the social sciences and medical fields. In addition, establishing more reasonable preference models is also an important part of commonly used algorithms such as RLHF. Therefore, we believe that our article is very suitable for this primary area.
 
