@@ -1,4 +1,4 @@
-We appreciate Reviewer 59ua’s positive feedback. To address the questions and concerns about our method, we provide point-wise responses as follows.
+We appreciate Reviewer B9Eq’s positive feedback. To address the questions and concerns about our method, we provide point-wise responses as follows.
 
 ### Weakness
 
@@ -19,7 +19,7 @@ In the revision, we will:
 
 #### 2. Practical guidance on when to use Equation (5) vs Equation (8)
 
-If the number of alternatives is small and the computational limit permits, use (5). Otherwise use (8). In fact, xxxxxxx we can use a mixture of linear and quadratic activations as well.
+If the number of alternatives is small and the computational limit permits, use (5). Otherwise use (8). In fact, xxxxxxx we can use a mixture of linear and quadratic activations as well. [I remember here need to first directly answer the reviewer's question (your conclusion/recommendation) then give example.]
 
 We appreciate this insightful question. One of the strengths of the DeepHalo architecture is its structural flexibility: the activation function σ can be instantiated as any polynomial function, and Equations (5) and (8) are not mutually exclusive. In practice, they can be freely mixed—for example, stacking layers with linear and quadratic activations can achieve effective interaction orders such as $((1+1+1)\times2+1)\times2$, offering nuanced control over expressivity.
 
@@ -45,8 +45,7 @@ This modularity makes DeepHalo a unified and controllable framework for context-
 
 3. They reason why these existing model cannot capture exactly for up-to k-order interactions is ......
 
-).
-
+)
 
 We appreciate the reviewer’s thoughtful question. While many prior models (e.g., FATE, TCNet) acknowledge context effects, none have formally defined feature-based halo effects in a utility-decomposable framework. Our work is, to the best of our knowledge, the first to do so.
 
