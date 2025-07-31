@@ -2,35 +2,24 @@ We sincerely appreciate your recognition of our modeling problem, methodological
 
 To address the concerns, we provide detailed point-wise responses below.
 
-(FETA: NN architecture not scalable to model high-order interactions. A high-dimensional tensor is needed.
-FATE: Entangle. No explicit control over the order it can represent.
-
-Give an example from e-commerce that there are practical situations where the decision maker would like to capture interactions upto a specific order.
-)
 
 > Q: As far as I can see, the specific decomposition of the utility function which DeepHalo uses mirrors FETA’s almost exactly. The proposed neural network architecture is a fairly straightforward variation on DeepSets. The authors claim that the model offers an increased level of interpretability. However, the notion of relative context effect in (10) used to interpret the model can be calculated with any model (including prior ones) that decomposes the utility of a choice set into contributions of subsets; the interpretability is therefore not derived from the DeepHalo architecture specifically.
  
-A: Among context-dependent models, 
+A: The key methodological contribution of DeepHalo lies  in introducing a structured and order-controllable framework that balances expressiveness and interpretability—a capability that is lacking in existing context-dependent choice models. Among context-dependent models, 
 
 - First-order models such as CMNL (Yousefi Maragheh et al., 2020), low-rank Halo MNL (Ko and Li, 2024), and FETA (Pfannschmidt et al., 2022) are inherently restricted to pairwise interactions. For instance, FETA proposes a decomposition that resembles the halo effect, but in practice it is limited to first-order pairwise interactions. The architecture is not scalable to higher-order effects, as doing so would require exponentially large tensor storage and computational resources, rendering it impractical for real-world applications.
 
 - Other models such as FATE and TCNet attempt to learn context effects by directly entangling all item features within the offer set. While their outputs can be retrospectively interpreted as halo effects via Eq. (10), the interaction order is not explicitly controlled. Recovering a meaningful decomposition in these models would require computational complexity on the order of O(2 ∣S∣−1), due to the exponential number of possible interaction terms. This limitation stems from their architectural design: context effects are not modeled in a structured or decomposable way. Specifically, FATE aggregates all item features into a set embedding, which is then combined with individual item features through complex nonlinear transformations—obscuring the origin and order of interactions. TCNet, similarly, uses attention mechanisms where the softmax denominator implicitly mixes information from all items in the offer set, making it difficult to isolate individual effects. As a result, neither model can recover a truly decomposable utility function. 
 
-The difference lies in their architecture. FATE combines global context with individual features but cannot restrict interaction depth. TCNet’s attention mechanism inherently mixes all items, always modeling full-order interactions by design. As a result, these models **do not formulate context effects in a structured, decomposable way**, making interpretation more difficult.
+In contrast, DeepHalo is explicitly designed to address this gap by enabling precise control over the maximum order of halo interactions. To the best of our knowledge, it is the first model that supports flexible trade-offs between model complexity and interpretability in this context.
 
-Therefore, first-order models have interpretability but lack expressiveness, while other higher-order models have expressiveness yet cannot control the exact maximum effect order and are difficult to interpret. DeepHalo is designed to balance these two properties, enabling the modeling of higher-order Halo effects to any desired level of precision. Specifically, it achieves the following:
+In e-commerce applications such as recommendation systems and bundle pricing, practitioners are often primarily interested in lower-order context effects, which are more stable, interpretable, and practically useful. While expressive models can theoretically recover such effects, they do so implicitly as part of an entangled representation involving many higher-order interactions. Consequently, low-order effects cannot be meaningfully isolated and require evaluating up to $O(2^{|S|-1})$ terms. DeepHalo offers a principled approximation that explicitly models low-order halo effects. It allows users to control the maximum interaction order $K$, with computational complexity only $O(2^K)$, offering a flexible trade-off between efficiency and expressiveness.
 
 - **Feature-Based High-Order Halo Effects**  
   To our knowledge, we are the first to define high-order halo effects in terms of item features formally. For example, when assessing how subset $\{A, B\}$ influences the utility of item $C$ in an offer set $\{A, B, C, D\}$, the effect should depend only on the features of $A$, $B$, and $C$, not on unrelated items like $D$. Including irrelevant items makes the subset effect uninterpretable. This illustrates why models that entangle all item features inevitably introduce uncontrolled, high-order interactions.
 
 - **Structured Decomposition and Controllable Effect Order**  
   As shown in Appendix A, DeepHalo’s architecture ensures the utility can be decomposed as in Line 189. The model depth determines the maximum interaction order, while the choice of activation function affects how quickly the order increases. We appreciate the reviewer’s interest and clarify this further in Section 2.
-
-- **Direct Effect Recovery Without Solving Linear Systems**
-
- (change O(2^S) vs O(2^K))
-
-  Prior approaches require solving large linear systems to recover halo effects, which becomes intractable for large assortments. In contrast, DeepHalo leverages Eq. (3) and Eq. (10) to recover effects directly and efficiently. We elaborate on this further in Section 3 in response to your questions. 
 
 These innovations go beyond what Deep Set offers. While DeepSets provides permutation invariance, DeepHalo integrates domain-specific insights from discrete choice theory and the halo literature, along with architectural elements like residual connections and polynomial activations. This enables interpretable, high-order interaction modeling in a principled and controllable way.
 
