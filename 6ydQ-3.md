@@ -21,7 +21,7 @@ In contrast, DeepHalo offers a principled approximation that explicitly models l
 
 > Q: If the contribution relates to DCM behaviour modeling for the ML community, then some aspects should be considered... (Poor choice of (classical DCM) baselines)
 
-A: Regarding the choice of baselines for the experiment: Our model aims to explore the context effect. Therefore, we mainly compare DeepHalo with the context-dependent DCM benchmark, such as Contextual MNL. We set MNL as a baseline because comparing MNL and Contextual MNL directly demonstrates the effect of context, and MNL can serve as a sanity check. To cover the context-independent DCM benchmarks you mentioned, which follow the RUM principle, we add mixed logit in featureless experiments, which can approximate any RUM model arbitrarily well. Regarding ML baselines, we add additional baselines with transformer (TCnet) and deep sets (FATE) (suggested by reviewer D2h9), as displayed below.
+A: Regarding the choice of baselines: Since our model focuses on context effects, we primarily compare DeepHalo with context-dependent DCMs such as Contextual MNL. MNL is included as a sanity check, and the comparison between MNL and Contextual MNL illustrates the impact of context. To cover the context-independent RUM-based models you mentioned, we include Mixed Logit in the featureless setting, as it can approximate any RUM arbitrarily well. For ML baselines, we incorporate TCNet (Transformer-based) and FATE (DeepSets-based), as suggested by reviewer D2h9, as shown below.
 
 | Model         | Hotel (Train/Test) | SFOshop (Train/Test) | SFOwork (Train/Test) |
 |---------------|--------------------|------------------------|-----------------------|
