@@ -39,7 +39,7 @@ A: The training speed of the ML baselines and our model does not exhibit signifi
 
 > Q: However, it’s very unclear to me why this fits in the NeurIPS context.
 
-A: We believe this paper belongs to this community, since several wonderful works related to our topic have appeared in previous years’ Neurips; some are listed below:
+A: We believe this paper belongs to this community since several wonderful works related to our topic have appeared in previous years’ NeurIPS and other ML conferences; some are listed below:
 
 [1]Oh S, Thekumparampil KK, Xu J. Collaboratively learning preferences from ordinal data. Advances in Neural Information Processing Systems. 28, 2015
 
@@ -50,6 +50,12 @@ A: We believe this paper belongs to this community, since several wonderful work
 [4]Yiqun Hu, David Simchi-Levi, and Zhenzhen Yan. Learning Mixed Multinomial Logits with Provable Guarantees. Advances in Neural Information Processing Systems, 9447-9459, 2022
 
 [5]De Peuter S, Zhu S, Guo Y, Howes A, Kaski S. Preference learning of latent decision utilities with a human-like model of preferential choice. Advances in Neural Information Processing Systems, 37:123608-36, 2024
+
+[6] Arjun Seshadri, Alex Peysakhovich, and Johan Ugander. Discovering context effects from raw choice data. In International conference on machine learning, pages 5660–5669. PMLR, 2019
+
+[7] Amanda Bower and Laura Balzano. Preference modeling with context-dependent salient features. In International Conference on Machine Learning, pages 1067–1077. PMLR, 2020.
+
+[8] Nir Rosenfeld, Kojin Oshiba, and Yaron Singer. Predicting choice with set-dependent aggregation. In International Conference on Machine Learning, pages 8220–8229. PMLR, 2020.
 
 Our primary area is machine learning for sciences (e.g., climate, health, life sciences, physics, social sciences). Transparent understanding of human decision-making processes is very important in the social sciences and medical fields. In addition, establishing more reasonable preference models is also an important part of commonly used algorithms such as RLHF. Therefore, we believe that our article is very suitable for this primary area.
 
