@@ -1,5 +1,8 @@
 We appreciate Reviewer 59ua’s positive feedback. To address the questions and concerns about our method, we provide point-wise responses as follows.
 
+### Weakness
+
+
 #### 1. Clarifying Section 4.1 — why Equation (8) needs only **log₂ l** layers to model *l*‑th‑order interactions
 
 We agree that Section 4.1 should state this property explicitly. Currently, this is mentioned in Section 4.2, and the explanation is deferred in the appendix. 
@@ -9,12 +12,14 @@ In the revision, we will:
    > “Because each Equation (8) layer doubles the maximum attainable interaction order, an *l*‑th‑order effect can be represented with at most ⌈log₂ l⌉ stacked layers.”
 
 2) **Provide an intuitive explanation**  
-   - A single (8) layer captures up to second‑order effects.  
+   - A single layer (Equation (8)) captures up to second‑order effects.  
    - Stacking two layers composes these interactions, yielding up to 4‑th‑order effects, and so on.  
    - After *k* layers the highest order is $2^{k}$, giving the logarithmic bound.
 
 
 #### 2. Practical guidance on when to use Equation (5) vs Equation (8)
+
+If the number of alternatives is small and the computational limit permits, use (5). Otherwise use (8). In fact, xxxxxxx we can use a mixture of linear and quadratic activations as well.
 
 We appreciate this insightful question. One of the strengths of the DeepHalo architecture is its structural flexibility: the activation function σ can be instantiated as any polynomial function, and Equations (5) and (8) are not mutually exclusive. In practice, they can be freely mixed—for example, stacking layers with linear and quadratic activations can achieve effective interaction orders such as $((1+1+1)\times2+1)\times2$, offering nuanced control over expressivity.
 
@@ -34,9 +39,18 @@ This modularity makes DeepHalo a unified and controllable framework for context-
 
 #### 3. Clarifying what makes DeepHalo more interpretable than prior neural context-effect models
 
+(1. They can recover using (10), but this is under two premises: (a) model expressive enough to include all interaction orders up to (|S|-1), but not some specific orders; (b) computational time O(2^{|S|}). In contrast, ours O(2^k) to get k-order interactions. 
+
+2. Model up to a specific order is of practical interest. For instance,....
+
+3. They reason why these existing model cannot capture exactly for up-to k-order interactions is ......
+
+).
+
+
 We appreciate the reviewer’s thoughtful question. While many prior models (e.g., FATE, TCNet) acknowledge context effects, none have formally defined feature-based halo effects in a utility-decomposable framework. Our work is, to the best of our knowledge, the first to do so.
 
-Concretely, given an offer set $\{A, B, C, D\}$, when estimating how the subset $\{A, B\}$ influences the utility of item $C$, the function must depend only on the features of $A$, $B$, and $C$, and must not involve irrelevant items like $D$. This subset-specific conditioning is critical for interpretability, but is not enforced in FATE, TCNet. Models such as FATE and TCNet attempt to learn context by directly entangling all item features. As the reviewer notes, their outputs can be interpreted via Eq. (10) as halo effects. However, the interaction order in these models is uncontrolled, and recovering a faithful decomposition would require evaluating up to $|S|-1$ orders, leading to exponentially many terms and breaking interpretability.
+As a concrete example, consider an offer set $\{A, B, C, D\}$ ..... when estimating how the subset $\{A, B\}$ influences the utility of item $C$, the function must depend only on the features of $A$, $B$, and $C$, and must not involve irrelevant items like $D$. This subset-specific conditioning is critical for interpretability, but is not enforced in FATE, TCNet. Models such as FATE and TCNet attempt to learn context by directly entangling all item features. As the reviewer notes, their outputs can be interpreted via Eq. (10) as halo effects. However, the interaction order in these models is uncontrolled, and recovering a faithful decomposition would require evaluating up to $|S|-1$ orders, leading to exponentially many terms and breaking interpretability.
 
 The issue lies in their architecture. FATE combines global context with individual features but cannot restrict interaction depth. TCNet’s attention mechanism inherently mixes all items, effectively modeling full-order interactions by design. As a result, these models do not formulate context effects in a structured, decomposable way, making interpretation difficult.
 
@@ -75,8 +89,11 @@ In contrast:
 
 In short, while SDA enables generic set-dependent context modeling, DeepHalo provides a theoretically-grounded and architecturally-enforced approach to interpretable, order-controlled context effects, which is essential for practical discrete choice applications.
 
+
+(Change to explain why other models cannot do this)
 ### 5. Simple Example: Utility Decomposition and Order Growth**
 The key intuition is that every recursion depth l in Eqs. (4)–(5) adds **exactly one additional order of interaction** while preserving all lower‑order terms via the residual connection. The process is the same as Appendix A 2.2 and A 2.3. To better facilitate the understanding, we provide a simple example below.
+
 
 Consider an offer set ${j, k, l}$ and let $\phi$ be an identity mapping. We focus on the change of $z_{j}$ in DeepHalo.
 1. **Pairwise (1‑st order) layer.**  
