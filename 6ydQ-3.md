@@ -98,5 +98,15 @@ Thank you for the thoughtful comment.
 
 Subfigure (b) illustrates how different item subsets (horizontal axis) influence the utility gap between item pairs (vertical axis). The rightmost column (∅) shows baseline preferences without contextual influence—for example, strong preferences for Pepsi over Coke and 7-Up over Sprite are evident both here and in the market shares (Subfigure a). The leftmost column (item 1) reveals a strong negative halo effect of Pepsi on Coke, reducing Coke’s competitiveness when co-offered. A similar pattern is observed between 7-Up and Sprite.
 
+| Model                 | SFOshop (Train/Test) | SFOwork (Train/Test) |
+|-----------------------|---------------------|---------------------|
+| MNL                   | 1.7281 / 1.7262     | 0.9423 / 0.9482     |
+| MLP                   | 1.5556 / 1.5523     | 0.8074 / 0.8120     |
+| CMNL                  | 1.5676 / 1.5686     | 0.8116 / 0.8164     |
+| Mixed MNL             | 1.5599 / 1.5577     | 0.8092 / 0.8153     |
+| Nested Logit          | 1.5788 / 1.5875     | 0.8366 / 0.8457     |
+| FateNet               | 1.5726 / 1.5765     | 0.8133 / 0.8167     |
+| TCNet                 | 1.5694 / 1.5742     | 0.8114 / 0.8145     |
+| **DeepHalo (Ours)**    | **1.5385 / 1.5263** | **0.8040 / 0.8066** |
 
 
