@@ -100,11 +100,11 @@ Subfigure (b) illustrates how different item subsets (horizontal axis) influence
 
 
 
-Thank you for your insightful comments! We have also greatly enjoyed our discussions and found them highly insightful. Following your suggestion, we have included nested logit results on the SFOshop and SFOwork datasets, as shown in the updated table below. Notably, the best non–context-dependent model, including nested logit, still performs worse than our DeepHalo model.
+Following your suggestion, we tested the nested logit model on the SFOshop and SFOwork datasets. As is well-known, specifying the nesting structure is a often a pratically challenging task. Fortunatelly, for this dataset, we are able to follow the guidelines provided in Koppelman and Bhat (2006). The results are presented below.
 
-The nested logit structure is constructed following the instructions in Koppelman and Bhat (2006), ensuring a canonical and well-established specification.
+We observe that the nested logit model is consistently outperformed by all context-dependent choice models, including our proposed DeepHalo model. Note also that its performance falls between that of MNL and mixed logit (not RUMNet but the original one), which is consistent with our intuition. This highlights the importance of capturing context effects when modeling the complex choice behavior observed in real-world datasets.
 
-We would like to emphasize that our primary comparison is between models capable of capturing context effects (irrational or context-dependent behaviors) and models that cannot. The results clearly demonstrate that the ability to capture context effects is crucial for modeling the complex, non-IIA choice behavior observed in real-world datasets. In addition, we will add a paragraph in the introduction discussing the differences between traditional IIA-relaxing models and our approach, to provide readers with a clearer and more comfortable understanding.
+Additionally, we plan to include a paragraph in the introduction to discuss the differences between traditional IIA-relaxing models and our approach. We hope this will help provide readers with a clearer and more intuitive understanding of our contribution.
 
 | Model             | SFOshop (Train/Test) | SFOwork (Train/Test) |
 |-------------------|---------------------|---------------------|
