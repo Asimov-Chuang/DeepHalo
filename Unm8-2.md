@@ -76,3 +76,40 @@ Across all settings, **DeepHalo consistently achieves the lowest Test NLL**, sho
 The expression $u_j(x_j, X_R)$ in Eq. (3) refers to the same function as $u_j(X_{R \cup \{j\}})$ in Eq. (2), and we will revise the notation for consistency. We will also correct the duplicate citation of Deep Sets [Zaheer et al., 2018], fix the misspelling of FETA and FATE (“E” stands for “evaluate”), and use $|S|$ consistently to denote set size. These issues will be addressed in the final version. We appreciate the reviewer’s careful reading.
 
 
+Thank you for your response. We truly appreciated the insightful exchange, and we are also very grateful that you are willing to raise your score.
+
+Regarding your comment:
+
+> “I understand the argument that for practitioners using these models there are advantages from being able to control the order of interactions, but I would have expected more significant experimental evidence to support this claim.”
+
+We would like to provide an additional experiment to further support this point.
+
+We trained an MLP on a synthetic featureless choice dataset with assortment size 10, where the ground-truth halo effect has a maximum order of 2. We then applied our proposed algorithm to recover all orders of halo effects from the trained MLP. Using the recovered effects, we reconstructed the utility and choice probabilities, and varied the maximum order of included effects to study how the in-sample performance depends on the maximum order we use to reconstruct the utility.
+
+We repeated the same procedure for a DeepHalo model trained on the same dataset, whose architecture was limited to capturing up to second-order effects.
+
+The results are shown in the table below. We observe that:
+
+- The MLP, due to the lack of explicit order control, required up to order 9 effects to reach optimal performance.
+- In contrast, DeepHalo achieved optimal performance already at order 2, demonstrating the effectiveness of its explicit order control for low-order approximation.
+
+Interestingly, we observed that once a model has captured high-order effects, the lower-order effects become functionally dependent on them. In other words, these effects work in tandem: the low-order components do not independently explain the choice behavior, but rather contribute meaningfully only in the presence of complementary high-order effects.
+
+This interplay is critical—simply truncating the higher-order terms and retaining only the low-order effects can actually degrade performance. This is because the lower-order components may have adapted during training to serve as partial corrections or complements to higher-order terms. Once those higher-order terms are removed, the utility approximation becomes misaligned with the original model's logic, leading to inferior predictions. This further highlights the importance of order control: it enables us to achieve faithful lower order approximations without relying on brittle truncating higher order effects.
+
+
+We believe this experiment further highlights the practical importance of having interpretable, order-controllable approximations like DeepHalo.
+
+| Max Effect Order | MLP In-sample NLL | DeepHalo In-sample NLL |
+|----------------------------|---------------|---------------------|
+| 0                          | 3.7148        | 2.3020              |
+| 1                          | 3.2303        | 4.1364              |
+| 2                          | 0.7643        | 0.0922              |
+| 3                          | 1.6429        | 0.0922              |
+| 4                          | 0.8172        | 0.0922              |
+| 5                          | 0.6719        | 0.0922              |
+| 6                          | 0.3280        | 0.0922              |
+| 7                          | 0.1502        | 0.0922              |
+| 8                          | 0.0958        | 0.0922              |
+| 9                          | 0.0910        | 0.0922              |
+
