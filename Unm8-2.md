@@ -75,7 +75,7 @@ Across all settings, **DeepHalo consistently achieves the lowest Test NLL**, sho
 ### **Clarification**
 The expression $u_j(x_j, X_R)$ in Eq. (3) refers to the same function as $u_j(X_{R \cup \{j\}})$ in Eq. (2), and we will revise the notation for consistency. We will also correct the duplicate citation of Deep Sets [Zaheer et al., 2018], fix the misspelling of FETA and FATE (“E” stands for “evaluate”), and use $|S|$ consistently to denote set size. These issues will be addressed in the final version. We appreciate the reviewer’s careful reading.
 
-
+### **Additional Experiment**
 Thank you for your response. We truly appreciated the insightful exchange, and we are also very grateful that you are willing to raise your score.
 
 Regarding your comment:
