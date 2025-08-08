@@ -111,3 +111,39 @@ We believe this experiment further highlights the practical importance of having
 | 8                          | 0.0958        | 0.0922              |
 | 9                          | 0.0910        | 0.0922              |
 
+
+
+
+Dear Reviewer,
+
+To provide further experimental evidence supporting the benefit of controlling interaction order, we conducted the following controlled experiment.
+
+We generated a dataset of 10 items where the ground-truth utility function includes interaction effects up to the second order only. This setting is meant to mimic practical scenarios in which interaction effects are limited to low orders. We compared two modeling approaches for estimating first- and second-order effects:
+
+(1) DeepHalo: Fit our model with architecture explicitly constrained to capture up to second-order interactions. Report the in-sample negative log-likelihood (NLL) of the observed choices using the fitted model.
+
+(2) MLP with Post Hoc Truncation: Fit a standard MLP. Use Equation (10) to extract interaction effects of all orders, then truncate post hoc to include only terms up to order $k$. Evaluate the in-sample NLL using only the truncated interaction effects.
+
+The in-sample NLL results for various truncation orders k are shown below:
+
+
+| Truncation Order $k$| MLP In-sample NLL | DeepHalo In-sample NLL |
+|----------------------------|---------------|---------------------|
+| 2                          | 0.7643        | 0.0922              |
+| 3                          | 1.6429        | 0.0922              |
+| 4                          | 0.8172        | 0.0922              |
+| 5                          | 0.6719        | 0.0922              |
+| 6                          | 0.3280        | 0.0922              |
+| 7                          | 0.1502        | 0.0922              |
+| 8                          | 0.0958        | 0.0922              |
+| 9                          | 0.0910        | 0.0922              |
+
+We observe that:
+
+- The MLP matches DeepHalo’s performance only when all interaction terms—including spurious higher-order ones—are included (i.e., no truncation).
+
+- Interestingly, increasing the truncation order beyond the true interaction order can worsen performance (e.g., from $k=2$ to $k=3$).
+
+This happens because the interaction effects of different orders interact nonlinearly. When higher-order terms are included but not properly estimated, they can distort the estimation of lower-order effects, leading to biased predictions. In contrast, DeepHalo’s explicit order control ensures a faithful low-order approximation without relying on fragile post hoc truncation.
+
+We hope this simple experiment clarifies the practical importance of interpretable, order-controllable models like DeepHalo. Thank you again for your thoughtful feedback.
