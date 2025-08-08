@@ -116,13 +116,13 @@ We believe this experiment further highlights the practical importance of having
 
 Dear Reviewer,
 
-To provide further experimental evidence supporting the benefit of controlling interaction order, we conducted the following controlled experiment.
+We would like to present an additional controlled experiment to illustrate the importance of using interpretable low-order approximations, as opposed to relying on post hoc truncation based on Equation (3).
 
 We generated a dataset of 10 items where the ground-truth utility function includes interaction effects up to the second order only. This setting is meant to mimic practical scenarios in which interaction effects are limited to low orders. We compared two modeling approaches for estimating first- and second-order effects:
 
 (1) DeepHalo: Fit our model with architecture explicitly constrained to capture up to second-order interactions. Report the in-sample negative log-likelihood (NLL) of the observed choices using the fitted model.
 
-(2) MLP with Post Hoc Truncation: Fit a standard MLP with the same number of learnable parameters. Use Equation (10) to extract interaction effects of all orders, then truncate post hoc to include only terms up to order $k$. Evaluate the in-sample NLL using only the truncated interaction effects.
+(2) MLP with Post Hoc Truncation: Fit a standard MLP with the same number of learnable parameters. Use Equation (3) to extract interaction effects of all orders, then truncate post hoc to include only terms up to order $k$. Evaluate the in-sample NLL using only the truncated interaction effects.
 
 The in-sample NLL results for various truncation orders k are shown below:
 
