@@ -144,6 +144,6 @@ We observe that:
 
 - Interestingly, increasing the truncation order beyond the true interaction order can worsen performance (e.g., from $k=2$ to $k=3$).
 
-This happens because the interaction effects of different orders interact nonlinearly. When higher-order terms are included but not properly estimated, they can distort the estimation of lower-order effects, leading to biased predictions. In contrast, DeepHalo’s explicit order control ensures a faithful low-order approximation without relying on fragile post hoc truncation.
+This happens because the interaction effects of different orders operate jointly. When higher-order terms are learned by the model but not included in evaluation, they can distort the predictions. In contrast, DeepHalo’s explicit order control ensures a faithful low-order approximation without relying on fragile post hoc truncation.
 
 We hope this simple experiment clarifies the practical importance of interpretable, order-controllable models like DeepHalo. Thank you again for your thoughtful feedback.
