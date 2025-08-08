@@ -122,7 +122,7 @@ We generated a dataset of 10 items where the ground-truth utility function inclu
 
 (1) DeepHalo: Fit our model with architecture explicitly constrained to capture up to second-order interactions. Report the in-sample negative log-likelihood (NLL) of the observed choices using the fitted model.
 
-(2) MLP with Post Hoc Truncation: Fit a standard MLP. Use Equation (10) to extract interaction effects of all orders, then truncate post hoc to include only terms up to order $k$. Evaluate the in-sample NLL using only the truncated interaction effects.
+(2) MLP with Post Hoc Truncation: Fit a standard MLP with the same number of learnable parameters. Use Equation (10) to extract interaction effects of all orders, then truncate post hoc to include only terms up to order $k$. Evaluate the in-sample NLL using only the truncated interaction effects.
 
 The in-sample NLL results for various truncation orders k are shown below:
 
