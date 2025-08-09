@@ -147,3 +147,27 @@ We observe that:
 This happens because the interaction effects of different orders operate jointly. When higher-order terms are learned by the model but not included in evaluation, they can distort the predictions. In contrast, DeepHalo’s explicit order control ensures a faithful low-order approximation without relying on fragile post hoc truncation.
 
 We hope this simple experiment clarifies the practical importance of interpretable, order-controllable models like DeepHalo. Thank you again for your thoughtful feedback.
+
+
+### **Additional Experiment 2**
+
+We sincerely thank you for recognizing the additional experiments and for the insightful discussion.  
+Regarding your suggestion — *“I think the above experiment would have been even more interesting if it had been performed on human data, because the relevance of these results is now predicated on the assumption that within human decisions the interactions are limited to lower orders”* — we fully agree.  
+At the end of this rebuttal, we present a simple experiment on the SFOshop dataset to address this point.
+
+First, we tested the assumption that human decisions the interactions are limited to lower orders.  
+We fitted a 2nd-order DeepHalo and a full-order DeepHalo (fitting only, without considering out-of-sample performance).  
+Their in-sample NLL losses were 1.5339 and 1.5331, respectively — essentially identical.  
+This indicates that, for this real dataset, only second-order effects are sufficient to capture human choice behavior.
+
+We then repeated the same truncation experiment as before and obtained similar trends:
+
+| Truncation Order \(k\) | MLP In-sample NLL | DeepHalo(2-order) In-sample NLL |
+|------------------------|-------------------|----------------------------------|
+| 2 | 1.6065 | 1.5339 |
+| 3 | 1.6168 | 1.5339 |
+| 4 | 1.6834 | 1.5339 |
+| 5 | 1.5806 | 1.5339 |
+| 6 | 1.5406 | 1.5339 |
+| 7 | 1.5340 | 1.5339 |
+
