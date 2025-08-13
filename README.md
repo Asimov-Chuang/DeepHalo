@@ -8,11 +8,39 @@ We greatly appreciate the time, effort, and constructive feedback from all revie
 3. Developed an identifiable effect recovery algorithm to extract meaningful context effects.  
 
 **Outcomes from the Discussion**  
-1. Addressed the primary novelty concern — why controlling the order of context effects is necessary and why existing models cannot achieve this.  
-   - Demonstrated (see discussions with reviewers Uum8 and B9Eq) that lower-order effects work in tandem with higher-order effects, and that leaving the maximum order uncontrolled results in an exponential number of effects, severely compromising interpretability.  
-   - Showed that simply truncating to obtain lower-order effects can greatly distort predicted choice probabilities.  
-   - Clarified that existing models, due to entangling all item features, can only recover the full-order model, whereas our approach enables faithful lower-order approximations by explicitly constraining the maximum order.  
-2. Incorporated reviewer 6ydQ’s suggestion to include classical non-IIA discrete choice models (mixed logit, nested logit) for broader comparisons.  
-3. Followed reviewer D2h9’s advice to report parameter counts and include additional baselines in the featureless experiments, making the empirical evaluation more convincing.
 
-In addition, we have provided clarifications for other points raised and will incorporate corresponding improvements in future versions. We look forward to continued constructive exchanges with the community.
+**1. Addressed the primary novelty concern** 
+
+Reviewers’ novelty concerns focused on three questions:  
+(i) how DeepHalo controls the order of context effects,  
+(ii) why such control is necessary, and  
+(iii) why existing models cannot achieve it.  
+
+We addressed (i) with a simplified example in our discussion with Uum8 and by referring to the derivation in the Appendix. For (ii) and (iii), we conducted extensive experiments on synthetic and real datasets, whose results were well recognized by reviewers Uum8 and B9Eq for their clarity and persuasiveness. (i) is also further validated through the experiments. These experiments showed that: 
+
+- Lower- and higher-order effects work in tandem. Leaving the maximum order uncontrolled leads to exponential growth in effects and loss of interpretability.  
+- Naïve truncation to obtain lower-order effects can severely distort predicted choice probabilities.  
+- Existing models, by entangling all item features, can only recover a full-order model, whereas our method enables faithful lower-order approximations via explicit order constraints.  
+
+
+**2. More baseline models, training details, and additional experiments**  
+
+We further improved the empirical evaluation by:  
+- Incorporating reviewer 6ydQ’s suggestion to include classical non-IIA models (mixed logit, nested logit) and report training time.  
+- Following reviewer D2h9’s advice to provide parameter counts and add baselines in featureless experiments.  
+- Responding to Uum8’s request by adding a data efficiency experiment.  
+
+Feedback from reviewers indicates these concerns have been satisfactorily addressed.  
+
+**3. Clarifications on presentation-related points**  
+
+Reviewers raised several minor points regarding presentation and confusing points. We have addressed these by:  
+- Providing point-by-point clarifications during the discussion.  
+- Outlining specific revision plans to improve clarity and readability.  
+
+We aim to make the paper as straightforward and easy to follow as possible. 
+
+**Summary**  
+
+Across the discussion phase, all reviewers reached consensus in giving positive evaluations of our work. The feedback was constructive and converged on the view that the paper makes a clear and valuable contribution. Nearly all concerns raised were fully resolved through additional experiments, clarifications, and revisions. 
+
