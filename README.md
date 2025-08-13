@@ -42,5 +42,5 @@ We aim to make the paper as straightforward and easy to follow as possible.
 
 **Summary**  
 
-Across the discussion phase, all reviewers reached consensus in giving positive evaluations of our work. The feedback was constructive and converged on the view that the paper makes a clear and valuable contribution. Nearly all concerns raised were fully resolved through additional experiments, clarifications, and revisions. 
+Across the discussion phase, all reviewers reached consensus in giving positive evaluations of our work. The feedback was constructive and converged on the view that the paper makes a clear and valuable contribution. Nearly all concerns raised were fully resolved through additional experiments, clarifications, and revision plans. 
 
