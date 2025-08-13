@@ -9,24 +9,25 @@ We greatly appreciate the time, effort, and constructive feedback from all revie
 
 **Outcomes from the Discussion**  
 
-**1. Addressed the primary novelty concern** 
+**1. Further clarification of novelty** 
 
-Reviewers’ novelty concerns focused on three questions:  
-(i) how DeepHalo controls the order of context effects,  
-(ii) why such control is necessary, and  
-(iii) why existing models cannot achieve it.  
+We further clarify the novelty of DeepHalo from three perspectives:  
 
-We addressed (i) with a simplified example in our discussion with Uum8 and by referring to the derivation in the Appendix. For (ii) and (iii), we conducted extensive experiments on synthetic and real datasets, whose results were well recognized by reviewers Uum8 and B9Eq for their clarity and persuasiveness. (i) is also further validated through the experiments. These experiments showed that: 
+(i) Mechanism for controlling context effect order 
+(ii) Necessity of order control  
+(iii) Limitations of existing models  
+
+We explained (i) using a simplified example in our discussion with Uum8 and by referring to the derivation in the Appendix. For (ii) and (iii), we conducted extensive experiments on synthetic and real datasets, whose results were well recognized by reviewers Uum8 and B9Eq for their clarity and persuasiveness. These experiments also provided further validation for (i) and showed that:
 
 - Lower- and higher-order effects work in tandem. Leaving the maximum order uncontrolled leads to exponential growth in effects and loss of interpretability.  
-- Naive truncation to obtain lower-order effects can severely distort predicted choice probabilities.  
+- Post-hoc truncation to obtain lower-order effects can severely distort predicted choice probabilities.  
 - Existing models, by entangling all item features, can only recover a full-order model, whereas our method enables faithful lower-order approximations via explicit order constraints.  
 
 
 **2. More baseline models, training details, and additional experiments**  
 
 We further improved the empirical evaluation by:  
-- Incorporating reviewer 6ydQ’s suggestion to include classical non-IIA models (mixed logit, nested logit) and report training time.  
+- Incorporating reviewer 6ydQ’s suggestion to include classical non-IIA models (mixed logit, nested logit) and report performance.  
 - Following reviewer D2h9’s advice to provide parameter counts and add baselines in featureless experiments.  
 - Responding to Uum8’s request by adding a data efficiency experiment.  
 
