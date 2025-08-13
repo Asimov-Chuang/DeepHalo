@@ -19,7 +19,7 @@ Reviewers’ novelty concerns focused on three questions:
 We addressed (i) with a simplified example in our discussion with Uum8 and by referring to the derivation in the Appendix. For (ii) and (iii), we conducted extensive experiments on synthetic and real datasets, whose results were well recognized by reviewers Uum8 and B9Eq for their clarity and persuasiveness. (i) is also further validated through the experiments. These experiments showed that: 
 
 - Lower- and higher-order effects work in tandem. Leaving the maximum order uncontrolled leads to exponential growth in effects and loss of interpretability.  
-- Naïve truncation to obtain lower-order effects can severely distort predicted choice probabilities.  
+- Naive truncation to obtain lower-order effects can severely distort predicted choice probabilities.  
 - Existing models, by entangling all item features, can only recover a full-order model, whereas our method enables faithful lower-order approximations via explicit order constraints.  
 
 
