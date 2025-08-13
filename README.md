@@ -14,7 +14,9 @@ We greatly appreciate the time, effort, and constructive feedback from all revie
 We further clarify the novelty of DeepHalo from three perspectives:  
 
 (i) Mechanism for controlling context effect order 
+
 (ii) Necessity of order control  
+
 (iii) Limitations of existing models  
 
 We explained (i) using a simplified example in our discussion with Uum8 and by referring to the derivation in the Appendix. For (ii) and (iii), we conducted extensive experiments on synthetic and real datasets, whose results were well recognized by reviewers Uum8 and B9Eq for their clarity and persuasiveness. These experiments also provided further validation for (i) and showed that:
