@@ -19,7 +19,7 @@ We further clarify the novelty of DeepHalo from three perspectives:
 
 (iii) Limitations of existing models  
 
-We explained (i) using a simplified example in our discussion with Uum8 and by referring to the derivation in the Appendix. For (ii) and (iii), we conducted extensive experiments on synthetic and real datasets, whose results were well recognized by reviewers Uum8 and B9Eq for their clarity and persuasiveness. These experiments also provided further validation for (i) and showed that:
+We explained (i) using a simplified example in our discussion with Uum8 and by referring to the derivation in the Appendix. For (ii) and (iii), we conducted experiments on synthetic and real datasets, whose results were well recognized by reviewers Uum8 and B9Eq for their clarity and persuasiveness. These experiments also provided further validation for (i) and showed that:
 
 - Lower- and higher-order effects work in tandem. Leaving the maximum order uncontrolled leads to exponential growth in effects and loss of interpretability.  
 - Post-hoc truncation to obtain lower-order effects can severely distort predicted choice probabilities.  
