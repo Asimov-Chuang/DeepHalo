@@ -1,0 +1,9 @@
+# data
+DeepHalo-Code/Data/*.csv
+DeepHalo-Code/Data/*.zip
+DeepHalo-Code/Data/*.parquet
+DeepHalo-Code/Data/*.npy
+DeepHalo-Code/Data/*.npz
+DeepHalo-Code/Data/*.pkl
+# notebooks cache
+**/.ipynb_checkpoints/
